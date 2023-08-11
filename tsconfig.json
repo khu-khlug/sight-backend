@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     "module": "commonjs",
+    "strict": true,
     "declaration": true,
     "removeComments": true,
     "emitDecoratorMetadata": true,
@@ -10,6 +11,10 @@
     "sourceMap": true,
     "outDir": "./dist",
     "baseUrl": "./",
+    "paths": {
+      "@sight": ["src"],
+      "@sight/*": ["src/*"],
+    },
     "incremental": true,
     "skipLibCheck": true,
     "strictNullChecks": false,
