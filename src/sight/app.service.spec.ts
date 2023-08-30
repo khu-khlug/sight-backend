@@ -18,6 +18,11 @@ describe('AppService', () => {
       const result = appService.add(1, 1);
       expect(result).toEqual(2);
     });
+
+    test('11과 11을 더하면 22가 반환되어야 한다', () => {
+      const result = appService.add(11, 11);
+      expect(result).toEqual(22);
+    });
   });
 
   describe('subtract', () => {
