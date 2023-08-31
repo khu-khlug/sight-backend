@@ -1,7 +1,9 @@
 ignore:
-  - '**/*.module.ts'
+  - "**/*.module.ts"
 
 comment:
-  layout: 'reach, diff, files'
+  layout: "reach, diff, files"
   behavior: default
   require_changes: false
+  require_base: false
+  require_head: true

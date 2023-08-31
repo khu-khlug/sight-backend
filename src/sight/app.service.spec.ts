@@ -19,4 +19,11 @@ describe('AppService', () => {
       expect(result).toEqual(2);
     });
   });
+
+  describe('subtract', () => {
+    test('2에서 1을 빼면 1이 반환되어야 한다', () => {
+      const result = appService.subtract(2, 1);
+      expect(result).toEqual(1);
+    });
+  });
 });
