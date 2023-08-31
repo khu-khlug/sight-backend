@@ -1,8 +1,8 @@
 ignore:
-  - '**/*.module.ts'
+  - "**/*.module.ts"
 
 comment:
-  layout: 'diff, files, flags'
+  layout: "reach, diff, files"
   behavior: default
   require_changes: false
   require_base: false
