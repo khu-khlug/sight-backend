@@ -1,5 +1,5 @@
 import { Test } from '@nestjs/testing';
-import { AppService } from '@app/sight/app.service';
+import { AppService } from '@sight/app/app.service';
 
 // Codecov 테스트를 위한 테스트 코드입니다.
 describe('AppService', () => {

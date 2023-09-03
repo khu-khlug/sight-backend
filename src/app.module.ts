@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { AppService } from '@app/sight/app.service';
+import { AppService } from '@sight/app/app.service';
 
 @Module({
   imports: [],
