@@ -1,5 +1,7 @@
 import { faker } from '@faker-js/faker';
 
+import { InterestListView } from '@sight/app/application/interest/query/view/InterestListView';
+import { InterestView } from '@sight/app/application/interest/query/view/InterestView';
 import { UserListView } from '@sight/app/application/user/query/view/UserListView';
 import { UserView } from '@sight/app/application/user/query/view/UserView';
 
@@ -19,7 +21,6 @@ export function generateUserView(params?: Partial<UserView>): UserView {
       phone: faker.phone.number('###-####-####'),
       homepage: faker.internet.url(),
       language: faker.lorem.word(),
-      interest: faker.lorem.word(),
       prefer: faker.lorem.word(),
     },
     admission: faker.lorem.word(),
@@ -48,6 +49,30 @@ export function generateUserListView(
   return {
     count,
     users: Array.from({ length: count }, () => generateUserView()),
+    ...params,
+  };
+}
+
+export function generateInterestView(
+  params?: Partial<InterestView>,
+): InterestView {
+  return {
+    id: faker.number.int(),
+    name: faker.lorem.word(),
+    description: faker.lorem.paragraph(),
+    createdAt: faker.date.anytime(),
+    ...params,
+  };
+}
+
+export function generateInterestListView(
+  params?: Partial<InterestListView>,
+): InterestListView {
+  const count = params?.count ?? faker.number.int({ min: 1, max: 5 });
+
+  return {
+    count,
+    interests: Array.from({ length: count }, () => generateInterestView()),
     ...params,
   };
 }

@@ -7,7 +7,6 @@ export type ProfileConstructorParams = {
   phone: string | null;
   homepage: string | null;
   language: string | null;
-  interest: string | null;
   prefer: string | null;
 };
 
@@ -20,7 +19,6 @@ export class Profile {
   private _phone: string | null;
   private _homepage: string | null;
   private _language: string | null;
-  private _interest: string | null;
   private _prefer: string | null;
 
   constructor(params: ProfileConstructorParams) {
@@ -32,7 +30,6 @@ export class Profile {
     this._phone = params.phone;
     this._homepage = params.homepage;
     this._language = params.language;
-    this._interest = params.interest;
     this._prefer = params.prefer;
   }
 
@@ -66,10 +63,6 @@ export class Profile {
 
   get language(): string | null {
     return this._language;
-  }
-
-  get interest(): string | null {
-    return this._interest;
   }
 
   get prefer(): string | null {
