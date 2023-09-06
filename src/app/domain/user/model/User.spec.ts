@@ -1,7 +1,7 @@
-import { User } from '@sight/app/domain/user/model/User';
-
 import { testNow } from '@sight/__test__/constant';
 import { DomainFixture } from '@sight/__test__/fixtures';
+
+import { User } from '@sight/app/domain/user/model/User';
 
 describe('User', () => {
   let user: User;

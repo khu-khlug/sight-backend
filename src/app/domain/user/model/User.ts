@@ -1,5 +1,5 @@
-import { Profile } from '@sight/app/domain/user/model/Profile';
 import { UserState } from '@sight/app/domain/user/model/constant';
+import { Profile } from '@sight/app/domain/user/model/Profile';
 
 export type UserConstructorParams = {
   id: number;
