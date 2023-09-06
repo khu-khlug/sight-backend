@@ -1,6 +1,8 @@
 import { faker } from '@faker-js/faker';
+
 import { UserListView } from '@sight/app/application/user/query/view/UserListView';
 import { UserView } from '@sight/app/application/user/query/view/UserView';
+
 import { UserState } from '@sight/app/domain/user/model/constant';
 
 export function generateUserView(params?: Partial<UserView>): UserView {

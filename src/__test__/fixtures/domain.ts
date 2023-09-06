@@ -1,8 +1,8 @@
 import { faker } from '@faker-js/faker';
-import { Profile } from '@sight/app/domain/user/model/Profile';
 
-import { User, UserConstructorParams } from '@sight/app/domain/user/model/User';
 import { UserState } from '@sight/app/domain/user/model/constant';
+import { Profile } from '@sight/app/domain/user/model/Profile';
+import { User, UserConstructorParams } from '@sight/app/domain/user/model/User';
 
 export function generateUser(params?: Partial<UserConstructorParams>): User {
   return new User({
