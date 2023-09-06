@@ -3,6 +3,10 @@ import { faker } from '@faker-js/faker';
 import { UserState } from '@sight/app/domain/user/model/constant';
 import { Profile } from '@sight/app/domain/user/model/Profile';
 import { User, UserConstructorParams } from '@sight/app/domain/user/model/User';
+import {
+  Interest,
+  InterestConstructorParams,
+} from '@sight/app/domain/interest/model/Interest';
 
 export function generateUser(params?: Partial<UserConstructorParams>): User {
   return new User({
@@ -18,7 +22,6 @@ export function generateUser(params?: Partial<UserConstructorParams>): User {
       phone: faker.phone.number('###-####-####'),
       homepage: faker.internet.url(),
       language: faker.lorem.word(),
-      interest: faker.lorem.word(),
       prefer: faker.lorem.word(),
     }),
     admission: faker.lorem.word(),
@@ -35,6 +38,18 @@ export function generateUser(params?: Partial<UserConstructorParams>): User {
     lastEnterAt: faker.date.anytime(),
     createdAt: faker.date.anytime(),
     updatedAt: faker.date.anytime(),
+    ...params,
+  });
+}
+
+export function generateInterest(
+  params?: Partial<InterestConstructorParams>,
+): Interest {
+  return new Interest({
+    id: faker.number.int(),
+    name: faker.lorem.word(),
+    description: faker.lorem.paragraph(),
+    createdAt: faker.date.anytime(),
     ...params,
   });
 }
