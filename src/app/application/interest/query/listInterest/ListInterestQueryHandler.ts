@@ -3,7 +3,7 @@ import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 
 import { IInterestQuery } from '@sight/app/application/interest/query/IInterestQuery';
 import { ListInterestQuery } from '@sight/app/application/interest/query/listInterest/ListInterestQuery';
-import { ListInterestQueryResult } from '@sight/app/application/interest/query/listInterest/listInterestQueryResult';
+import { ListInterestQueryResult } from '@sight/app/application/interest/query/listInterest/ListInterestQueryResult';
 
 @Injectable()
 @QueryHandler(ListInterestQuery)
