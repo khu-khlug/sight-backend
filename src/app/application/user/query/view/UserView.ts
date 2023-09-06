@@ -9,7 +9,6 @@ export interface ProfileView {
   phone: string | null;
   homepage: string | null;
   language: string | null;
-  interest: string | null;
   prefer: string | null;
 }
 
