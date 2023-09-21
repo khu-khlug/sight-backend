@@ -8,12 +8,12 @@ export interface ProfileView {
   email: string | null;
   phone: string | null;
   homepage: string | null;
-  language: string | null;
+  languages: string[] | null;
   prefer: string | null;
 }
 
 export interface UserView {
-  id: number;
+  id: string;
   name: string;
   password: string | null;
   profile: ProfileView;

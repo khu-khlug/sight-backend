@@ -4,7 +4,7 @@ export class UpdateUserCommand implements ICommand {
   constructor(
     readonly userId: string,
     readonly email: string,
-    readonly phone: string,
+    readonly phone: string | null,
     readonly homepage: string,
     readonly languages: string[],
     readonly interestIds: string[],

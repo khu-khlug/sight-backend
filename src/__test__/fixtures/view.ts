@@ -9,7 +9,7 @@ import { UserState } from '@sight/app/domain/user/model/constant';
 
 export function generateUserView(params?: Partial<UserView>): UserView {
   return {
-    id: faker.number.int(),
+    id: faker.string.uuid(),
     name: faker.lorem.word(),
     password: faker.lorem.word(),
     profile: {
@@ -20,7 +20,7 @@ export function generateUserView(params?: Partial<UserView>): UserView {
       email: faker.internet.email(),
       phone: faker.phone.number('###-####-####'),
       homepage: faker.internet.url(),
-      language: faker.lorem.word(),
+      languages: [faker.lorem.word()],
       prefer: faker.lorem.word(),
     },
     admission: faker.lorem.word(),
