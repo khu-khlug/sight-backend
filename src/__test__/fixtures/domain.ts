@@ -10,7 +10,7 @@ import {
 
 export function generateUser(params?: Partial<UserConstructorParams>): User {
   return new User({
-    id: faker.number.int(),
+    id: faker.string.uuid(),
     name: faker.lorem.word(),
     password: faker.lorem.word(),
     profile: new Profile({
@@ -21,7 +21,7 @@ export function generateUser(params?: Partial<UserConstructorParams>): User {
       email: faker.internet.email(),
       phone: faker.phone.number('###-####-####'),
       homepage: faker.internet.url(),
-      language: faker.lorem.word(),
+      languages: [faker.lorem.word()],
       prefer: faker.lorem.word(),
     }),
     admission: faker.lorem.word(),
@@ -46,7 +46,7 @@ export function generateInterest(
   params?: Partial<InterestConstructorParams>,
 ): Interest {
   return new Interest({
-    id: faker.number.int(),
+    id: faker.string.uuid(),
     name: faker.lorem.word(),
     description: faker.lorem.paragraph(),
     createdAt: faker.date.anytime(),

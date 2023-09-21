@@ -1,8 +1,12 @@
+import { UnprocessableEntityException } from '@nestjs/common';
+import { AggregateRoot } from '@nestjs/cqrs';
+
 import { UserState } from '@sight/app/domain/user/model/constant';
 import { Profile } from '@sight/app/domain/user/model/Profile';
+import { Message } from '@sight/constant/message';
 
 export type UserConstructorParams = {
-  id: number;
+  id: string;
   name: string;
   password: string | null;
   profile: Profile;
@@ -22,8 +26,8 @@ export type UserConstructorParams = {
   updatedAt: Date;
 };
 
-export class User {
-  private _id: number;
+export class User extends AggregateRoot {
+  private _id: string;
   private _name: string;
   private _password: string | null;
   private _profile: Profile;
@@ -43,6 +47,7 @@ export class User {
   private _updatedAt: Date;
 
   constructor(params: UserConstructorParams) {
+    super();
     this._id = params.id;
     this._name = params.name;
     this._password = params.password;
@@ -63,11 +68,23 @@ export class User {
     this._updatedAt = params.updatedAt;
   }
 
-  login(): void {
-    this._lastLoginAt = new Date();
+  setProfile(profile: Partial<Profile>): void {
+    if (profile.phone && this.state != UserState.GRADUATE) {
+      throw new UnprocessableEntityException(
+        Message.GRADUATED_USER_ONLY_CAN_CHANGE_EMAIL,
+      );
+    }
+
+    this._profile = new Profile({ ...this._profile, ...profile });
+    this._updatedAt = new Date();
   }
 
-  get id(): number {
+  login(): void {
+    this._lastLoginAt = new Date();
+    this._updatedAt = new Date();
+  }
+
+  get id(): string {
     return this._id;
   }
 
