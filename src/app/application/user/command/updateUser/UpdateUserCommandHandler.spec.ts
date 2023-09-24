@@ -27,6 +27,10 @@ import {
   UserRepository,
 } from '@sight/app/domain/user/IUserRepository';
 import { UserState } from '@sight/app/domain/user/model/constant';
+import {
+  ISlackSender,
+  SlackSender,
+} from '@sight/app/domain/adapter/ISlackSender';
 
 describe('UpdateUserCommandHandler', () => {
   let handler: UpdateUserCommandHandler;
@@ -34,6 +38,7 @@ describe('UpdateUserCommandHandler', () => {
   let userRepository: jest.Mocked<IUserRepository>;
   let interestRepository: jest.Mocked<IInterestRepository>;
   let userInterestRepository: jest.Mocked<IUserInterestRepository>;
+  let slackSender: jest.Mocked<ISlackSender>;
 
   beforeAll(async () => {
     advanceTo(new Date());
@@ -45,6 +50,7 @@ describe('UpdateUserCommandHandler', () => {
         { provide: UserRepository, useValue: {} },
         { provide: InterestRepository, useValue: {} },
         { provide: UserInterestRepository, useValue: {} },
+        { provide: SlackSender, useValue: {} },
       ],
     }).compile();
 
@@ -53,6 +59,7 @@ describe('UpdateUserCommandHandler', () => {
     userRepository = testModule.get(UserRepository);
     interestRepository = testModule.get(InterestRepository);
     userInterestRepository = testModule.get(UserInterestRepository);
+    slackSender = testModule.get(SlackSender);
   });
 
   afterAll(() => {
@@ -100,6 +107,7 @@ describe('UpdateUserCommandHandler', () => {
       userRepository.save = jest.fn();
       userInterestRepository.removeByUserId = jest.fn();
       userInterestRepository.save = jest.fn();
+      slackSender.send = jest.fn();
     });
 
     test('주어진 유저 ID에 해당하는 유저가 존재하지 않을 때, 예외를 발생시켜야 한다', async () => {
@@ -162,6 +170,12 @@ describe('UpdateUserCommandHandler', () => {
 
       expect(userRepository.save).toBeCalledTimes(1);
       expect(userRepository.save).toBeCalledWith(user);
+    });
+
+    test('요청자에게 슬랙 메시지를 보내야 한다', async () => {
+      await handler.execute(command);
+
+      expect(slackSender.send).toBeCalledTimes(1);
     });
 
     test('수정한 유저를 반환해야 한다', async () => {
