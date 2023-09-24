@@ -14,6 +14,8 @@ export type SlackBroadcastParams = Omit<
   'sourceUserId' | 'targetUserId'
 >;
 
+export const SlackSender = Symbol('SlackSender');
+
 export interface ISlackSender {
   send: (params: SlackSendParams) => Promise<void>;
   sendToManagers: (params: SlackSendToManagersParams) => Promise<void>;
