@@ -1,16 +1,18 @@
 import { Test } from '@nestjs/testing';
 import { advanceTo, clear } from 'jest-date-mock';
 
-import { UpdateUnitedUserCommandHandler } from './UpdateUnitedUserCommandHandler';
+import { UpdateUnitedUserCommand } from '@sight/app/application/user/command/updateUnitedUser/UpdateUnitedUserCommand';
+import { UpdateUnitedUserCommandHandler } from '@sight/app/application/user/command/updateUnitedUser/UpdateUnitedUserCommandHandler';
+
+import { UserState } from '@sight/app/domain/user/model/constant';
+import { User } from '@sight/app/domain/user/model/User';
 import {
   IUserRepository,
   UserRepository,
 } from '@sight/app/domain/user/IUserRepository';
-import { User } from '@sight/app/domain/user/model/User';
+
 import { generateUser } from '@sight/__test__/fixtures/domain';
-import { UserState } from '@sight/app/domain/user/model/constant';
 import { Message } from '@sight/constant/message';
-import { UpdateUnitedUserCommand } from './UpdateUnitedUserCommand';
 
 describe('UpdateUnitedUserCommandHandler', () => {
   let handler: UpdateUnitedUserCommandHandler;

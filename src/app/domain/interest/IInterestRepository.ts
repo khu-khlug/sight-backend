@@ -1,5 +1,6 @@
 import { IGenericRepository } from '@sight/core/persistence/IGenericRepository';
-import { Interest } from './model/Interest';
+
+import { Interest } from '@sight/app/domain/interest/model/Interest';
 
 export const InterestRepository = Symbol('InterestRepository');
 

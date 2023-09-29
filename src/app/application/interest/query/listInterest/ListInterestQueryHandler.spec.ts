@@ -1,11 +1,11 @@
 import { Test } from '@nestjs/testing';
 
-import { ViewFixture } from '@sight/__test__/fixtures';
-
 import { IInterestQuery } from '@sight/app/application/interest/query/IInterestQuery';
 import { ListInterestQueryHandler } from '@sight/app/application/interest/query/listInterest/ListInterestQueryHandler';
 import { ListInterestQueryResult } from '@sight/app/application/interest/query/listInterest/ListInterestQueryResult';
 import { InterestListView } from '@sight/app/application/interest/query/view/InterestListView';
+
+import { ViewFixture } from '@sight/__test__/fixtures';
 
 describe('ListInterestQueryHandler', () => {
   let listInterestQueryHandler: ListInterestQueryHandler;

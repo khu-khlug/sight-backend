@@ -1,8 +1,9 @@
-import { DomainFixture } from '@sight/__test__/fixtures';
-
-import { User } from '@sight/app/domain/user/model/User';
 import { advanceTo, clear } from 'jest-date-mock';
-import { UserState } from './constant';
+
+import { UserState } from '@sight/app/domain/user/model/constant';
+import { User } from '@sight/app/domain/user/model/User';
+
+import { DomainFixture } from '@sight/__test__/fixtures';
 import { Message } from '@sight/constant/message';
 
 describe('User', () => {

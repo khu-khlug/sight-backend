@@ -1,19 +1,18 @@
 import { Test } from '@nestjs/testing';
 import { advanceTo, clear } from 'jest-date-mock';
 
-import { Message } from '@sight/constant/message';
-import {
-  generateInterest,
-  generateUser,
-} from '@sight/__test__/fixtures/domain';
-
 import { UpdateUserCommand } from '@sight/app/application/user/command/updateUser/UpdateUserCommand';
 import { UpdateUserCommandHandler } from '@sight/app/application/user/command/updateUser/UpdateUserCommandHandler';
 import { UpdateUserCommandResult } from '@sight/app/application/user/command/updateUser/UpdateUserCommandResult';
 
 import { Interest } from '@sight/app/domain/interest/model/Interest';
 import { UserInterestFactory } from '@sight/app/domain/interest/UserInterestFactory';
+import { UserState } from '@sight/app/domain/user/model/constant';
 import { User } from '@sight/app/domain/user/model/User';
+import {
+  ISlackSender,
+  SlackSender,
+} from '@sight/app/domain/adapter/ISlackSender';
 import {
   IInterestRepository,
   InterestRepository,
@@ -26,11 +25,12 @@ import {
   IUserRepository,
   UserRepository,
 } from '@sight/app/domain/user/IUserRepository';
-import { UserState } from '@sight/app/domain/user/model/constant';
+
+import { Message } from '@sight/constant/message';
 import {
-  ISlackSender,
-  SlackSender,
-} from '@sight/app/domain/adapter/ISlackSender';
+  generateInterest,
+  generateUser,
+} from '@sight/__test__/fixtures/domain';
 
 describe('UpdateUserCommandHandler', () => {
   let handler: UpdateUserCommandHandler;

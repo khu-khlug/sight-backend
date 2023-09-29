@@ -1,7 +1,5 @@
 import { Test } from '@nestjs/testing';
 
-import { ViewFixture } from '@sight/__test__/fixtures';
-
 import { IUserQuery } from '@sight/app/application/user/query/IUserQuery';
 import { ListUserQuery } from '@sight/app/application/user/query/listUser/ListUserQuery';
 import { ListUserQueryHandler } from '@sight/app/application/user/query/listUser/ListUserQueryHandler';
@@ -9,6 +7,8 @@ import { ListUserQueryResult } from '@sight/app/application/user/query/listUser/
 import { UserListView } from '@sight/app/application/user/query/view/UserListView';
 
 import { UserState } from '@sight/app/domain/user/model/constant';
+
+import { ViewFixture } from '@sight/__test__/fixtures';
 
 describe('ListUserQueryHandler', () => {
   let listUserQueryHandler: ListUserQueryHandler;

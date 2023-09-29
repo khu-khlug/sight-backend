@@ -1,12 +1,12 @@
 import { Inject } from '@nestjs/common';
 import { EventsHandler, IEventHandler } from '@nestjs/cqrs';
 
+import { SlackMessageCategory } from '@sight/app/domain/message/model/constant';
 import { UserProfileUpdated } from '@sight/app/domain/user/event/UserProfileUpdated';
 import {
   ISlackSender,
   SlackSender,
 } from '@sight/app/domain/adapter/ISlackSender';
-import { SlackMessageCategory } from '@sight/app/domain/message/model/constant';
 
 @EventsHandler(UserProfileUpdated)
 export class UserProfileUpdatedHandler
