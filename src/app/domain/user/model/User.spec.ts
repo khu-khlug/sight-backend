@@ -1,8 +1,9 @@
-import { DomainFixture } from '@sight/__test__/fixtures';
-
-import { User } from '@sight/app/domain/user/model/User';
 import { advanceTo, clear } from 'jest-date-mock';
-import { UserState } from './constant';
+
+import { UserState } from '@sight/app/domain/user/model/constant';
+import { User } from '@sight/app/domain/user/model/User';
+
+import { DomainFixture } from '@sight/__test__/fixtures';
 import { Message } from '@sight/constant/message';
 
 describe('User', () => {
@@ -13,7 +14,7 @@ describe('User', () => {
   beforeEach(() => {
     advanceTo(now);
 
-    user = DomainFixture.generateUser();
+    user = DomainFixture.generateUser({ state: UserState.UNDERGRADUATE });
   });
 
   afterAll(() => {
@@ -24,6 +25,14 @@ describe('User', () => {
     const email = 'some@email.com';
     const grade = 1;
     const name = '김러리';
+
+    test('교류 회원이 이메일 외에 다른 정보를 변경할 때, 예외를 발생시켜야 한다', () => {
+      user = DomainFixture.generateUser({ state: UserState.UNITED });
+
+      expect(() => user.setProfile({ phone: '010-0000-0000' })).toThrowError(
+        Message.UNITED_USER_CAN_ONLY_CHANGE_EMAIL,
+      );
+    });
 
     test('졸업 상태가 아닌 유저가 전화번호를 변경할 때, 예외를 발생시켜야 한다', () => {
       user = DomainFixture.generateUser({ state: UserState.UNDERGRADUATE });

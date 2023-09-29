@@ -1,5 +1,6 @@
 import { IGenericRepository } from '@sight/core/persistence/IGenericRepository';
-import { User } from './model/User';
+
+import { User } from '@sight/app/domain/user/model/User';
 
 export const UserRepository = Symbol('UserRepository');
 

@@ -1,8 +1,10 @@
 import { UnprocessableEntityException } from '@nestjs/common';
 import { AggregateRoot } from '@nestjs/cqrs';
 
+import { UserProfileUpdated } from '@sight/app/domain/user/event/UserProfileUpdated';
 import { UserState } from '@sight/app/domain/user/model/constant';
 import { Profile } from '@sight/app/domain/user/model/Profile';
+
 import { Message } from '@sight/constant/message';
 
 export type UserConstructorParams = {
@@ -69,7 +71,16 @@ export class User extends AggregateRoot {
   }
 
   setProfile(profile: Partial<Profile>): void {
-    if (profile.phone && this.state != UserState.GRADUATE) {
+    if (
+      !(Object.keys(profile).length === 1 && profile.email) &&
+      this.state === UserState.UNITED
+    ) {
+      throw new UnprocessableEntityException(
+        Message.UNITED_USER_CAN_ONLY_CHANGE_EMAIL,
+      );
+    }
+
+    if (profile.phone && this.state !== UserState.GRADUATE) {
       throw new UnprocessableEntityException(
         Message.GRADUATED_USER_ONLY_CAN_CHANGE_EMAIL,
       );
@@ -77,6 +88,8 @@ export class User extends AggregateRoot {
 
     this._profile = new Profile({ ...this._profile, ...profile });
     this._updatedAt = new Date();
+
+    this.apply(new UserProfileUpdated(this));
   }
 
   login(): void {

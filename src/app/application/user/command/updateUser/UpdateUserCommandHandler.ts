@@ -1,8 +1,6 @@
 import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { ICommandHandler } from '@nestjs/cqrs';
 
-import { Message } from '@sight/constant/message';
-
 import { UpdateUserCommand } from '@sight/app/application/user/command/updateUser/UpdateUserCommand';
 import { UpdateUserCommandResult } from '@sight/app/application/user/command/updateUser/UpdateUserCommandResult';
 
@@ -20,11 +18,8 @@ import {
   IUserRepository,
   UserRepository,
 } from '@sight/app/domain/user/IUserRepository';
-import {
-  ISlackSender,
-  SlackSender,
-} from '@sight/app/domain/adapter/ISlackSender';
-import { SlackMessageCategory } from '@sight/app/domain/message/model/constant';
+
+import { Message } from '@sight/constant/message';
 
 @Injectable()
 export class UpdateUserCommandHandler
@@ -39,8 +34,6 @@ export class UpdateUserCommandHandler
     private readonly interestRepository: IInterestRepository,
     @Inject(UserInterestRepository)
     private readonly userInterestRepository: IUserInterestRepository,
-    @Inject(SlackSender)
-    private readonly slackSender: ISlackSender,
   ) {}
 
   // TODO @Transactional()
@@ -57,12 +50,6 @@ export class UpdateUserCommandHandler
     await this.updateInterests(userId, interestIds);
 
     await this.userRepository.save(user);
-    await this.slackSender.send({
-      sourceUserId: null,
-      targetUserId: userId,
-      message: '회원 정보를 수정했습니다.',
-      category: SlackMessageCategory.USER_DATA,
-    });
 
     return new UpdateUserCommandResult(user);
   }
