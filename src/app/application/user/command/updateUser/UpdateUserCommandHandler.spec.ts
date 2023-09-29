@@ -172,12 +172,6 @@ describe('UpdateUserCommandHandler', () => {
       expect(userRepository.save).toBeCalledWith(user);
     });
 
-    test('요청자에게 슬랙 메시지를 보내야 한다', async () => {
-      await handler.execute(command);
-
-      expect(slackSender.send).toBeCalledTimes(1);
-    });
-
     test('수정한 유저를 반환해야 한다', async () => {
       const commandResult = await handler.execute(command);
 

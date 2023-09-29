@@ -16,8 +16,9 @@ export type SlackBroadcastParams = Omit<
 
 export const SlackSender = Symbol('SlackSender');
 
+// async sender
 export interface ISlackSender {
-  send: (params: SlackSendParams) => Promise<void>;
-  sendToManagers: (params: SlackSendToManagersParams) => Promise<void>;
-  broadcast: (params: SlackBroadcastParams) => Promise<void>;
+  send: (params: SlackSendParams) => void;
+  sendToManagers: (params: SlackSendToManagersParams) => void;
+  broadcast: (params: SlackBroadcastParams) => void;
 }

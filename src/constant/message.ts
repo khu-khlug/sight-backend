@@ -5,4 +5,5 @@ export const Message = {
 
   // 422 Unprocessable Entity
   GRADUATED_USER_ONLY_CAN_CHANGE_EMAIL: 'Graduated user only can change email',
+  UNITED_USER_CAN_ONLY_CHANGE_EMAIL: 'United user can only change email',
 };
