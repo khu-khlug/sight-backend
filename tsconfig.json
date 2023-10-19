@@ -14,13 +14,14 @@
     "baseUrl": "./",
     "paths": {
       "@sight": ["src"],
-      "@sight/*": ["src/*"],
+      "@sight/*": ["src/*"]
     },
     "incremental": true,
     "skipLibCheck": true,
     "noImplicitAny": false,
     "strictBindCallApply": false,
     "forceConsistentCasingInFileNames": false,
-    "noFallthroughCasesInSwitch": false
+    "noFallthroughCasesInSwitch": false,
+    "esModuleInterop": true
   }
 }
