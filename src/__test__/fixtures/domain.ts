@@ -19,7 +19,7 @@ export function generateUser(params?: Partial<UserConstructorParams>): User {
       grade: faker.number.int(),
       number: faker.number.int(),
       email: faker.internet.email(),
-      phone: faker.phone.number('###-####-####'),
+      phone: faker.phone.number(),
       homepage: faker.internet.url(),
       languages: [faker.lorem.word()],
       prefer: faker.lorem.word(),
