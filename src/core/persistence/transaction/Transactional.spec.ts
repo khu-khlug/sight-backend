@@ -81,7 +81,7 @@ describe('Transactional', () => {
 
             const newEntity = new MockEntity();
             newEntity.id = newMockEntityId;
-            managerInTransaction.insert(newEntity);
+            await managerInTransaction.insert(newEntity);
 
             throw new Error();
           });
