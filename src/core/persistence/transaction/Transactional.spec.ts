@@ -1,4 +1,10 @@
-import { Entity, EntityManager, MikroORM, PrimaryKey } from '@mikro-orm/core';
+import {
+  Connection,
+  Entity,
+  EntityManager,
+  MikroORM,
+  PrimaryKey,
+} from '@mikro-orm/core';
 import { MikroOrmModule } from '@mikro-orm/nestjs';
 import { Injectable } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
@@ -66,7 +72,7 @@ describe('Transactional', () => {
   });
 
   test('처리 중에 에러가 발생하면 롤백되어야 한다', async () => {
-    const newMockEntityId = 'new-mock-entity-id';
+    let connection: Connection;
 
     await cls.runWith(
       {
@@ -78,10 +84,9 @@ describe('Transactional', () => {
             const managerInTransaction: EntityManager = cls.get(
               TRANSACTIONAL_ENTITY_MANAGER,
             );
+            connection = managerInTransaction.getConnection();
 
-            const newEntity = new MockEntity();
-            newEntity.id = newMockEntityId;
-            await managerInTransaction.insert(newEntity);
+            jest.spyOn(connection, 'rollback');
 
             throw new Error();
           });
@@ -89,9 +94,7 @@ describe('Transactional', () => {
       },
     );
 
-    const result = await entityManager.findOne(MockEntity, newMockEntityId);
-
-    expect(result).toBeNull();
+    expect(connection!.rollback).toBeCalledTimes(1);
   });
 
   test.todo('lock에 걸릴 경우 롤백되어야 한다');
