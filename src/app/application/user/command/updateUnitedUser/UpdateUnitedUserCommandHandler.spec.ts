@@ -14,6 +14,10 @@ import {
 import { generateUser } from '@sight/__test__/fixtures/domain';
 import { Message } from '@sight/constant/message';
 
+jest.mock('@sight/core/persistence/transaction/Transactional', () => ({
+  Transactional: () => () => {},
+}));
+
 describe('UpdateUnitedUserCommandHandler', () => {
   let handler: UpdateUnitedUserCommandHandler;
   let userRepository: jest.Mocked<IUserRepository>;

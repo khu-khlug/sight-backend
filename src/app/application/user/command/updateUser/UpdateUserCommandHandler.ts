@@ -1,6 +1,8 @@
 import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { ICommandHandler } from '@nestjs/cqrs';
 
+import { Transactional } from '@sight/core/persistence/transaction/Transactional';
+
 import { UpdateUserCommand } from '@sight/app/application/user/command/updateUser/UpdateUserCommand';
 import { UpdateUserCommandResult } from '@sight/app/application/user/command/updateUser/UpdateUserCommandResult';
 
@@ -36,7 +38,7 @@ export class UpdateUserCommandHandler
     private readonly userInterestRepository: IUserInterestRepository,
   ) {}
 
-  // TODO @Transactional()
+  @Transactional()
   async execute(command: UpdateUserCommand): Promise<UpdateUserCommandResult> {
     const { userId, email, phone, homepage, languages, interestIds, prefer } =
       command;

@@ -1,6 +1,8 @@
 import { Inject, NotFoundException } from '@nestjs/common';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 
+import { Transactional } from '@sight/core/persistence/transaction/Transactional';
+
 import { UpdateUnitedUserCommand } from '@sight/app/application/user/command/updateUnitedUser/UpdateUnitedUserCommand';
 import { UpdateUnitedUserCommandResult } from '@sight/app/application/user/command/updateUnitedUser/UpdateUnitedUserCommandResult';
 
@@ -21,7 +23,7 @@ export class UpdateUnitedUserCommandHandler
     private readonly userRepository: IUserRepository,
   ) {}
 
-  // TODO @Transactional
+  @Transactional()
   async execute(
     command: UpdateUnitedUserCommand,
   ): Promise<UpdateUnitedUserCommandResult> {

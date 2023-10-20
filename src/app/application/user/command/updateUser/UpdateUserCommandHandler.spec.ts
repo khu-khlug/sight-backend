@@ -32,6 +32,10 @@ import {
   generateUser,
 } from '@sight/__test__/fixtures/domain';
 
+jest.mock('@sight/core/persistence/transaction/Transactional', () => ({
+  Transactional: () => () => {},
+}));
+
 describe('UpdateUserCommandHandler', () => {
   let handler: UpdateUserCommandHandler;
   let userInterestFactory: UserInterestFactory;
