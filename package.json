@@ -80,9 +80,6 @@
     "testEnvironment": "node",
     "moduleNameMapper": {
       "@sight/(.*)": "<rootDir>/$1"
-    },
-    "setupFiles": [
-      "<rootDir>/__test__/setup.ts"
-    ]
+    }
   }
 }
