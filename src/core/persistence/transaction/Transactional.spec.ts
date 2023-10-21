@@ -1,3 +1,11 @@
+import { MikroOrmModule } from '@mikro-orm/nestjs';
+import { Injectable } from '@nestjs/common';
+import { Test, TestingModule } from '@nestjs/testing';
+import { AopModule } from '@toss/nestjs-aop';
+import { existsSync } from 'fs';
+import { chmod, rm, writeFile } from 'fs/promises';
+import { advanceTo, clear } from 'jest-date-mock';
+import { ClsModule, ClsService } from 'nestjs-cls';
 import {
   Connection,
   Entity,
@@ -5,12 +13,6 @@ import {
   MikroORM,
   PrimaryKey,
 } from '@mikro-orm/core';
-import { MikroOrmModule } from '@mikro-orm/nestjs';
-import { Injectable } from '@nestjs/common';
-import { Test, TestingModule } from '@nestjs/testing';
-import { AopModule } from '@toss/nestjs-aop';
-import { advanceTo, clear } from 'jest-date-mock';
-import { ClsModule, ClsService } from 'nestjs-cls';
 
 import { TRANSACTIONAL_ENTITY_MANAGER } from '@sight/core/persistence/transaction/constant';
 import { Transactional } from '@sight/core/persistence/transaction/Transactional';
@@ -30,6 +32,16 @@ class MockClass {
   }
 }
 
+async function recreateTestSqliteDBFile(path: string) {
+  const isExists = await existsSync(path);
+  if (isExists) {
+    await rm(path);
+  }
+
+  await writeFile(path, '');
+  await chmod(path, 0o666);
+}
+
 describe('Transactional', () => {
   let mockClass: MockClass;
   let cls: ClsService;
@@ -40,6 +52,7 @@ describe('Transactional', () => {
     advanceTo(new Date());
 
     const dbFilePath = './src/__test__/test.sqlite3';
+    await recreateTestSqliteDBFile(dbFilePath);
 
     testModule = await Test.createTestingModule({
       imports: [
