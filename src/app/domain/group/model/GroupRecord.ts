@@ -1,5 +1,6 @@
 import { AggregateRoot } from '@nestjs/cqrs';
-import { GroupRecordState } from './constant';
+
+import { GroupRecordState } from '@sight/app/domain/group/model/constant';
 
 export type GroupRecordConstructorParams = {
   id: string;
