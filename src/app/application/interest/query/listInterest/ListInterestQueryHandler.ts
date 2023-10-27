@@ -1,7 +1,10 @@
 import { Injectable, Inject } from '@nestjs/common';
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 
-import { IInterestQuery } from '@sight/app/application/interest/query/IInterestQuery';
+import {
+  IInterestQuery,
+  InterestQuery,
+} from '@sight/app/application/interest/query/IInterestQuery';
 import { ListInterestQuery } from '@sight/app/application/interest/query/listInterest/ListInterestQuery';
 import { ListInterestQueryResult } from '@sight/app/application/interest/query/listInterest/ListInterestQueryResult';
 
@@ -11,7 +14,7 @@ export class ListInterestQueryHandler
   implements IQueryHandler<ListInterestQuery, ListInterestQueryResult>
 {
   constructor(
-    @Inject('InterestQuery')
+    @Inject(InterestQuery)
     private readonly interestQuery: IInterestQuery,
   ) {}
 

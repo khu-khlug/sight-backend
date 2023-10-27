@@ -1,9 +1,12 @@
 import { Test } from '@nestjs/testing';
 
-import { IInterestQuery } from '@sight/app/application/interest/query/IInterestQuery';
 import { ListInterestQueryHandler } from '@sight/app/application/interest/query/listInterest/ListInterestQueryHandler';
 import { ListInterestQueryResult } from '@sight/app/application/interest/query/listInterest/ListInterestQueryResult';
 import { InterestListView } from '@sight/app/application/interest/query/view/InterestListView';
+import {
+  IInterestQuery,
+  InterestQuery,
+} from '@sight/app/application/interest/query/IInterestQuery';
 
 import { ViewFixture } from '@sight/__test__/fixtures';
 
@@ -15,12 +18,12 @@ describe('ListInterestQueryHandler', () => {
     const testModule = await Test.createTestingModule({
       providers: [
         ListInterestQueryHandler,
-        { provide: 'InterestQuery', useValue: {} },
+        { provide: InterestQuery, useValue: {} },
       ],
     }).compile();
 
     listInterestQueryHandler = testModule.get(ListInterestQueryHandler);
-    interestQuery = testModule.get('InterestQuery');
+    interestQuery = testModule.get(InterestQuery);
   });
 
   describe('execute', () => {
