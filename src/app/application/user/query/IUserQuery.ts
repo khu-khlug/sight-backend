@@ -9,6 +9,8 @@ export type ListUserParams = {
   offset: number;
 };
 
+export const UserQuery = Symbol('UserQuery');
+
 export interface IUserQuery {
   listUser: (params: ListUserParams) => Promise<UserListView>;
 }

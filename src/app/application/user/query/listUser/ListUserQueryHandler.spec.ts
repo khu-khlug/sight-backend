@@ -1,10 +1,13 @@
 import { Test } from '@nestjs/testing';
 
-import { IUserQuery } from '@sight/app/application/user/query/IUserQuery';
 import { ListUserQuery } from '@sight/app/application/user/query/listUser/ListUserQuery';
 import { ListUserQueryHandler } from '@sight/app/application/user/query/listUser/ListUserQueryHandler';
 import { ListUserQueryResult } from '@sight/app/application/user/query/listUser/ListUserQueryResult';
 import { UserListView } from '@sight/app/application/user/query/view/UserListView';
+import {
+  IUserQuery,
+  UserQuery,
+} from '@sight/app/application/user/query/IUserQuery';
 
 import { UserState } from '@sight/app/domain/user/model/constant';
 
@@ -16,11 +19,11 @@ describe('ListUserQueryHandler', () => {
 
   beforeAll(async () => {
     const testModule = await Test.createTestingModule({
-      providers: [ListUserQueryHandler, { provide: 'UserQuery', useValue: {} }],
+      providers: [ListUserQueryHandler, { provide: UserQuery, useValue: {} }],
     }).compile();
 
     listUserQueryHandler = testModule.get(ListUserQueryHandler);
-    userQuery = testModule.get('UserQuery');
+    userQuery = testModule.get(UserQuery);
   });
 
   describe('execute', () => {

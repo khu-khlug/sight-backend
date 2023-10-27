@@ -1,7 +1,10 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 
-import { IUserQuery } from '@sight/app/application/user/query/IUserQuery';
+import {
+  IUserQuery,
+  UserQuery,
+} from '@sight/app/application/user/query/IUserQuery';
 import { ListUserQuery } from '@sight/app/application/user/query/listUser/ListUserQuery';
 import { ListUserQueryResult } from '@sight/app/application/user/query/listUser/ListUserQueryResult';
 
@@ -11,7 +14,7 @@ export class ListUserQueryHandler
   implements IQueryHandler<ListUserQuery, ListUserQueryResult>
 {
   constructor(
-    @Inject('UserQuery')
+    @Inject(UserQuery)
     private readonly userQuery: IUserQuery,
   ) {}
 
