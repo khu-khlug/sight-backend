@@ -1,5 +1,5 @@
-import { Inject, Injectable, NotFoundException } from '@nestjs/common';
-import { ICommandHandler } from '@nestjs/cqrs';
+import { Inject, NotFoundException } from '@nestjs/common';
+import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 
 import { Transactional } from '@sight/core/persistence/transaction/Transactional';
 
@@ -23,7 +23,7 @@ import {
 
 import { Message } from '@sight/constant/message';
 
-@Injectable()
+@CommandHandler(UpdateUserCommand)
 export class UpdateUserCommandHandler
   implements ICommandHandler<UpdateUserCommand, UpdateUserCommandResult>
 {
