@@ -30,7 +30,7 @@ describe('ListUserQueryHandler', () => {
     let listView: UserListView;
 
     const state = UserState.UNDERGRADUATE;
-    const interest = '관심사';
+    const interestId = 'interestId';
     const limit = 5;
     const offset = 0;
 
@@ -40,21 +40,21 @@ describe('ListUserQueryHandler', () => {
     });
 
     test('파라미터를 의도대로 쿼리에 넘겨주어야 한다', async () => {
-      const query = new ListUserQuery(state, interest, limit, offset);
+      const query = new ListUserQuery(state, interestId, limit, offset);
 
       await listUserQueryHandler.execute(query);
 
       expect(userQuery.listUser).toBeCalledTimes(1);
       expect(userQuery.listUser).toBeCalledWith({
         state,
-        interest,
+        interestId,
         limit,
         offset,
       });
     });
 
     test('유저 목록 뷰를 의도대로 반환해야 한다', async () => {
-      const query = new ListUserQuery(state, interest, limit, offset);
+      const query = new ListUserQuery(state, interestId, limit, offset);
 
       const queryResult = await listUserQueryHandler.execute(query);
 
