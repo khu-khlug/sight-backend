@@ -1,6 +1,8 @@
 import { faker } from '@faker-js/faker';
 
 import { GroupListView } from '@sight/app/application/group/query/view/GroupListView';
+import { GroupMemberListView } from '@sight/app/application/group/query/view/GroupMemberListView';
+import { GroupMemberView } from '@sight/app/application/group/query/view/GroupMemberView';
 import { GroupView } from '@sight/app/application/group/query/view/GroupView';
 
 import {
@@ -36,6 +38,40 @@ export function generateGroupListView(
   return {
     count,
     groups: Array.from({ length: count }, () => generateGroupView()),
+    ...params,
+  };
+}
+
+export function generateGroupMemberView(
+  params?: Partial<GroupMemberView>,
+): GroupMemberView {
+  return {
+    id: faker.string.uuid(),
+    groupId: faker.string.uuid(),
+    memberId: faker.string.uuid(),
+    memberName: faker.lorem.word(),
+    languages: [faker.lorem.word()],
+    interests: [
+      {
+        id: faker.string.uuid(),
+        name: faker.lorem.word(),
+      },
+    ],
+    createdAt: faker.date.anytime(),
+    ...params,
+  };
+}
+
+export function generateGroupMemberListView(
+  params?: Partial<GroupMemberListView>,
+): GroupMemberListView {
+  const count = params?.count ?? faker.number.int({ min: 1, max: 5 });
+
+  return {
+    count,
+    groupMembers: Array.from({ length: count }, () =>
+      generateGroupMemberView(),
+    ),
     ...params,
   };
 }
