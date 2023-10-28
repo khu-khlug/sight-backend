@@ -19,11 +19,11 @@ export class ListUserQueryHandler
   ) {}
 
   async execute(query: ListUserQuery): Promise<ListUserQueryResult> {
-    const { state, interest, limit, offset } = query;
+    const { state, interestId, limit, offset } = query;
 
     const listView = await this.userQuery.listUser({
       state,
-      interest,
+      interestId,
       limit,
       offset,
     });

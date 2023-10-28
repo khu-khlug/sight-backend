@@ -4,7 +4,7 @@ import { UserState } from '@sight/app/domain/user/model/constant';
 
 export type ListUserParams = {
   state: UserState | null;
-  interest: string | null;
+  interestId: string | null;
   limit: number;
   offset: number;
 };
