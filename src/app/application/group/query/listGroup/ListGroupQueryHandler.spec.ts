@@ -40,11 +40,12 @@ describe('ListGroupQueryHandler', () => {
 
     const queryType = GroupListQueryType.MY;
     const keyword = 'keyword';
+    const interestId = 'interestId';
     const limit = 50;
     const offset = 0;
 
     beforeEach(() => {
-      query = new ListGroupQuery(queryType, keyword, limit, offset);
+      query = new ListGroupQuery(queryType, keyword, interestId, limit, offset);
       listView = ViewFixture.generateGroupListView();
 
       groupQuery.listGroup = jest.fn().mockResolvedValue(listView);

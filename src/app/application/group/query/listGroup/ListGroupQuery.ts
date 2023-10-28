@@ -13,6 +13,7 @@ export class ListGroupQuery implements IQuery {
   constructor(
     readonly queryType: GroupListQueryType,
     readonly keyword: string | null,
+    readonly interestId: string | null,
     readonly limit: number,
     readonly offset: number,
   ) {}
