@@ -18,11 +18,12 @@ export class ListGroupQueryHandler
   ) {}
 
   async execute(query: ListGroupQuery): Promise<ListGroupQueryResult> {
-    const { queryType, keyword, limit, offset } = query;
+    const { queryType, keyword, interestId, limit, offset } = query;
 
     const listView = await this.groupQuery.listGroup({
       queryType,
       keyword,
+      interestId,
       limit,
       offset,
     });

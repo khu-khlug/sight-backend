@@ -4,6 +4,7 @@ import { GroupListView } from '@sight/app/application/group/query/view/GroupList
 type ListGroupParams = {
   queryType: GroupListQueryType;
   keyword: string | null;
+  interestId: string | null;
   limit: number;
   offset: number;
 };
