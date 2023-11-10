@@ -1,5 +1,26 @@
-import { createDecorator } from '@toss/nestjs-aop';
+import { ICommandHandler, IEventHandler } from '@nestjs/cqrs';
 
 import { TRANSACTIONAL_DECORATOR } from '@sight/core/persistence/transaction/constant';
 
-export const Transactional = () => createDecorator(TRANSACTIONAL_DECORATOR, {});
+import { IsAsyncFunction } from '@sight/util/types';
+
+export type KeyOf<T extends ICommandHandler | IEventHandler> =
+  T extends ICommandHandler
+    ? 'execute'
+    : T extends IEventHandler
+    ? 'handle'
+    : never;
+
+export const Transactional =
+  () =>
+  <T extends ICommandHandler | IEventHandler, K extends keyof T>(
+    target: T,
+    propertyKey: IsAsyncFunction<T[K]> extends true ? KeyOf<T> : never,
+  ) => {
+    Reflect.defineMetadata(
+      TRANSACTIONAL_DECORATOR,
+      true,
+      target,
+      propertyKey as string,
+    );
+  };
