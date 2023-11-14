@@ -1,4 +1,7 @@
 export const Message = {
+  // 403 Forbidden
+  CANNOT_CREATE_GROUP: 'Cannot create group',
+
   // 404 Not Found
   USER_NOT_FOUND: 'User not found',
   SOME_INTERESTS_NOT_FOUND: 'Some interests not found',

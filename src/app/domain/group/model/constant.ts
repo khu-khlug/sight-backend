@@ -8,6 +8,12 @@ export const GroupCategory = {
 } as const;
 export type GroupCategory = (typeof GroupCategory)[keyof typeof GroupCategory];
 
+export const ManagerOnlyGroupCategory: GroupCategory[] = [
+  GroupCategory.MANAGE,
+  GroupCategory.EDUCATION,
+  GroupCategory.PROGRAM,
+];
+
 export const GroupState = {
   PENDING: 'PENDING',
   PROGRESS: 'PROGRESS',
@@ -31,3 +37,16 @@ export const GroupRecordState = {
 } as const;
 export type GroupRecordState =
   (typeof GroupRecordState)[keyof typeof GroupRecordState];
+
+export const GroupAccessGrade = {
+  PRIVATE: 'PRIVATE', // 비공개
+  MANAGER: 'MANAGER', // 운영진 공개
+  MEMBER: 'MEMBER', // 쿠러그 멤버 공개
+  ALL: 'ALL', // 전체 공개
+};
+export type GroupAccessGrade =
+  (typeof GroupAccessGrade)[keyof typeof GroupAccessGrade];
+
+export const ManagerOnlyGroupAccessGrade: GroupAccessGrade[] = [
+  GroupAccessGrade.MANAGER,
+];
