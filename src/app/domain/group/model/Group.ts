@@ -1,6 +1,7 @@
 import { AggregateRoot } from '@nestjs/cqrs';
 
 import {
+  GroupAccessGrade,
   GroupCategory,
   GroupState,
 } from '@sight/app/domain/group/model/constant';
@@ -14,7 +15,7 @@ export type GroupConstructorParams = {
   adminUserId: string;
   purpose: string | null;
   technology: string[];
-  grade: number;
+  grade: GroupAccessGrade;
   lastUpdaterUserId: string;
   repository: string | null;
   allowJoin: boolean;
@@ -32,7 +33,7 @@ export class Group extends AggregateRoot {
   private _adminUserId: string; // 구 master
   private _purpose: string | null;
   private _technology: string[];
-  private _grade: number; // 사용하는지 확인 후 제거
+  private _grade: GroupAccessGrade; // 사용하는지 확인 후 제거
   private _lastUpdaterUserId: string;
   private _repository: string | null;
   private _allowJoin: boolean;
@@ -103,7 +104,7 @@ export class Group extends AggregateRoot {
     return this._allowJoin;
   }
 
-  get grade(): number {
+  get grade(): GroupAccessGrade {
     return this._grade;
   }
 

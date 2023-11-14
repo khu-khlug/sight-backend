@@ -4,9 +4,9 @@ import { UserState } from '@sight/app/domain/user/model/constant';
 import { Profile } from '@sight/app/domain/user/model/Profile';
 import { User, UserConstructorParams } from '@sight/app/domain/user/model/User';
 import {
-  Interest,
-  InterestConstructorParams,
-} from '@sight/app/domain/interest/model/Interest';
+  PointHistory,
+  PointHistoryConstructorParams,
+} from '@sight/app/domain/user/model/PointHistory';
 
 export function generateUser(params?: Partial<UserConstructorParams>): User {
   return new User({
@@ -42,13 +42,14 @@ export function generateUser(params?: Partial<UserConstructorParams>): User {
   });
 }
 
-export function generateInterest(
-  params?: Partial<InterestConstructorParams>,
-): Interest {
-  return new Interest({
+export function generatePointHistory(
+  params?: Partial<PointHistoryConstructorParams>,
+): PointHistory {
+  return new PointHistory({
     id: faker.string.uuid(),
-    name: faker.lorem.word(),
-    description: faker.lorem.paragraph(),
+    userId: faker.string.uuid(),
+    point: faker.number.int(),
+    reason: faker.lorem.sentence(),
     createdAt: faker.date.anytime(),
     ...params,
   });
