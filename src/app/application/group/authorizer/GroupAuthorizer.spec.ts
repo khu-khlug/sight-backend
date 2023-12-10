@@ -31,7 +31,7 @@ describe('GroupAuthorizer', () => {
     clear();
   });
 
-  describe('createGroup', () => {
+  describe('authorizeForCreateGroup', () => {
     let user: User;
 
     describe('운영진 유저라면', () => {
@@ -43,7 +43,7 @@ describe('GroupAuthorizer', () => {
         '%s 유형의 그룹을 만들 수 있어야 한다',
         (category: GroupCategory) => {
           expect(() =>
-            authorizer.createGroup({
+            authorizer.authorizeForCreateGroup({
               user,
               category,
               grade: GroupAccessGrade.ALL,
@@ -56,7 +56,7 @@ describe('GroupAuthorizer', () => {
         '공개 범위 %s의 그룹을 만들 수 있어야 한다',
         (grade: GroupAccessGrade) => {
           expect(() =>
-            authorizer.createGroup({
+            authorizer.authorizeForCreateGroup({
               user,
               category: GroupCategory.STUDY,
               grade,
@@ -75,7 +75,7 @@ describe('GroupAuthorizer', () => {
         '%s 유형의 그룹을 만들 때 예외가 발생해야 한다',
         (category: GroupCategory) => {
           expect(() =>
-            authorizer.createGroup({
+            authorizer.authorizeForCreateGroup({
               user,
               category,
               grade: GroupAccessGrade.ALL,
@@ -88,12 +88,80 @@ describe('GroupAuthorizer', () => {
         '공개 범위 %s의 그룹을 만들 때 예외가 발생해야 한다',
         (grade: GroupAccessGrade) => {
           expect(() =>
-            authorizer.createGroup({
+            authorizer.authorizeForCreateGroup({
               user,
               category: GroupCategory.STUDY,
               grade,
             }),
           ).toThrowError(Message.CANNOT_CREATE_GROUP);
+        },
+      );
+    });
+  });
+
+  describe('authorizeForModifyGroup', () => {
+    let user: User;
+
+    describe('운영진 유저라면', () => {
+      beforeEach(() => {
+        user = DomainFixture.generateUser({ manager: true });
+      });
+
+      test.each(Object.values(GroupCategory))(
+        '그룹을 %s 유형으로 수정할 수 있어야 한다',
+        (category: GroupCategory) => {
+          expect(() =>
+            authorizer.authorizeForModifyGroup({
+              user,
+              nextCategory: category,
+              nextGrade: GroupAccessGrade.ALL,
+            }),
+          ).not.toThrow();
+        },
+      );
+
+      test.each(Object.values(GroupAccessGrade))(
+        '그룹을 %s 공개 범위로 수정할 수 있어야 한다',
+        (grade: GroupAccessGrade) => {
+          expect(() =>
+            authorizer.authorizeForModifyGroup({
+              user,
+              nextCategory: GroupCategory.STUDY,
+              nextGrade: grade,
+            }),
+          ).not.toThrow();
+        },
+      );
+    });
+
+    describe('일반 유저라면', () => {
+      beforeEach(() => {
+        user = DomainFixture.generateUser({ manager: false });
+      });
+
+      test.each(Object.values(ManagerOnlyGroupCategory))(
+        '그룹을 %s 유형으로 수정할 때 예외가 발생해야 한다',
+        (category: GroupCategory) => {
+          expect(() =>
+            authorizer.authorizeForModifyGroup({
+              user,
+              nextCategory: category,
+              nextGrade: GroupAccessGrade.ALL,
+            }),
+          ).toThrowError(Message.CANNOT_MODIFY_GROUP);
+        },
+      );
+
+      test.each(Object.values(ManagerOnlyGroupAccessGrade))(
+        '그룹을 %s 공개 범위로 수정할 때 예외가 발생해야 한다',
+        (grade: GroupAccessGrade) => {
+          expect(() =>
+            authorizer.authorizeForModifyGroup({
+              user,
+              nextCategory: GroupCategory.STUDY,
+              nextGrade: grade,
+            }),
+          ).toThrowError(Message.CANNOT_MODIFY_GROUP);
         },
       );
     });

@@ -20,6 +20,7 @@ describe('GroupFactory', () => {
   const authorUserId = 'author-user-id';
   const adminUserId = 'admin-user-id';
   const purpose = null;
+  const interestIds = [];
   const technology = [];
   const grade = GroupAccessGrade.MEMBER;
   const lastUpdaterUserId = 'last-updater-user-id';
@@ -51,6 +52,7 @@ describe('GroupFactory', () => {
         authorUserId,
         adminUserId,
         purpose,
+        interestIds,
         technology,
         grade,
         lastUpdaterUserId,
@@ -70,6 +72,7 @@ describe('GroupFactory', () => {
         authorUserId,
         adminUserId,
         purpose,
+        interestIds,
         technology,
         grade,
         lastUpdaterUserId,
@@ -94,6 +97,7 @@ describe('GroupFactory', () => {
         authorUserId,
         adminUserId,
         purpose,
+        interestIds,
         technology,
         grade,
         lastUpdaterUserId,
@@ -112,6 +116,7 @@ describe('GroupFactory', () => {
         authorUserId,
         adminUserId,
         purpose,
+        interestIds,
         technology,
         grade,
         lastUpdaterUserId,

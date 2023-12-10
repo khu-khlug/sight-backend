@@ -1,3 +1,5 @@
+export const CUSTOMER_SERVICE_GROUP_ID = '15265';
+
 export const GroupCategory = {
   STUDY: 'STUDY',
   PROJECT: 'PROJECT',

@@ -16,9 +16,15 @@ type CreateGroupParams = {
   grade: GroupAccessGrade;
 };
 
+type ModifyGroupParams = {
+  user: User;
+  nextCategory: GroupCategory | null;
+  nextGrade: GroupAccessGrade | null;
+};
+
 @Injectable()
 export class GroupAuthorizer {
-  createGroup(params: CreateGroupParams): void {
+  authorizeForCreateGroup(params: CreateGroupParams): void {
     const { user, category, grade } = params;
 
     if (user.manager) {
@@ -30,6 +36,25 @@ export class GroupAuthorizer {
       ManagerOnlyGroupAccessGrade.includes(grade)
     ) {
       throw new ForbiddenException(Message.CANNOT_CREATE_GROUP);
+    }
+  }
+
+  authorizeForModifyGroup(params: ModifyGroupParams): void {
+    const { user, nextCategory, nextGrade } = params;
+
+    if (user.manager) {
+      return;
+    }
+
+    if (!nextCategory || !nextGrade) {
+      return;
+    }
+
+    if (
+      ManagerOnlyGroupCategory.includes(nextCategory) ||
+      ManagerOnlyGroupAccessGrade.includes(nextGrade)
+    ) {
+      throw new ForbiddenException(Message.CANNOT_MODIFY_GROUP);
     }
   }
 }

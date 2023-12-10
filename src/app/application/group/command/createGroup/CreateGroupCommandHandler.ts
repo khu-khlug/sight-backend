@@ -9,7 +9,6 @@ import { CreateGroupCommandResult } from '@sight/app/application/group/command/c
 import { GroupFactory } from '@sight/app/domain/group/GroupFactory';
 import { GroupMemberFactory } from '@sight/app/domain/group/GroupMemberFactory';
 import { GroupState } from '@sight/app/domain/group/model/constant';
-import { GroupInterestFactory } from '@sight/app/domain/interest/GroupInterestFactory';
 import {
   GroupMemberRepository,
   IGroupMemberRepository,
@@ -18,10 +17,6 @@ import {
   GroupRepository,
   IGroupRepository,
 } from '@sight/app/domain/group/IGroupRepository';
-import {
-  GroupInterestRepository,
-  IGroupInterestRepository,
-} from '@sight/app/domain/interest/IGroupInterestRepository';
 import {
   IInterestRepository,
   InterestRepository,
@@ -38,14 +33,10 @@ export class CreateGroupCommandHandler
     private readonly groupFactory: GroupFactory,
     @Inject(GroupMemberFactory)
     private readonly groupMemberFactory: GroupMemberFactory,
-    @Inject(GroupInterestFactory)
-    private readonly groupInterestFactory: GroupInterestFactory,
     @Inject(GroupRepository)
     private readonly groupRepository: IGroupRepository,
     @Inject(GroupMemberRepository)
     private readonly groupMemberRepository: IGroupMemberRepository,
-    @Inject(GroupInterestRepository)
-    private readonly groupInterestRepository: IGroupInterestRepository,
     @Inject(InterestRepository)
     private readonly interestRepository: IInterestRepository,
   ) {}
@@ -77,6 +68,7 @@ export class CreateGroupCommandHandler
       authorUserId: userId,
       adminUserId: userId,
       purpose,
+      interestIds,
       technology,
       grade,
       lastUpdaterUserId: userId,
@@ -91,15 +83,6 @@ export class CreateGroupCommandHandler
       groupId: newGroup.id,
     });
     await this.groupMemberRepository.save(groupMember);
-
-    const groupInterests = uniqueInterestIds.map((interestId) =>
-      this.groupInterestFactory.create({
-        id: this.groupInterestRepository.nextId(),
-        interestId,
-        groupId: newGroup.id,
-      }),
-    );
-    await this.groupInterestRepository.save(...groupInterests);
 
     return new CreateGroupCommandResult(newGroup);
   }
