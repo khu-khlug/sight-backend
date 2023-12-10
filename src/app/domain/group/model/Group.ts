@@ -71,6 +71,8 @@ export class Group extends AggregateRoot {
   updateTitle(title: string): void {
     if (this._title !== title) {
       this._title = title;
+      this._updatedAt = new Date();
+      this.wake();
       this.apply(new GroupUpdated(this.id, 'title'));
     }
   }
@@ -78,6 +80,8 @@ export class Group extends AggregateRoot {
   updatePurpose(purpose: string | null): void {
     if (this._purpose !== purpose) {
       this._purpose = purpose;
+      this._updatedAt = new Date();
+      this.wake();
       this.apply(new GroupUpdated(this.id, 'purpose'));
     }
   }
@@ -85,6 +89,8 @@ export class Group extends AggregateRoot {
   updateInterestIds(interestIds: string[]): void {
     if (isDifferentStringArray(this._interestIds, interestIds)) {
       this._interestIds = Array.from(new Set(interestIds));
+      this._updatedAt = new Date();
+      this.wake();
       this.apply(new GroupUpdated(this.id, 'interests'));
     }
   }
@@ -92,6 +98,8 @@ export class Group extends AggregateRoot {
   updateTechnology(technology: string[]): void {
     if (isDifferentStringArray(this._technology, technology)) {
       this._technology = technology;
+      this._updatedAt = new Date();
+      this.wake();
       this.apply(new GroupUpdated(this.id, 'technology'));
     }
   }
@@ -99,6 +107,7 @@ export class Group extends AggregateRoot {
   updateGrade(grade: GroupAccessGrade): void {
     if (this._grade !== grade) {
       this._grade = grade;
+      this.wake();
       this.apply(new GroupUpdated(this.id, 'grade'));
     }
   }
@@ -106,6 +115,8 @@ export class Group extends AggregateRoot {
   updateRepository(repository: string | null): void {
     if (this._repository !== repository) {
       this._repository = repository;
+      this._updatedAt = new Date();
+      this.wake();
       this.apply(new GroupUpdated(this.id, 'repository'));
     }
   }
@@ -113,6 +124,8 @@ export class Group extends AggregateRoot {
   updateAllowJoin(allowJoin: boolean): void {
     if (this._allowJoin !== allowJoin) {
       this._allowJoin = allowJoin;
+      this._updatedAt = new Date();
+      this.wake();
       this.apply(new GroupUpdated(this.id, 'allowJoin'));
     }
   }
@@ -120,7 +133,15 @@ export class Group extends AggregateRoot {
   updateCategory(category: GroupCategory): void {
     if (this._category !== category) {
       this._category = category;
+      this._updatedAt = new Date();
+      this.wake();
       this.apply(new GroupUpdated(this.id, 'category'));
+    }
+  }
+
+  wake(): void {
+    if (this._state === GroupState.SUSPEND) {
+      this._state = GroupState.PROGRESS;
     }
   }
 
