@@ -22,7 +22,7 @@ export function generateGroup(params?: Partial<GroupConstructorParams>): Group {
   return new Group({
     id: faker.string.uuid(),
     category: faker.helpers.enumValue(GroupCategory),
-    state: faker.helpers.enumValue(GroupState),
+    state: GroupState.PROGRESS,
     title: faker.lorem.word(),
     authorUserId: faker.string.uuid(),
     adminUserId: faker.string.uuid(),
