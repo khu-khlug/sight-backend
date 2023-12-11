@@ -113,6 +113,34 @@ describe('ModifyGroupCommandHandler', () => {
       ).rejects.toThrowError(Message.ONLY_GROUP_ADMIN_CAN_EDIT_GROUP);
     });
 
+    test('운영 그룹은 요청자가 그룹의 관리자가 아니더라도 예외를 발생시키지 않는다', async () => {
+      const manageGroup = DomainFixture.generateGroup({
+        category: GroupCategory.MANAGE,
+      });
+      groupRepository.findById = jest.fn().mockResolvedValue(manageGroup);
+
+      const otherUserId = 'other-user-id';
+      const commandWithOtherRequester = new ModifyGroupCommand(
+        groupId,
+        otherUserId,
+        params,
+      );
+
+      await expect(
+        handler.execute(commandWithOtherRequester),
+      ).resolves.not.toThrow();
+    });
+
+    test('요청자가 그룹에 속하지 않았다면 예외를 발생시켜야 한다', async () => {
+      groupMemberRepository.findByGroupIdAndUserId = jest
+        .fn()
+        .mockResolvedValue(null);
+
+      await expect(handler.execute(command)).rejects.toThrowError(
+        Message.REQUESTER_NOT_JOINED_GROUP,
+      );
+    });
+
     test('수정할 수 없는 그룹을 수정하면 예외를 발생시켜야 한다', async () => {
       jest.spyOn(group, 'isEditable').mockReturnValue(false);
 
