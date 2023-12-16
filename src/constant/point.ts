@@ -1,3 +1,5 @@
 export const Point = {
   GROUP_CREATED: 20,
+  GROUP_ENDED_WITH_SUCCESS: 50,
+  GROUP_ENDED_WITH_FAIL: 30,
 };

@@ -1,11 +1,13 @@
 import { AggregateRoot } from '@nestjs/cqrs';
 
+import { GroupStateChanged } from '@sight/app/domain/group/event/GroupStateChanged';
 import { GroupUpdated } from '@sight/app/domain/group/event/GroupUpdated';
 import {
   CUSTOMER_SERVICE_GROUP_ID,
   GroupAccessGrade,
   GroupCategory,
   GroupState,
+  PRACTICE_GROUP_ID,
 } from '@sight/app/domain/group/model/constant';
 
 import { isDifferentStringArray } from '@sight/util/isDifferentStringArray';
@@ -139,6 +141,17 @@ export class Group extends AggregateRoot {
     }
   }
 
+  changeState(nextState: GroupState) {
+    if (this._state === nextState) {
+      return;
+    }
+
+    const prevState = this._state;
+    this._state = nextState;
+    this._updatedAt = new Date();
+    this.apply(new GroupStateChanged(this.id, prevState, nextState));
+  }
+
   wake(): void {
     if (this._state === GroupState.SUSPEND) {
       this._state = GroupState.PROGRESS;
@@ -158,6 +171,10 @@ export class Group extends AggregateRoot {
 
   isCustomerServiceGroup(): boolean {
     return this.id === CUSTOMER_SERVICE_GROUP_ID;
+  }
+
+  isPracticeGroup(): boolean {
+    return this.id === PRACTICE_GROUP_ID;
   }
 
   get id(): string {

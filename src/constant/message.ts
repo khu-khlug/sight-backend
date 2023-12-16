@@ -3,6 +3,7 @@ export const Message = {
   CANNOT_CREATE_GROUP: 'Cannot create group',
   CANNOT_MODIFY_GROUP: 'Cannot modify group',
   ONLY_GROUP_ADMIN_CAN_EDIT_GROUP: 'Only group admin can edit the group',
+  ONLY_MANAGER_CAN_SUSPEND_GROUP: 'Only managers can suspend the group',
   REQUESTER_NOT_JOINED_GROUP: 'Requester is not joined the group',
 
   // 404 Not Found

@@ -99,6 +99,10 @@ export class User extends AggregateRoot {
   }
 
   grantPoint(point: number, reason: string): void {
+    if (point === 0) {
+      return;
+    }
+
     this._point += point;
     this._updatedAt = new Date();
     this.apply(new PointGranted(this, point, reason));

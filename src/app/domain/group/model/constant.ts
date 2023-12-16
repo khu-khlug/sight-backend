@@ -1,4 +1,5 @@
 export const CUSTOMER_SERVICE_GROUP_ID = '15265';
+export const PRACTICE_GROUP_ID = '7549';
 
 export const GroupCategory = {
   STUDY: 'STUDY',
