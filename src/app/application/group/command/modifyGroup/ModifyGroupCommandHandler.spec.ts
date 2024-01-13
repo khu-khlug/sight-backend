@@ -76,7 +76,10 @@ describe('ModifyGroupCommandHandler', () => {
 
     beforeEach(() => {
       command = new ModifyGroupCommand(groupId, requesterUserId, params);
-      group = DomainFixture.generateGroup({ adminUserId: requesterUserId });
+      group = DomainFixture.generateGroup({
+        category: GroupCategory.STUDY,
+        adminUserId: requesterUserId,
+      });
       const groupMember = DomainFixture.generateGroupMember();
       const interests = params.interestIds.map((interestId) =>
         DomainFixture.generateInterest({ id: interestId }),

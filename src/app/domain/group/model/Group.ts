@@ -1,5 +1,7 @@
+import { UnprocessableEntityException } from '@nestjs/common';
 import { AggregateRoot } from '@nestjs/cqrs';
 
+import { GroupPortfolioEnabled } from '@sight/app/domain/group/event/GroupPortfolioEnabled';
 import { GroupStateChanged } from '@sight/app/domain/group/event/GroupStateChanged';
 import { GroupUpdated } from '@sight/app/domain/group/event/GroupUpdated';
 import {
@@ -9,6 +11,7 @@ import {
   GroupState,
   PRACTICE_GROUP_ID,
 } from '@sight/app/domain/group/model/constant';
+import { Message } from '@sight/constant/message';
 
 import { isDifferentStringArray } from '@sight/util/isDifferentStringArray';
 
@@ -109,6 +112,7 @@ export class Group extends AggregateRoot {
   updateGrade(grade: GroupAccessGrade): void {
     if (this._grade !== grade) {
       this._grade = grade;
+      this._updatedAt = new Date();
       this.wake();
       this.apply(new GroupUpdated(this.id, 'grade'));
     }
@@ -155,7 +159,21 @@ export class Group extends AggregateRoot {
   wake(): void {
     if (this._state === GroupState.SUSPEND) {
       this._state = GroupState.PROGRESS;
+      this._updatedAt = new Date();
     }
+  }
+
+  enablePortfolio(): void {
+    if (this._hasPortfolio) {
+      throw new UnprocessableEntityException(
+        Message.ALREADY_GROUP_ENABLED_PORTFOLIO,
+      );
+    }
+
+    this._hasPortfolio = true;
+    this._updatedAt = new Date();
+
+    this.apply(new GroupPortfolioEnabled(this.id));
   }
 
   isEditable(): boolean {

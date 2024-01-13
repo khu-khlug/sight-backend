@@ -16,4 +16,6 @@ export const Message = {
   UNITED_USER_CAN_ONLY_CHANGE_EMAIL: 'United user can only change email',
   GROUP_NOT_EDITABLE: 'Group is not editable',
   CANNOT_MODIFY_CUSTOMER_SERVICE_GROUP: 'Cannot modify customer service group',
+  ALREADY_GROUP_ENABLED_PORTFOLIO: 'Already group enabled portfolio',
+  ALREADY_GROUP_DISABLED_PORTFOLIO: 'Already group disabled portfolio',
 };
