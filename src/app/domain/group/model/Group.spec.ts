@@ -57,6 +57,26 @@ describe('Group', () => {
     });
   });
 
+  describe('enablePortfolio', () => {
+    test('포트폴리오를 활성화해야 한다', () => {
+      const group = DomainFixture.generateGroup({
+        hasPortfolio: false,
+      });
+
+      group.enablePortfolio();
+
+      expect(group.hasPortfolio).toEqual(true);
+    });
+
+    test('이미 포트폴리오가 활성화되어 있다면 예외를 발생시켜야 한다', () => {
+      const group = DomainFixture.generateGroup({
+        hasPortfolio: true,
+      });
+
+      expect(() => group.enablePortfolio()).toThrow();
+    });
+  });
+
   describe('isEditable', () => {
     test('그룹이 종료된 상태라면 false를 반환해야 한다', () => {
       const group = DomainFixture.generateGroup({
