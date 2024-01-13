@@ -1,14 +1,16 @@
 import { Test } from '@nestjs/testing';
 import { advanceTo, clear } from 'jest-date-mock';
 
-import { EnablePortfolioCommandHandler } from './EnablePortfolioCommandHandler';
+import { EnablePortfolioCommand } from '@sight/app/application/group/command/enablePortfolio/EnablePortfolioCommand';
+import { EnablePortfolioCommandHandler } from '@sight/app/application/group/command/enablePortfolio/EnablePortfolioCommandHandler';
+
+import { Group } from '@sight/app/domain/group/model/Group';
 import {
   GroupRepository,
   IGroupRepository,
 } from '@sight/app/domain/group/IGroupRepository';
-import { Group } from '@sight/app/domain/group/model/Group';
+
 import { DomainFixture } from '@sight/__test__/fixtures';
-import { EnablePortfolioCommand } from './EnablePortfolioCommand';
 import { Message } from '@sight/constant/message';
 
 describe('EnablePortfolioCommandHandler', () => {
