@@ -1,5 +1,5 @@
 import { EntityManager } from '@mikro-orm/core';
-import { Injectable, InternalServerErrorException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { ICommandHandler, IEventHandler } from '@nestjs/cqrs';
 import { ClsService } from 'nestjs-cls';
 
@@ -36,25 +36,14 @@ export class TransactionalApplier {
 
   private createWrappedFunction(originalFn: AsyncFn, transaction: boolean) {
     const wrapper = async (...args: any[]) => {
-      const entityManager: EntityManager | undefined = this.cls.get(
-        TRANSACTIONAL_ENTITY_MANAGER,
-      );
-      if (!entityManager) {
-        throw new InternalServerErrorException('Entity manager is not exists');
-      }
-
       if (transaction) {
-        return await entityManager.transactional(async (manager) => {
-          return await this.cls.runWith(
-            { [TRANSACTIONAL_ENTITY_MANAGER]: manager },
-            () => originalFn(args),
-          );
+        return await this.em.transactional(async (manager) => {
+          this.cls.set(TRANSACTIONAL_ENTITY_MANAGER, manager);
+          return await originalFn(args);
         });
       } else {
-        return await this.cls.runWith(
-          { [TRANSACTIONAL_ENTITY_MANAGER]: this.em },
-          () => originalFn(args),
-        );
+        this.cls.set(TRANSACTIONAL_ENTITY_MANAGER, this.em);
+        return await originalFn(args);
       }
     };
     Object.setPrototypeOf(wrapper, originalFn);
