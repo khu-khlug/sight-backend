@@ -1,4 +1,5 @@
 import { Request } from 'express';
+import { ClsService } from 'nestjs-cls';
 import {
   CanActivate,
   ExecutionContext,
@@ -10,7 +11,6 @@ import {
 import { ITokenVerifier, TokenVerifier } from '@sight/core/auth/ITokenVerifier';
 
 import { Message } from '@sight/constant/message';
-import { ClsService } from 'nestjs-cls';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
