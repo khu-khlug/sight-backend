@@ -11,7 +11,7 @@ import {
 } from '@sight/app/domain/group/IGroupLogRepository';
 
 @Injectable()
-export class GroupLogger implements IGroupLogger {
+export class GroupLoggerImpl implements IGroupLogger {
   constructor(
     private readonly clsService: ClsService,
     private readonly groupLogFactory: GroupLogFactory,

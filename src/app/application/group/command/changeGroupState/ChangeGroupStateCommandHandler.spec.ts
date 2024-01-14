@@ -5,13 +5,12 @@ import { ChangeGroupStateCommand } from '@sight/app/application/group/command/ch
 import { ChangeGroupStateCommandHandler } from '@sight/app/application/group/command/changeGroupState/ChangeGroupStateCommandHandler';
 import { ChangeGroupStateCommandResult } from '@sight/app/application/group/command/changeGroupState/ChangeGroupStateCommandResult';
 
-import { GroupLogFactory } from '@sight/app/domain/group/GroupLogFactory';
 import { GroupState } from '@sight/app/domain/group/model/constant';
 import { Group } from '@sight/app/domain/group/model/Group';
 import {
-  GroupLogRepository,
-  IGroupLogRepository,
-} from '@sight/app/domain/group/IGroupLogRepository';
+  GroupLogger,
+  IGroupLogger,
+} from '@sight/app/domain/group/IGroupLogger';
 import {
   GroupRepository,
   IGroupRepository,
@@ -24,8 +23,7 @@ import { Message } from '@sight/constant/message';
 describe('ChangeGroupStateCommandHandler', () => {
   let handler: ChangeGroupStateCommandHandler;
   let groupRepository: jest.Mocked<IGroupRepository>;
-  let groupLogFactory: jest.Mocked<GroupLogFactory>;
-  let groupLogRepository: jest.Mocked<IGroupLogRepository>;
+  let groupLogger: jest.Mocked<IGroupLogger>;
 
   beforeAll(async () => {
     advanceTo(new Date());
@@ -33,18 +31,13 @@ describe('ChangeGroupStateCommandHandler', () => {
     const testModule = await Test.createTestingModule({
       providers: [
         ChangeGroupStateCommandHandler,
-        ...generateEmptyProviders(
-          GroupRepository,
-          GroupLogFactory,
-          GroupLogRepository,
-        ),
+        ...generateEmptyProviders(GroupRepository, GroupLogger),
       ],
     }).compile();
 
     handler = testModule.get(ChangeGroupStateCommandHandler);
     groupRepository = testModule.get(GroupRepository);
-    groupLogFactory = testModule.get(GroupLogFactory);
-    groupLogRepository = testModule.get(GroupLogRepository);
+    groupLogger = testModule.get(GroupLogger);
   });
 
   afterAll(() => {
@@ -62,17 +55,14 @@ describe('ChangeGroupStateCommandHandler', () => {
       group = DomainFixture.generateGroup({
         adminUserId: requesterUserId,
       });
-      const log = DomainFixture.generateGroupLog();
 
       group.isCustomerServiceGroup = jest.fn().mockReturnValue(false);
       group.isPracticeGroup = jest.fn().mockReturnValue(false);
-      groupLogFactory.create = jest.fn().mockReturnValue(log);
       groupRepository.findById = jest.fn().mockResolvedValue(group);
-      groupLogRepository.nextId = jest.fn().mockReturnValue('some-id');
 
       group.changeState = jest.fn();
       groupRepository.save = jest.fn();
-      groupLogRepository.save = jest.fn();
+      groupLogger.log = jest.fn();
     });
 
     test('그룹이 존재하지 않으면 예외를 발생시켜야 한다', async () => {

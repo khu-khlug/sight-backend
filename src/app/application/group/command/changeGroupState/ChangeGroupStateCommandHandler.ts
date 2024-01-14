@@ -11,12 +11,11 @@ import { Transactional } from '@sight/core/persistence/transaction/Transactional
 import { ChangeGroupStateCommand } from '@sight/app/application/group/command/changeGroupState/ChangeGroupStateCommand';
 import { ChangeGroupStateCommandResult } from '@sight/app/application/group/command/changeGroupState/ChangeGroupStateCommandResult';
 
-import { GroupLogFactory } from '@sight/app/domain/group/GroupLogFactory';
 import { GroupState } from '@sight/app/domain/group/model/constant';
 import {
-  GroupLogRepository,
-  IGroupLogRepository,
-} from '@sight/app/domain/group/IGroupLogRepository';
+  GroupLogger,
+  IGroupLogger,
+} from '@sight/app/domain/group/IGroupLogger';
 import {
   GroupRepository,
   IGroupRepository,
@@ -32,10 +31,8 @@ export class ChangeGroupStateCommandHandler
   constructor(
     @Inject(GroupRepository)
     private readonly groupRepository: IGroupRepository,
-    @Inject(GroupLogFactory)
-    private readonly groupLogFactory: GroupLogFactory,
-    @Inject(GroupLogRepository)
-    private readonly groupLogRepository: IGroupLogRepository,
+    @Inject(GroupLogger)
+    private readonly groupLogger: IGroupLogger,
   ) {}
 
   @Transactional()
@@ -65,13 +62,7 @@ export class ChangeGroupStateCommandHandler
     group.wake();
     await this.groupRepository.save(group);
 
-    const newGroupLog = this.groupLogFactory.create({
-      id: this.groupLogRepository.nextId(),
-      groupId,
-      userId: requester.userId,
-      message: this.buildMessage(nextState),
-    });
-    await this.groupLogRepository.save(newGroupLog);
+    await this.groupLogger.log(groupId, this.buildMessage(nextState));
 
     return new ChangeGroupStateCommandResult(nextState);
   }
