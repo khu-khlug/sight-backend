@@ -1,4 +1,7 @@
 export const Message = {
+  // 401 Unauthorized
+  TOKEN_REQUIRED: 'Token is required',
+
   // 403 Forbidden
   CANNOT_CREATE_GROUP: 'Cannot create group',
   CANNOT_MODIFY_GROUP: 'Cannot modify group',
