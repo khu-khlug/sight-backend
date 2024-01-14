@@ -5,7 +5,7 @@ import { ClsService } from 'nestjs-cls';
 import { IRequester } from '@sight/core/auth/IRequester';
 import { UserRole } from '@sight/core/auth/UserRole';
 
-import { GroupLogger } from '@sight/app/infra/logger/GroupLogger';
+import { GroupLoggerImpl } from '@sight/app/infra/logger/GroupLogger';
 
 import { GroupLogFactory } from '@sight/app/domain/group/GroupLogFactory';
 import {
@@ -16,7 +16,7 @@ import {
 import { generateEmptyProviders } from '@sight/__test__/util';
 
 describe('GroupLogger', () => {
-  let groupLogger: GroupLogger;
+  let groupLogger: GroupLoggerImpl;
   let groupLogFactory: GroupLogFactory;
   let groupLogRepository: jest.Mocked<IGroupLogRepository>;
   let clsService: jest.Mocked<ClsService>;
@@ -26,13 +26,13 @@ describe('GroupLogger', () => {
 
     const testModule = await Test.createTestingModule({
       providers: [
-        GroupLogger,
+        GroupLoggerImpl,
         GroupLogFactory,
         ...generateEmptyProviders(ClsService, GroupLogRepository),
       ],
     }).compile();
 
-    groupLogger = testModule.get(GroupLogger);
+    groupLogger = testModule.get(GroupLoggerImpl);
     groupLogFactory = testModule.get(GroupLogFactory);
     groupLogRepository = testModule.get(GroupLogRepository);
     clsService = testModule.get(ClsService);
