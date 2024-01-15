@@ -1,7 +1,7 @@
 import { Test } from '@nestjs/testing';
 import { advanceTo, clear } from 'jest-date-mock';
 
-import { MessageBuilder } from './MessageBuilder';
+import { MessageBuilder } from '@sight/core/message/MessageBuilder';
 
 describe('MessageBuilder', () => {
   let messageBuilder: MessageBuilder;
