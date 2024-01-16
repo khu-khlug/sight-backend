@@ -39,7 +39,6 @@ export class GroupCreatedHandler implements IEventHandler<GroupCreated> {
     await this.userRepository.save(authorUser);
 
     this.slackSender.send({
-      sourceUserId: null,
       targetUserId: group.authorUserId,
       category: SlackMessageCategory.GROUP_ACTIVITY,
       message: `${group.title} 그룹을 만들었습니다.`,

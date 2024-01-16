@@ -21,7 +21,6 @@ export class UserProfileUpdatedHandler
     const { user } = event;
 
     this.slackSender.send({
-      sourceUserId: null,
       targetUserId: user.id,
       message: '회원 정보를 수정했습니다.',
       category: SlackMessageCategory.USER_DATA,

@@ -52,4 +52,18 @@ describe('MessageBuilder', () => {
 
     expect(actual).toEqual(expected);
   });
+
+  test('동일한 파라미터가 있는 메시지는 동일한 값을 사용해야 한다', () => {
+    const GIVEN_MESSAGE = ':some1: :some2: :some1: :some3: :some4:';
+    const expected = `1 2 1 3 4`;
+
+    const actual = messageBuilder.build(GIVEN_MESSAGE, {
+      some1: '1',
+      some2: '2',
+      some3: '3',
+      some4: '4',
+    });
+
+    expect(actual).toEqual(expected);
+  });
 });

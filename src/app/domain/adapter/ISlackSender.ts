@@ -1,7 +1,7 @@
 import { SlackMessageCategory } from '@sight/app/domain/message/model/constant';
 
 export type SlackSendParams = {
-  sourceUserId: string | null;
+  sourceUserId?: string;
   targetUserId: string;
   message: string;
   category: SlackMessageCategory;

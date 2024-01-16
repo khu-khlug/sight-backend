@@ -56,7 +56,6 @@ export class GroupUpdatedHandler implements IEventHandler<GroupUpdated> {
     const members = await this.groupMemberRepository.findByGroupId(groupId);
     members.forEach((member) =>
       this.slackSender.send({
-        sourceUserId: null,
         targetUserId: member.userId,
         category: SlackMessageCategory.GROUP_ACTIVITY,
         message,

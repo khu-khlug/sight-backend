@@ -6,6 +6,7 @@ import {
 } from '@sight/app/domain/group/model/constant';
 
 import { DomainFixture } from '@sight/__test__/fixtures';
+import { Message } from '@sight/constant/message';
 
 describe('Group', () => {
   beforeAll(() => {
@@ -73,7 +74,31 @@ describe('Group', () => {
         hasPortfolio: true,
       });
 
-      expect(() => group.enablePortfolio()).toThrow();
+      expect(() => group.enablePortfolio()).toThrowError(
+        Message.ALREADY_GROUP_ENABLED_PORTFOLIO,
+      );
+    });
+  });
+
+  describe('disablePortfolio', () => {
+    test('포트폴리오를 비활성화해야 한다', () => {
+      const group = DomainFixture.generateGroup({
+        hasPortfolio: true,
+      });
+
+      group.disablePortfolio();
+
+      expect(group.hasPortfolio).toEqual(false);
+    });
+
+    test('이미 포트폴리오가 비활성화되어 있다면 예외를 발생시켜야 한다', () => {
+      const group = DomainFixture.generateGroup({
+        hasPortfolio: false,
+      });
+
+      expect(() => group.disablePortfolio()).toThrowError(
+        Message.ALREADY_GROUP_DISABLED_PORTFOLIO,
+      );
     });
   });
 
