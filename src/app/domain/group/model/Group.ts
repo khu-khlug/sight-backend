@@ -176,6 +176,19 @@ export class Group extends AggregateRoot {
     this.apply(new GroupPortfolioEnabled(this.id));
   }
 
+  disablePortfolio(): void {
+    if (!this._hasPortfolio) {
+      throw new UnprocessableEntityException(
+        Message.ALREADY_GROUP_DISABLED_PORTFOLIO,
+      );
+    }
+
+    this._hasPortfolio = false;
+    this._updatedAt = new Date();
+
+    this.apply(new GroupPortfolioEnabled(this.id));
+  }
+
   isEditable(): boolean {
     return !this.isEnd() && !this.isCustomerServiceGroup();
   }

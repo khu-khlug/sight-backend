@@ -76,7 +76,6 @@ export class GroupPortfolioEnabledHandler
     this.slackSender.send({
       category: SlackMessageCategory.GROUP_ACTIVITY,
       message: `<a href="/group/'${groupId}'"><u>${group.title}</u></a> 그룹의 <a href="/folio/'${groupId}'" target="_blank">포트폴리오</a>가 발행 중입니다.`,
-      sourceUserId: null,
       targetUserId: requester.userId, // TODO: 요청자 정보에 접근할 수 있을 때 수정
     });
   }
