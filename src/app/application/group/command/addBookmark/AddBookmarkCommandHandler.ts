@@ -53,7 +53,7 @@ export class AddBookmarkCommandHandler
         userId,
       );
     if (prevBookmark) {
-      throw new UnprocessableEntityException(Message.ALREADY_BOOKMARKED_GROUP);
+      return;
     }
 
     const newBookmark = this.groupBookmarkFactory.create({

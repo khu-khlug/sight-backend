@@ -101,15 +101,16 @@ describe('AddBookmarkCommandHandler', () => {
       ).rejects.toThrowError(Message.DEFAULT_BOOKMARKED_GROUP);
     });
 
-    test('이미 즐겨찾기 중이라면 예외가 발생해야 한다', async () => {
+    test('이미 즐겨찾기 중이라면 새로운 즐겨찾기를 생성하지 않아야 한다', async () => {
       const bookmark = DomainFixture.generateGroupBookmark();
       groupBookmarkRepository.findByGroupIdAndUserId = jest
         .fn()
         .mockResolvedValue(bookmark);
+      jest.spyOn(groupBookmarkFactory, 'create');
 
-      await expect(
-        handler.execute(new AddBookmarkCommand(groupId, userId)),
-      ).rejects.toThrowError(Message.ALREADY_BOOKMARKED_GROUP);
+      await handler.execute(new AddBookmarkCommand(groupId, userId));
+
+      expect(groupBookmarkFactory.create).not.toBeCalled();
     });
 
     test('즐겨찾기를 생성해야 한다', async () => {

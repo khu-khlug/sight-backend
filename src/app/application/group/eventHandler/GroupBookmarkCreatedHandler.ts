@@ -1,8 +1,6 @@
 import { Inject } from '@nestjs/common';
 import { EventsHandler, IEventHandler } from '@nestjs/cqrs';
-import { ClsService } from 'nestjs-cls';
 
-import { IRequester } from '@sight/core/auth/IRequester';
 import { MessageBuilder } from '@sight/core/message/MessageBuilder';
 import { Transactional } from '@sight/core/persistence/transaction/Transactional';
 
@@ -24,8 +22,6 @@ export class GroupBookmarkCreatedHandler
   implements IEventHandler<GroupBookmarkCreated>
 {
   constructor(
-    @Inject(ClsService)
-    private readonly clsService: ClsService,
     @Inject(MessageBuilder)
     private readonly messageBuilder: MessageBuilder,
     @Inject(SlackSender)
@@ -36,14 +32,12 @@ export class GroupBookmarkCreatedHandler
 
   @Transactional()
   async handle(event: GroupBookmarkCreated): Promise<void> {
-    const { groupId } = event;
+    const { groupId, userId } = event;
 
     const group = await this.groupRepository.findById(groupId);
     if (!group) {
       return;
     }
-
-    const requester: IRequester = this.clsService.get('requester');
 
     const message = this.messageBuilder.build(
       Template.ADD_GROUP_BOOKMARK.notification,
@@ -51,7 +45,7 @@ export class GroupBookmarkCreatedHandler
     );
     this.slackSender.send({
       category: SlackMessageCategory.GROUP_ACTIVITY_FOR_ME,
-      targetUserId: requester.userId,
+      targetUserId: userId,
       message,
     });
   }
