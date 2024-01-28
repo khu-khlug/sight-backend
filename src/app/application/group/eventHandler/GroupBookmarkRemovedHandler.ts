@@ -2,13 +2,12 @@ import { Inject } from '@nestjs/common';
 import { EventsHandler, IEventHandler } from '@nestjs/cqrs';
 
 import { MessageBuilder } from '@sight/core/message/MessageBuilder';
-import { Transactional } from '@sight/core/persistence/transaction/Transactional';
 
-import { GroupBookmarkCreated } from '@sight/app/domain/group/event/GroupBookmarkCreated';
+import { GroupBookmarkRemoved } from '@sight/app/domain/group/event/GroupBookmarkRemoved';
 import { SlackMessageCategory } from '@sight/app/domain/message/model/constant';
 import {
-  ISlackSender,
   SlackSender,
+  ISlackSender,
 } from '@sight/app/domain/adapter/ISlackSender';
 import {
   GroupRepository,
@@ -17,9 +16,9 @@ import {
 
 import { Template } from '@sight/constant/template';
 
-@EventsHandler(GroupBookmarkCreated)
-export class GroupBookmarkCreatedHandler
-  implements IEventHandler<GroupBookmarkCreated>
+@EventsHandler(GroupBookmarkRemoved)
+export class GroupBookmarkRemovedHandler
+  implements IEventHandler<GroupBookmarkRemoved>
 {
   constructor(
     @Inject(MessageBuilder)
@@ -30,8 +29,7 @@ export class GroupBookmarkCreatedHandler
     private readonly groupRepository: IGroupRepository,
   ) {}
 
-  @Transactional()
-  async handle(event: GroupBookmarkCreated): Promise<void> {
+  async handle(event: GroupBookmarkRemoved): Promise<void> {
     const { groupId, userId } = event;
 
     const group = await this.groupRepository.findById(groupId);
@@ -40,7 +38,7 @@ export class GroupBookmarkCreatedHandler
     }
 
     const message = this.messageBuilder.build(
-      Template.ADD_GROUP_BOOKMARK.notification,
+      Template.REMOVE_GROUP_BOOKMARK.notification,
       { groupId, groupTitle: group.title },
     );
     this.slackSender.send({

@@ -7,9 +7,8 @@ import {
 
 import { Transactional } from '@sight/core/persistence/transaction/Transactional';
 
-import { AddBookmarkCommand } from '@sight/app/application/group/command/addBookmark/AddBookmarkCommand';
+import { RemoveBookmarkCommand } from '@sight/app/application/group/command/removeBookmark/RemoveBookmarkCommand';
 
-import { GroupBookmarkFactory } from '@sight/app/domain/group/GroupBookmarkFactory';
 import {
   GroupBookmarkRepository,
   IGroupBookmarkRepository,
@@ -21,21 +20,19 @@ import {
 
 import { Message } from '@sight/constant/message';
 
-@CommandHandler(AddBookmarkCommand)
-export class AddBookmarkCommandHandler
-  implements ICommandHandler<AddBookmarkCommand>
+@CommandHandler(RemoveBookmarkCommand)
+export class RemoveBookmarkCommandHandler
+  implements ICommandHandler<RemoveBookmarkCommand>
 {
   constructor(
     @Inject(GroupRepository)
     private readonly groupRepository: IGroupRepository,
-    @Inject(GroupBookmarkFactory)
-    private readonly groupBookmarkFactory: GroupBookmarkFactory,
     @Inject(GroupBookmarkRepository)
     private readonly groupBookmarkRepository: IGroupBookmarkRepository,
   ) {}
 
   @Transactional()
-  async execute(command: AddBookmarkCommand): Promise<void> {
+  async execute(command: RemoveBookmarkCommand): Promise<void> {
     const { groupId, userId } = command;
 
     const group = await this.groupRepository.findById(groupId);
@@ -52,15 +49,11 @@ export class AddBookmarkCommandHandler
         groupId,
         userId,
       );
-    if (prevBookmark) {
+    if (!prevBookmark) {
       return;
     }
 
-    const newBookmark = this.groupBookmarkFactory.create({
-      id: this.groupBookmarkRepository.nextId(),
-      groupId,
-      userId,
-    });
-    await this.groupBookmarkRepository.save(newBookmark);
+    prevBookmark.remove();
+    await this.groupBookmarkRepository.remove(prevBookmark);
   }
 }

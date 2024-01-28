@@ -2,10 +2,8 @@ import { Test } from '@nestjs/testing';
 import { advanceTo, clear } from 'jest-date-mock';
 
 import { AddBookmarkCommand } from '@sight/app/application/group/command/addBookmark/AddBookmarkCommand';
-import { AddBookmarkCommandHandler } from '@sight/app/application/group/command/addBookmark/AddBookmarkCommandHandler';
+import { RemoveBookmarkCommandHandler } from '@sight/app/application/group/command/removeBookmark/RemoveBookmarkCommandHandler';
 
-import { GroupBookmarkFactory } from '@sight/app/domain/group/GroupBookmarkFactory';
-import { Group } from '@sight/app/domain/group/model/Group';
 import {
   GroupBookmarkRepository,
   IGroupBookmarkRepository,
@@ -20,11 +18,11 @@ import {
 } from '@sight/app/domain/group/model/constant';
 
 import { DomainFixture } from '@sight/__test__/fixtures';
+import { generateEmptyProviders } from '@sight/__test__/util';
 import { Message } from '@sight/constant/message';
 
-describe('AddBookmarkCommandHandler', () => {
-  let handler: AddBookmarkCommandHandler;
-  let groupBookmarkFactory: GroupBookmarkFactory;
+describe('RemoveBookmarkCommandHandler', () => {
+  let handler: RemoveBookmarkCommandHandler;
   let groupRepository: jest.Mocked<IGroupRepository>;
   let groupBookmarkRepository: jest.Mocked<IGroupBookmarkRepository>;
 
@@ -33,15 +31,12 @@ describe('AddBookmarkCommandHandler', () => {
 
     const testModule = await Test.createTestingModule({
       providers: [
-        AddBookmarkCommandHandler,
-        GroupBookmarkFactory,
-        { provide: GroupRepository, useValue: {} },
-        { provide: GroupBookmarkRepository, useValue: {} },
+        RemoveBookmarkCommandHandler,
+        ...generateEmptyProviders(GroupRepository, GroupBookmarkRepository),
       ],
     }).compile();
 
-    handler = testModule.get(AddBookmarkCommandHandler);
-    groupBookmarkFactory = testModule.get(GroupBookmarkFactory);
+    handler = testModule.get(RemoveBookmarkCommandHandler);
     groupRepository = testModule.get(GroupRepository);
     groupBookmarkRepository = testModule.get(GroupBookmarkRepository);
   });
@@ -51,22 +46,19 @@ describe('AddBookmarkCommandHandler', () => {
   });
 
   describe('execute', () => {
-    let group: Group;
-
-    const newBookmarkId = 'new-bookmark-id';
     const groupId = 'groupId';
     const userId = 'userId';
 
     beforeEach(() => {
-      group = DomainFixture.generateGroup({ id: groupId });
+      const group = DomainFixture.generateGroup();
+      const groupBookmark = DomainFixture.generateGroupBookmark();
 
       groupRepository.findById = jest.fn().mockResolvedValue(group);
       groupBookmarkRepository.findByGroupIdAndUserId = jest
         .fn()
-        .mockResolvedValue(null);
-      groupBookmarkRepository.nextId = jest.fn().mockReturnValue(newBookmarkId);
+        .mockResolvedValue(groupBookmark);
 
-      groupBookmarkRepository.save = jest.fn();
+      groupBookmarkRepository.remove = jest.fn();
     });
 
     test('그룹이 존재하지 않으면 예외가 발생해야 한다', async () => {
@@ -101,29 +93,20 @@ describe('AddBookmarkCommandHandler', () => {
       ).rejects.toThrowError(Message.DEFAULT_BOOKMARKED_GROUP);
     });
 
-    test('이미 즐겨찾기 중이라면 새로운 즐겨찾기를 생성하지 않아야 한다', async () => {
-      const bookmark = DomainFixture.generateGroupBookmark();
+    test('아직 그룹을 즐겨찾기하지 않았다면 무시해야 한다', async () => {
       groupBookmarkRepository.findByGroupIdAndUserId = jest
         .fn()
-        .mockResolvedValue(bookmark);
-      jest.spyOn(groupBookmarkFactory, 'create');
+        .mockResolvedValue(null);
 
       await handler.execute(new AddBookmarkCommand(groupId, userId));
 
-      expect(groupBookmarkFactory.create).not.toBeCalled();
+      expect(groupBookmarkRepository.remove).not.toBeCalled();
     });
 
-    test('즐겨찾기를 생성해야 한다', async () => {
-      const expected = groupBookmarkFactory.create({
-        id: newBookmarkId,
-        groupId,
-        userId,
-      });
-
+    test('그룹을 즐겨찾기 해제해야 한다', async () => {
       await handler.execute(new AddBookmarkCommand(groupId, userId));
 
-      expect(groupBookmarkRepository.save).toBeCalledTimes(1);
-      expect(groupBookmarkRepository.save).toBeCalledWith(expected);
+      expect(groupBookmarkRepository.remove).toBeCalled();
     });
   });
 });

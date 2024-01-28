@@ -3,9 +3,9 @@ import { advanceTo, clear } from 'jest-date-mock';
 
 import { MessageBuilder } from '@sight/core/message/MessageBuilder';
 
-import { GroupBookmarkCreatedHandler } from '@sight/app/application/group/eventHandler/GroupBookmarkCreatedHandler';
+import { GroupBookmarkRemovedHandler } from '@sight/app/application/group/eventHandler/GroupBookmarkRemovedHandler';
 
-import { GroupBookmarkCreated } from '@sight/app/domain/group/event/GroupBookmarkCreated';
+import { GroupBookmarkRemoved } from '@sight/app/domain/group/event/GroupBookmarkRemoved';
 import {
   ISlackSender,
   SlackSender,
@@ -18,8 +18,8 @@ import {
 import { DomainFixture } from '@sight/__test__/fixtures';
 import { generateEmptyProviders } from '@sight/__test__/util';
 
-describe('GroupBookmarkCreatedHandler', () => {
-  let handler: GroupBookmarkCreatedHandler;
+describe('GroupBookmarkRemovedHandler', () => {
+  let handler: GroupBookmarkRemovedHandler;
   let messageBuilder: jest.Mocked<MessageBuilder>;
   let slackSender: jest.Mocked<ISlackSender>;
   let groupRepository: jest.Mocked<IGroupRepository>;
@@ -29,12 +29,12 @@ describe('GroupBookmarkCreatedHandler', () => {
 
     const testModule = await Test.createTestingModule({
       providers: [
-        GroupBookmarkCreatedHandler,
+        GroupBookmarkRemovedHandler,
         ...generateEmptyProviders(MessageBuilder, SlackSender, GroupRepository),
       ],
     }).compile();
 
-    handler = testModule.get(GroupBookmarkCreatedHandler);
+    handler = testModule.get(GroupBookmarkRemovedHandler);
     messageBuilder = testModule.get(MessageBuilder);
     slackSender = testModule.get(SlackSender);
     groupRepository = testModule.get(GroupRepository);
@@ -58,7 +58,7 @@ describe('GroupBookmarkCreatedHandler', () => {
     });
 
     test('그룹이 존재하지 않으면 메시지를 보내지 않아야 한다', async () => {
-      const event = new GroupBookmarkCreated(groupId, userId);
+      const event = new GroupBookmarkRemoved(groupId, userId);
 
       groupRepository.findById.mockResolvedValue(null);
 
@@ -69,7 +69,7 @@ describe('GroupBookmarkCreatedHandler', () => {
 
     test('요청자에게 메시지를 보내야 한다', async () => {
       const groupId = 'groupId';
-      const event = new GroupBookmarkCreated(groupId, userId);
+      const event = new GroupBookmarkRemoved(groupId, userId);
 
       await handler.handle(event);
 

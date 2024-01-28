@@ -1,4 +1,4 @@
-export class GroupBookmarkCreated {
+export class GroupBookmarkRemoved {
   constructor(
     readonly groupId: string,
     readonly userId: string,

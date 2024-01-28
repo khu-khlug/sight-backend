@@ -8,4 +8,8 @@ export const Template = {
     notification:
       '<a href="/group/:groupId:"><u>:groupTitle:</u></a> 그룹을 즐겨 찾습니다.',
   },
+  REMOVE_GROUP_BOOKMARK: {
+    notification:
+      '<a href="/group/:groupId:"><u>:groupTitle:</u></a> 그룹을 더 이상 즐겨 찾지 않습니다.',
+  },
 } as const;
