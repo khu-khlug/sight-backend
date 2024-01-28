@@ -21,4 +21,6 @@ export const Message = {
   CANNOT_MODIFY_CUSTOMER_SERVICE_GROUP: 'Cannot modify customer service group',
   ALREADY_GROUP_ENABLED_PORTFOLIO: 'Already group enabled portfolio',
   ALREADY_GROUP_DISABLED_PORTFOLIO: 'Already group disabled portfolio',
+  ALREADY_BOOKMARKED_GROUP: 'Already bookmarked group',
+  DEFAULT_BOOKMARKED_GROUP: 'Cannot add bookmark default bookmarked group',
 };
