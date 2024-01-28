@@ -6,6 +6,8 @@ import {
   UnprocessableEntityException,
 } from '@nestjs/common';
 
+import { Transactional } from '@sight/core/persistence/transaction/Transactional';
+
 import { DisablePortfolioCommand } from '@sight/app/application/group/command/disablePortfolio/DisablePortfolioCommand';
 
 import {
@@ -24,6 +26,7 @@ export class DisablePortfolioCommandHandler
     private readonly groupRepository: IGroupRepository,
   ) {}
 
+  @Transactional()
   async execute(command: DisablePortfolioCommand): Promise<void> {
     const { groupId, requesterUserId } = command;
 

@@ -10,6 +10,10 @@ import {
   GroupConstructorParams,
 } from '@sight/app/domain/group/model/Group';
 import {
+  GroupBookmark,
+  GroupBookmarkConstructorParams,
+} from '@sight/app/domain/group/model/GroupBookmark';
+import {
   GroupLog,
   GroupLogConstructorParams,
 } from '@sight/app/domain/group/model/GroupLog';
@@ -60,6 +64,18 @@ export function generateGroupLog(
     userId: faker.string.uuid(),
     groupId: faker.string.uuid(),
     message: faker.lorem.sentence(),
+    createdAt: faker.date.anytime(),
+    ...params,
+  });
+}
+
+export function generateGroupBookmark(
+  params?: Partial<GroupBookmarkConstructorParams>,
+): GroupBookmark {
+  return new GroupBookmark({
+    id: faker.string.uuid(),
+    userId: faker.string.uuid(),
+    groupId: faker.string.uuid(),
     createdAt: faker.date.anytime(),
     ...params,
   });
