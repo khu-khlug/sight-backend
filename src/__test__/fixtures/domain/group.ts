@@ -36,7 +36,7 @@ export function generateGroup(params?: Partial<GroupConstructorParams>): Group {
     grade: faker.helpers.enumValue(GroupAccessGrade),
     lastUpdaterUserId: faker.string.uuid(),
     repository: faker.internet.url(),
-    allowJoin: faker.datatype.boolean(),
+    allowJoin: params?.allowJoin ?? true,
     hasPortfolio: faker.datatype.boolean(),
     createdAt: faker.date.anytime(),
     updatedAt: faker.date.anytime(),

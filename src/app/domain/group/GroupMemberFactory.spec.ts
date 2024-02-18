@@ -1,6 +1,7 @@
 import { Test } from '@nestjs/testing';
 import { advanceTo, clear } from 'jest-date-mock';
 
+import { GroupMemberCreated } from '@sight/app/domain/group/event/GroupMemberCreated';
 import { GroupMemberFactory } from '@sight/app/domain/group/GroupMemberFactory';
 import { GroupMember } from '@sight/app/domain/group/model/GroupMember';
 
@@ -33,6 +34,7 @@ describe('GroupMemberFactory', () => {
         groupId,
         createdAt: new Date(),
       });
+      expected.apply(new GroupMemberCreated(groupId, userId));
 
       const group = groupMemberFactory.create({
         id: groupMemberId,
