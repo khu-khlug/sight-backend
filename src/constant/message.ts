@@ -8,6 +8,7 @@ export const Message = {
   ONLY_GROUP_ADMIN_CAN_EDIT_GROUP: 'Only group admin can edit the group',
   ONLY_MANAGER_CAN_SUSPEND_GROUP: 'Only managers can suspend the group',
   REQUESTER_NOT_JOINED_GROUP: 'Requester is not joined the group',
+  CANNOT_READ_GROUP: 'Cannot read group',
 
   // 404 Not Found
   USER_NOT_FOUND: 'User not found',
@@ -22,4 +23,6 @@ export const Message = {
   ALREADY_GROUP_ENABLED_PORTFOLIO: 'Already group enabled portfolio',
   ALREADY_GROUP_DISABLED_PORTFOLIO: 'Already group disabled portfolio',
   DEFAULT_BOOKMARKED_GROUP: 'Cannot add bookmark default bookmarked group',
+  GROUP_JOIN_NOT_ALLOWED: 'Group join not allowed',
+  ALREADY_JOINED_GROUP: 'Already joined group',
 };

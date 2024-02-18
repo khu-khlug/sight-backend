@@ -42,11 +42,11 @@ export type GroupRecordState =
   (typeof GroupRecordState)[keyof typeof GroupRecordState];
 
 export const GroupAccessGrade = {
-  PRIVATE: 'PRIVATE', // 비공개
-  MANAGER: 'MANAGER', // 운영진 공개
-  MEMBER: 'MEMBER', // 쿠러그 멤버 공개
-  ALL: 'ALL', // 전체 공개
-};
+  PRIVATE: 'PRIVATE', // 비공개, 구 0
+  MANAGER: 'MANAGER', // 운영진 공개, 구 2
+  MEMBER: 'MEMBER', // 쿠러그 멤버 공개, 구 3
+  ALL: 'ALL', // 전체 공개, 구 4
+} as const;
 export type GroupAccessGrade =
   (typeof GroupAccessGrade)[keyof typeof GroupAccessGrade];
 

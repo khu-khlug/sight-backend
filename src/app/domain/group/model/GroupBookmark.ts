@@ -1,5 +1,6 @@
 import { AggregateRoot } from '@nestjs/cqrs';
-import { GroupBookmarkRemoved } from '../event/GroupBookmarkRemoved';
+
+import { GroupBookmarkRemoved } from '@sight/app/domain/group/event/GroupBookmarkRemoved';
 
 export type GroupBookmarkConstructorParams = {
   id: string;

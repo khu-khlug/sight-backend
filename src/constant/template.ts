@@ -12,4 +12,9 @@ export const Template = {
     notification:
       '<a href="/group/:groupId:"><u>:groupTitle:</u></a> 그룹을 더 이상 즐겨 찾지 않습니다.',
   },
+  JOIN_GROUP: {
+    notification:
+      '<a href="/group/:groupId:"><u>:groupTitle:</u></a> 그룹에 참여했습니다.',
+    point: '<u>:groupTitle:</u> 그룹에 참여했습니다.',
+  },
 } as const;
