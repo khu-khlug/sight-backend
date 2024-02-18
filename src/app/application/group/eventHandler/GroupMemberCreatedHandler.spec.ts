@@ -1,35 +1,38 @@
 import { Test } from '@nestjs/testing';
 import { advanceTo, clear } from 'jest-date-mock';
 
-import { GroupMemberCreatedHandler } from './GroupMemberCreatedHandler';
+import { MessageBuilder } from '@sight/core/message/MessageBuilder';
+
+import { GroupMemberCreatedHandler } from '@sight/app/application/group/eventHandler/GroupMemberCreatedHandler';
+
+import { GroupMemberCreated } from '@sight/app/domain/group/event/GroupMemberCreated';
+import {
+  ISlackSender,
+  SlackSender,
+} from '@sight/app/domain/adapter/ISlackSender';
 import {
   GroupLogger,
   IGroupLogger,
 } from '@sight/app/domain/group/IGroupLogger';
 import {
-  GroupRepository,
-  IGroupRepository,
-} from '@sight/app/domain/group/IGroupRepository';
-import {
   GroupMemberRepository,
   IGroupMemberRepository,
 } from '@sight/app/domain/group/IGroupMemberRepository';
 import {
-  IUserRepository,
-  UserRepository,
-} from '@sight/app/domain/user/IUserRepository';
-import {
-  ISlackSender,
-  SlackSender,
-} from '@sight/app/domain/adapter/ISlackSender';
-import { MessageBuilder } from '@sight/core/message/MessageBuilder';
-import { generateEmptyProviders } from '@sight/__test__/util';
-import { GroupMemberCreated } from '@sight/app/domain/group/event/GroupMemberCreated';
-import { DomainFixture } from '@sight/__test__/fixtures';
+  GroupRepository,
+  IGroupRepository,
+} from '@sight/app/domain/group/IGroupRepository';
 import {
   GroupAccessGrade,
   PRACTICE_GROUP_ID,
 } from '@sight/app/domain/group/model/constant';
+import {
+  IUserRepository,
+  UserRepository,
+} from '@sight/app/domain/user/IUserRepository';
+
+import { DomainFixture } from '@sight/__test__/fixtures';
+import { generateEmptyProviders } from '@sight/__test__/util';
 
 describe('GroupMemberCreatedHandler', () => {
   let handler: GroupMemberCreatedHandler;
