@@ -22,7 +22,7 @@ jobs:
         run: npm ci
 
       - name: Run tests
-        run: npm run test:cov -- --runInBand --maxWorkers=100%
+        run: npm run test:cov -- --maxWorkers=100%
 
       - name: Coverage
         uses: coverallsapp/github-action@v2.2.3
