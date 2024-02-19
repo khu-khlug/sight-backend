@@ -31,4 +31,4 @@ jobs:
             ${{ runner.OS }}-
 
       - run: npm ci
-      - run: npm run test --maxWorkers=100%
+      - run: npm run test -- --maxWorkers=100%
