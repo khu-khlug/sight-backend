@@ -2,6 +2,8 @@
 
 쿠러그 사이트의 백엔드 레포지토리입니다.
 
+[![Coverage Status](https://coveralls.io/repos/github/khu-khlug/sight-backend/badge.svg?branch=main)](https://coveralls.io/github/khu-khlug/sight-backend?branch=main)
+
 ## Stacks
 
 ![NestJS](https://img.shields.io/badge/nestjs-%23E0234E.svg?style=for-the-badge&logo=nestjs&logoColor=white)
