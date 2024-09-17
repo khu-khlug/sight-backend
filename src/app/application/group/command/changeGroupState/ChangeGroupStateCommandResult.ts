@@ -1,5 +1,5 @@
-import { GroupState } from '@sight/app/domain/group/model/constant';
+import { Group } from '@sight/app/domain/group/model/Group';
 
 export class ChangeGroupStateCommandResult {
-  constructor(readonly nextState: GroupState) {}
+  constructor(readonly group: Group) {}
 }

@@ -1,9 +1,6 @@
 import { UnprocessableEntityException } from '@nestjs/common';
 import { AggregateRoot } from '@nestjs/cqrs';
 
-import { GroupPortfolioEnabled } from '@sight/app/domain/group/event/GroupPortfolioEnabled';
-import { GroupStateChanged } from '@sight/app/domain/group/event/GroupStateChanged';
-import { GroupUpdated } from '@sight/app/domain/group/event/GroupUpdated';
 import {
   CUSTOMER_SERVICE_GROUP_ID,
   GroupAccessGrade,
@@ -12,8 +9,6 @@ import {
   PRACTICE_GROUP_ID,
 } from '@sight/app/domain/group/model/constant';
 import { Message } from '@sight/constant/message';
-
-import { isDifferentStringArray } from '@sight/util/isDifferentStringArray';
 
 export type GroupConstructorParams = {
   id: string;
@@ -74,86 +69,56 @@ export class Group extends AggregateRoot {
   }
 
   updateTitle(title: string): void {
-    if (this._title !== title) {
-      this._title = title;
-      this._updatedAt = new Date();
-      this.wake();
-      this.apply(new GroupUpdated(this.id, 'title'));
-    }
+    this._title = title;
+    this._updatedAt = new Date();
+    this.wake();
   }
 
   updatePurpose(purpose: string | null): void {
-    if (this._purpose !== purpose) {
-      this._purpose = purpose;
-      this._updatedAt = new Date();
-      this.wake();
-      this.apply(new GroupUpdated(this.id, 'purpose'));
-    }
+    this._purpose = purpose;
+    this._updatedAt = new Date();
+    this.wake();
   }
 
   updateInterestIds(interestIds: string[]): void {
-    if (isDifferentStringArray(this._interestIds, interestIds)) {
-      this._interestIds = Array.from(new Set(interestIds));
-      this._updatedAt = new Date();
-      this.wake();
-      this.apply(new GroupUpdated(this.id, 'interests'));
-    }
+    this._interestIds = Array.from(new Set(interestIds));
+    this._updatedAt = new Date();
+    this.wake();
   }
 
   updateTechnology(technology: string[]): void {
-    if (isDifferentStringArray(this._technology, technology)) {
-      this._technology = technology;
-      this._updatedAt = new Date();
-      this.wake();
-      this.apply(new GroupUpdated(this.id, 'technology'));
-    }
+    this._technology = technology;
+    this._updatedAt = new Date();
+    this.wake();
   }
 
   updateGrade(grade: GroupAccessGrade): void {
-    if (this._grade !== grade) {
-      this._grade = grade;
-      this._updatedAt = new Date();
-      this.wake();
-      this.apply(new GroupUpdated(this.id, 'grade'));
-    }
+    this._grade = grade;
+    this._updatedAt = new Date();
+    this.wake();
   }
 
   updateRepository(repository: string | null): void {
-    if (this._repository !== repository) {
-      this._repository = repository;
-      this._updatedAt = new Date();
-      this.wake();
-      this.apply(new GroupUpdated(this.id, 'repository'));
-    }
+    this._repository = repository;
+    this._updatedAt = new Date();
+    this.wake();
   }
 
   updateAllowJoin(allowJoin: boolean): void {
-    if (this._allowJoin !== allowJoin) {
-      this._allowJoin = allowJoin;
-      this._updatedAt = new Date();
-      this.wake();
-      this.apply(new GroupUpdated(this.id, 'allowJoin'));
-    }
+    this._allowJoin = allowJoin;
+    this._updatedAt = new Date();
+    this.wake();
   }
 
   updateCategory(category: GroupCategory): void {
-    if (this._category !== category) {
-      this._category = category;
-      this._updatedAt = new Date();
-      this.wake();
-      this.apply(new GroupUpdated(this.id, 'category'));
-    }
+    this._category = category;
+    this._updatedAt = new Date();
+    this.wake();
   }
 
   changeState(nextState: GroupState) {
-    if (this._state === nextState) {
-      return;
-    }
-
-    const prevState = this._state;
     this._state = nextState;
     this._updatedAt = new Date();
-    this.apply(new GroupStateChanged(this.id, prevState, nextState));
   }
 
   wake(): void {
@@ -172,8 +137,6 @@ export class Group extends AggregateRoot {
 
     this._hasPortfolio = true;
     this._updatedAt = new Date();
-
-    this.apply(new GroupPortfolioEnabled(this.id));
   }
 
   disablePortfolio(): void {
@@ -185,8 +148,6 @@ export class Group extends AggregateRoot {
 
     this._hasPortfolio = false;
     this._updatedAt = new Date();
-
-    this.apply(new GroupPortfolioEnabled(this.id));
   }
 
   isEditable(): boolean {

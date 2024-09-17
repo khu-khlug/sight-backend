@@ -1,7 +1,6 @@
 import { Test } from '@nestjs/testing';
 import { advanceTo, clear } from 'jest-date-mock';
 
-import { GroupBookmarkCreated } from '@sight/app/domain/group/event/GroupBookmarkCreated';
 import { GroupBookmarkFactory } from '@sight/app/domain/group/GroupBookmarkFactory';
 import { GroupBookmark } from '@sight/app/domain/group/model/GroupBookmark';
 
@@ -34,7 +33,6 @@ describe('GroupBookmarkFactory', () => {
         userId,
         createdAt: new Date(),
       });
-      expected.apply(new GroupBookmarkCreated(groupId, userId));
 
       const bookmark = groupBookmarkFactory.create({
         id: bookmarkId,

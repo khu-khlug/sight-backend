@@ -1,30 +1,16 @@
-import { Test } from '@nestjs/testing';
 import { advanceTo, clear } from 'jest-date-mock';
 
 import { MessageBuilder } from '@sight/core/message/MessageBuilder';
 
 describe('MessageBuilder', () => {
-  let messageBuilder: MessageBuilder;
-
-  beforeAll(async () => {
-    advanceTo(new Date());
-
-    const testModule = await Test.createTestingModule({
-      providers: [MessageBuilder],
-    }).compile();
-
-    messageBuilder = testModule.get(MessageBuilder);
-  });
-
-  afterAll(() => {
-    clear();
-  });
+  beforeEach(() => advanceTo(new Date()));
+  afterEach(() => clear());
 
   test('파라미터가 없는 메시지는 그대로 반환해야 한다', () => {
     const GIVEN_MESSAGE = 'Hello, World!';
     const expected = GIVEN_MESSAGE;
 
-    const actual = messageBuilder.build(GIVEN_MESSAGE, {});
+    const actual = MessageBuilder.build(GIVEN_MESSAGE, {});
 
     expect(actual).toEqual(expected);
   });
@@ -33,7 +19,7 @@ describe('MessageBuilder', () => {
     const GIVEN_MESSAGE = 'Hello, :username:!';
     const expected = 'Hello, Lery!';
 
-    const actual = messageBuilder.build(GIVEN_MESSAGE, { username: 'Lery' });
+    const actual = MessageBuilder.build(GIVEN_MESSAGE, { username: 'Lery' });
 
     expect(actual).toEqual(expected);
   });
@@ -42,7 +28,7 @@ describe('MessageBuilder', () => {
     const GIVEN_MESSAGE = ':some1: :some2: :some3: :some4: :some5:';
     const expected = `1 2 3 4 5`;
 
-    const actual = messageBuilder.build(GIVEN_MESSAGE, {
+    const actual = MessageBuilder.build(GIVEN_MESSAGE, {
       some1: '1',
       some2: '2',
       some3: '3',
@@ -57,7 +43,7 @@ describe('MessageBuilder', () => {
     const GIVEN_MESSAGE = ':some1: :some2: :some1: :some3: :some4:';
     const expected = `1 2 1 3 4`;
 
-    const actual = messageBuilder.build(GIVEN_MESSAGE, {
+    const actual = MessageBuilder.build(GIVEN_MESSAGE, {
       some1: '1',
       some2: '2',
       some3: '3',

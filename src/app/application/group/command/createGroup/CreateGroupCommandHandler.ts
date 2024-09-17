@@ -21,24 +21,32 @@ import {
   IInterestRepository,
   InterestRepository,
 } from '@sight/app/domain/interest/IInterestRepository';
+import {
+  ISlackSender,
+  SlackSender,
+} from '@sight/app/domain/adapter/ISlackSender';
 
 import { Message } from '@sight/constant/message';
+import { Point } from '@sight/constant/point';
+import { SlackMessageCategory } from '@sight/app/domain/message/model/constant';
+import { PointGrantService } from '@sight/app/domain/user/service/PointGrantService';
 
 @CommandHandler(CreateGroupCommand)
 export class CreateGroupCommandHandler
   implements ICommandHandler<CreateGroupCommand, CreateGroupCommandResult>
 {
   constructor(
-    @Inject(GroupFactory)
     private readonly groupFactory: GroupFactory,
-    @Inject(GroupMemberFactory)
     private readonly groupMemberFactory: GroupMemberFactory,
+    private readonly pointGrantService: PointGrantService,
     @Inject(GroupRepository)
     private readonly groupRepository: IGroupRepository,
     @Inject(GroupMemberRepository)
     private readonly groupMemberRepository: IGroupMemberRepository,
     @Inject(InterestRepository)
     private readonly interestRepository: IInterestRepository,
+    @Inject(SlackSender)
+    private readonly slackSender: ISlackSender,
   ) {}
 
   @Transactional()
@@ -46,7 +54,7 @@ export class CreateGroupCommandHandler
     command: CreateGroupCommand,
   ): Promise<CreateGroupCommandResult> {
     const {
-      userId,
+      requesterUserId,
       title,
       category,
       grade,
@@ -65,13 +73,13 @@ export class CreateGroupCommandHandler
       category,
       state: GroupState.PROGRESS,
       title,
-      authorUserId: userId,
-      adminUserId: userId,
+      authorUserId: requesterUserId,
+      adminUserId: requesterUserId,
       purpose,
       interestIds,
       technology,
       grade,
-      lastUpdaterUserId: userId,
+      lastUpdaterUserId: requesterUserId,
       repository,
       allowJoin,
     });
@@ -79,10 +87,23 @@ export class CreateGroupCommandHandler
 
     const groupMember = this.groupMemberFactory.create({
       id: this.groupMemberRepository.nextId(),
-      userId,
+      userId: requesterUserId,
       groupId: newGroup.id,
     });
     await this.groupMemberRepository.save(groupMember);
+
+    const message = `${newGroup.title} 그룹을 만들었습니다.`;
+    await this.pointGrantService.grant({
+      targetUserIds: [newGroup.adminUserId],
+      amount: Point.GROUP_CREATED,
+      reason: message,
+    });
+
+    this.slackSender.send({
+      targetUserId: newGroup.adminUserId,
+      category: SlackMessageCategory.GROUP_ACTIVITY,
+      message,
+    });
 
     return new CreateGroupCommandResult(newGroup);
   }

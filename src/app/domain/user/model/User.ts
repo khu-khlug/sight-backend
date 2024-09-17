@@ -1,7 +1,6 @@
 import { UnprocessableEntityException } from '@nestjs/common';
 import { AggregateRoot } from '@nestjs/cqrs';
 
-import { PointGranted } from '@sight/app/domain/user/event/PointGranted';
 import { UserProfileUpdated } from '@sight/app/domain/user/event/UserProfileUpdated';
 import { UserState } from '@sight/app/domain/user/model/constant';
 import { Profile } from '@sight/app/domain/user/model/Profile';
@@ -98,14 +97,9 @@ export class User extends AggregateRoot {
     this._updatedAt = new Date();
   }
 
-  grantPoint(point: number, reason: string): void {
-    if (point === 0) {
-      return;
-    }
-
+  grantPoint(point: number): void {
     this._point += point;
     this._updatedAt = new Date();
-    this.apply(new PointGranted(this, point, reason));
   }
 
   get id(): string {

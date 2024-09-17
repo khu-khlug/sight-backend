@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 
-import { GroupBookmarkCreated } from '@sight/app/domain/group/event/GroupBookmarkCreated';
 import {
   GroupBookmark,
   GroupBookmarkConstructorParams,
@@ -20,7 +19,6 @@ export class GroupBookmarkFactory {
       ...params,
       createdAt: new Date(),
     });
-    newBookmark.apply(new GroupBookmarkCreated(params.groupId, params.userId));
     return newBookmark;
   }
 

@@ -1,4 +1,8 @@
 export const Template = {
+  ENABLE_GROUP_PORTFOLIO: {
+    notification: `<a href="/group/:groupId:"><u>:groupTitle:</u></a> 그룹의 <a href="/folio/:groupId:" target="_blank">포트폴리오</a>가 발행 중입니다.`,
+    point: `<u>:groupTitle:</u> 그룹의 포트폴리오가 발행되었습니다.`,
+  },
   DISABLE_GROUP_PORTFOLIO: {
     notification:
       '<a href="/group/:groupId:"><u>:groupTitle:</u></a> 그룹의 포트폴리오 발행이 중단되었습니다.',

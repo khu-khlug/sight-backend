@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 
-import { GroupCreated } from '@sight/app/domain/group/event/GroupCreated';
 import {
   Group,
   GroupConstructorParams,
@@ -22,7 +21,6 @@ export class GroupFactory {
       createdAt: now,
       updatedAt: now,
     });
-    newGroup.apply(new GroupCreated(newGroup));
     return newGroup;
   }
 

@@ -18,24 +18,21 @@ import {
   GroupRepository,
   IGroupRepository,
 } from '@sight/app/domain/group/IGroupRepository';
-import {
-  IUserRepository,
-  UserRepository,
-} from '@sight/app/domain/user/IUserRepository';
 
 import { Point } from '@sight/constant/point';
+import { PointGrantService } from '@sight/app/domain/user/service/PointGrantService';
 
+// TODO[lery]: 그룹 상태 핸들러가 분리되면 그때 제거하기
 @EventsHandler(GroupStateChanged)
 export class GroupStateChangedHandler
   implements IEventHandler<GroupStateChanged>
 {
   constructor(
+    private readonly pointGrantService: PointGrantService,
     @Inject(GroupRepository)
     private readonly groupRepository: IGroupRepository,
     @Inject(GroupMemberRepository)
     private readonly groupMemberRepository: IGroupMemberRepository,
-    @Inject(UserRepository)
-    private readonly userRepository: IUserRepository,
     @Inject(SlackSender)
     private readonly slackSender: ISlackSender,
   ) {}
@@ -65,13 +62,11 @@ export class GroupStateChangedHandler
     );
 
     const userIds = members.map((m) => m.userId);
-    const users = await this.userRepository.findByIds(userIds);
-    users.forEach((user) => {
-      const point = this.buildPoint(prevState, nextState);
-      const message = `<u>${group.title}</u> ${this.buildMessage(nextState)}`;
-      user.grantPoint(point, message);
+    this.pointGrantService.grant({
+      targetUserIds: userIds,
+      amount: this.buildPoint(prevState, nextState),
+      reason: `<u>${group.title}</u> ${this.buildMessage(nextState)}`,
     });
-    await this.userRepository.save(...users);
   }
 
   private buildMessage(nextState: GroupState): string {

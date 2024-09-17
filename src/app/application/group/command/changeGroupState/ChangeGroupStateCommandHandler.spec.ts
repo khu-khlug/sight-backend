@@ -16,9 +16,9 @@ import {
   IGroupRepository,
 } from '@sight/app/domain/group/IGroupRepository';
 
-import { DomainFixture } from '@sight/__test__/fixtures';
 import { generateEmptyProviders } from '@sight/__test__/util';
 import { Message } from '@sight/constant/message';
+import { GroupFixture } from '@sight/__test__/fixtures/GroupFixture';
 
 describe('ChangeGroupStateCommandHandler', () => {
   let handler: ChangeGroupStateCommandHandler;
@@ -52,7 +52,7 @@ describe('ChangeGroupStateCommandHandler', () => {
     const nextState = GroupState.END_SUCCESS;
 
     beforeEach(() => {
-      group = DomainFixture.generateGroup({
+      group = GroupFixture.raw({
         adminUserId: requesterUserId,
       });
 
@@ -104,13 +104,13 @@ describe('ChangeGroupStateCommandHandler', () => {
       );
     });
 
-    test('그룹을 저장하고 변경된 상태를 반환해야 한다', async () => {
+    test('상태가 변경된 그룹을 반환해야 한다', async () => {
       const command = new ChangeGroupStateCommand(
         { userId: requesterUserId, isManager: false },
         groupId,
         nextState,
       );
-      const expected = new ChangeGroupStateCommandResult(nextState);
+      const expected = new ChangeGroupStateCommandResult(group);
 
       const result = await handler.execute(command);
 

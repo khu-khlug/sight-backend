@@ -1,38 +1,46 @@
 import { Test } from '@nestjs/testing';
 import { advanceTo, clear } from 'jest-date-mock';
 
-import { AddBookmarkCommand } from '@sight/app/application/group/command/addBookmark/AddBookmarkCommand';
-import { RemoveBookmarkCommandHandler } from '@sight/app/application/group/command/removeBookmark/RemoveBookmarkCommandHandler';
-
-import {
-  GroupBookmarkRepository,
-  IGroupBookmarkRepository,
-} from '@sight/app/domain/group/IGroupBookmarkRepository';
+import { RemoveBookmarkCommandHandler } from './RemoveBookmarkCommandHandler';
 import {
   GroupRepository,
   IGroupRepository,
 } from '@sight/app/domain/group/IGroupRepository';
 import {
-  CUSTOMER_SERVICE_GROUP_ID,
-  PRACTICE_GROUP_ID,
-} from '@sight/app/domain/group/model/constant';
-
-import { DomainFixture } from '@sight/__test__/fixtures';
-import { generateEmptyProviders } from '@sight/__test__/util';
+  GroupBookmarkRepository,
+  IGroupBookmarkRepository,
+} from '@sight/app/domain/group/IGroupBookmarkRepository';
+import { SlackSender } from '@sight/app/domain/adapter/ISlackSender';
+import { RemoveBookmarkCommand } from './RemoveBookmarkCommand';
 import { Message } from '@sight/constant/message';
+import { GroupFixture } from '@sight/__test__/fixtures/GroupFixture';
+import { GroupBookmarkFixture } from '@sight/__test__/fixtures/GroupBookmarkFixture';
 
 describe('RemoveBookmarkCommandHandler', () => {
   let handler: RemoveBookmarkCommandHandler;
   let groupRepository: jest.Mocked<IGroupRepository>;
   let groupBookmarkRepository: jest.Mocked<IGroupBookmarkRepository>;
 
-  beforeAll(async () => {
+  beforeAll(() => advanceTo(new Date()));
+
+  beforeEach(async () => {
     advanceTo(new Date());
 
     const testModule = await Test.createTestingModule({
       providers: [
         RemoveBookmarkCommandHandler,
-        ...generateEmptyProviders(GroupRepository, GroupBookmarkRepository),
+        {
+          provide: GroupRepository,
+          useValue: { findById: jest.fn() },
+        },
+        {
+          provide: GroupBookmarkRepository,
+          useValue: { findByGroupIdAndUserId: jest.fn(), remove: jest.fn() },
+        },
+        {
+          provide: SlackSender,
+          useValue: { send: jest.fn() },
+        },
       ],
     }).compile();
 
@@ -41,72 +49,66 @@ describe('RemoveBookmarkCommandHandler', () => {
     groupBookmarkRepository = testModule.get(GroupBookmarkRepository);
   });
 
-  afterAll(() => {
-    clear();
-  });
+  afterEach(() => clear());
 
   describe('execute', () => {
-    const groupId = 'groupId';
-    const userId = 'userId';
+    test('그룹이 존재하지 않으면 예외를 발생시켜야 한다', async () => {
+      const command = new RemoveBookmarkCommand('groupId', 'userId');
 
-    beforeEach(() => {
-      const group = DomainFixture.generateGroup();
-      const groupBookmark = DomainFixture.generateGroupBookmark();
+      groupRepository.findById.mockResolvedValue(null);
 
-      groupRepository.findById = jest.fn().mockResolvedValue(group);
-      groupBookmarkRepository.findByGroupIdAndUserId = jest
-        .fn()
-        .mockResolvedValue(groupBookmark);
-
-      groupBookmarkRepository.remove = jest.fn();
+      await expect(handler.execute(command)).rejects.toThrow(
+        Message.GROUP_NOT_FOUND,
+      );
     });
 
-    test('그룹이 존재하지 않으면 예외가 발생해야 한다', async () => {
-      groupRepository.findById = jest.fn().mockResolvedValue(null);
+    test('대상 그룹이 고객 센터 그룹이라면 예외를 발생시켜야 한다', async () => {
+      const command = new RemoveBookmarkCommand('groupId', 'userId');
+      const group = GroupFixture.customerService();
 
-      await expect(
-        handler.execute(new AddBookmarkCommand(groupId, userId)),
-      ).rejects.toThrowError(Message.GROUP_NOT_FOUND);
+      groupRepository.findById.mockResolvedValue(group);
+
+      await expect(handler.execute(command)).rejects.toThrow(
+        Message.DEFAULT_BOOKMARKED_GROUP,
+      );
     });
 
-    test('고객 센터 그룹이라면 예외가 발생해야 한다', async () => {
-      const customerServiceGroup = DomainFixture.generateGroup({
-        id: CUSTOMER_SERVICE_GROUP_ID,
-      });
-      groupRepository.findById = jest
-        .fn()
-        .mockResolvedValue(customerServiceGroup);
+    test('대상 그룹이 실습 그룹이라면 예외를 발생시켜야 한다', async () => {
+      const command = new RemoveBookmarkCommand('groupId', 'userId');
+      const group = GroupFixture.practice();
 
-      await expect(
-        handler.execute(new AddBookmarkCommand(groupId, userId)),
-      ).rejects.toThrowError(Message.DEFAULT_BOOKMARKED_GROUP);
+      groupRepository.findById.mockResolvedValue(group);
+
+      await expect(handler.execute(command)).rejects.toThrow(
+        Message.DEFAULT_BOOKMARKED_GROUP,
+      );
     });
 
-    test('그룹 활용 실습 그룹이라면 예외가 발생해야 한다', async () => {
-      const practiceGroup = DomainFixture.generateGroup({
-        id: PRACTICE_GROUP_ID,
-      });
-      groupRepository.findById = jest.fn().mockResolvedValue(practiceGroup);
+    test('이미 즐겨 찾는 그룹이 아니라면 즐겨찾기를 제거하지 않아야 한다', async () => {
+      const command = new RemoveBookmarkCommand('groupId', 'userId');
+      const group = GroupFixture.inProgressJoinable();
 
-      await expect(
-        handler.execute(new AddBookmarkCommand(groupId, userId)),
-      ).rejects.toThrowError(Message.DEFAULT_BOOKMARKED_GROUP);
-    });
+      groupRepository.findById.mockResolvedValue(group);
+      groupBookmarkRepository.findByGroupIdAndUserId.mockResolvedValue(null);
 
-    test('아직 그룹을 즐겨찾기하지 않았다면 무시해야 한다', async () => {
-      groupBookmarkRepository.findByGroupIdAndUserId = jest
-        .fn()
-        .mockResolvedValue(null);
-
-      await handler.execute(new AddBookmarkCommand(groupId, userId));
+      await handler.execute(command);
 
       expect(groupBookmarkRepository.remove).not.toBeCalled();
     });
 
-    test('그룹을 즐겨찾기 해제해야 한다', async () => {
-      await handler.execute(new AddBookmarkCommand(groupId, userId));
+    test('그룹 즐겨찾기를 제거해야 한다', async () => {
+      const command = new RemoveBookmarkCommand('groupId', 'userId');
+      const group = GroupFixture.inProgressJoinable();
+      const bookmark = GroupBookmarkFixture.normal();
 
-      expect(groupBookmarkRepository.remove).toBeCalled();
+      groupRepository.findById.mockResolvedValue(group);
+      groupBookmarkRepository.findByGroupIdAndUserId.mockResolvedValue(
+        bookmark,
+      );
+
+      await handler.execute(command);
+
+      expect(groupBookmarkRepository.remove).toBeCalledWith(bookmark);
     });
   });
 });

@@ -1,5 +1,4 @@
 import { AggregateRoot } from '@nestjs/cqrs';
-import { GroupBookmarkRemoved } from '../event/GroupBookmarkRemoved';
 
 export type GroupBookmarkConstructorParams = {
   id: string;
@@ -20,10 +19,6 @@ export class GroupBookmark extends AggregateRoot {
     this._userId = params.userId;
     this._groupId = params.groupId;
     this._createdAt = params.createdAt;
-  }
-
-  remove(): void {
-    this.apply(new GroupBookmarkRemoved(this._id, this._userId));
   }
 
   get id(): string {

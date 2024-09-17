@@ -8,6 +8,7 @@ import {
 import { Transactional } from '@sight/core/persistence/transaction/Transactional';
 
 import { AddBookmarkCommand } from '@sight/app/application/group/command/addBookmark/AddBookmarkCommand';
+import { AddBookmarkCommandResult } from '@sight/app/application/group/command/addBookmark/AddBookmarkCommandResult';
 
 import { GroupBookmarkFactory } from '@sight/app/domain/group/GroupBookmarkFactory';
 import {
@@ -20,6 +21,13 @@ import {
 } from '@sight/app/domain/group/IGroupRepository';
 
 import { Message } from '@sight/constant/message';
+import { Template } from '@sight/constant/template';
+import {
+  ISlackSender,
+  SlackSender,
+} from '@sight/app/domain/adapter/ISlackSender';
+import { SlackMessageCategory } from '@sight/app/domain/message/model/constant';
+import { MessageBuilder } from '@sight/core/message/MessageBuilder';
 
 @CommandHandler(AddBookmarkCommand)
 export class AddBookmarkCommandHandler
@@ -32,10 +40,14 @@ export class AddBookmarkCommandHandler
     private readonly groupBookmarkFactory: GroupBookmarkFactory,
     @Inject(GroupBookmarkRepository)
     private readonly groupBookmarkRepository: IGroupBookmarkRepository,
+    @Inject(SlackSender)
+    private readonly slackSender: ISlackSender,
   ) {}
 
   @Transactional()
-  async execute(command: AddBookmarkCommand): Promise<void> {
+  async execute(
+    command: AddBookmarkCommand,
+  ): Promise<AddBookmarkCommandResult> {
     const { groupId, userId } = command;
 
     const group = await this.groupRepository.findById(groupId);
@@ -53,7 +65,7 @@ export class AddBookmarkCommandHandler
         userId,
       );
     if (prevBookmark) {
-      return;
+      return new AddBookmarkCommandResult(prevBookmark);
     }
 
     const newBookmark = this.groupBookmarkFactory.create({
@@ -62,5 +74,16 @@ export class AddBookmarkCommandHandler
       userId,
     });
     await this.groupBookmarkRepository.save(newBookmark);
+
+    this.slackSender.send({
+      category: SlackMessageCategory.GROUP_ACTIVITY_FOR_ME,
+      targetUserId: userId,
+      message: MessageBuilder.build(Template.ADD_GROUP_BOOKMARK.notification, {
+        groupId,
+        groupTitle: group.title,
+      }),
+    });
+
+    return new AddBookmarkCommandResult(newBookmark);
   }
 }

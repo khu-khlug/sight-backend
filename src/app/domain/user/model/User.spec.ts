@@ -67,4 +67,15 @@ describe('User', () => {
       expect(user.updatedAt).toEqual(now);
     });
   });
+
+  describe('grantPoint', () => {
+    test('포인트를 부여해야 한다', async () => {
+      const user = DomainFixture.generateUser({ point: 100 });
+      const point = 1000;
+
+      user.grantPoint(point);
+
+      expect(user.point).toEqual(1100);
+    });
+  });
 });

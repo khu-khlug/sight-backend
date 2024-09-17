@@ -64,7 +64,7 @@ export class ChangeGroupStateCommandHandler
 
     await this.groupLogger.log(groupId, this.buildMessage(nextState));
 
-    return new ChangeGroupStateCommandResult(nextState);
+    return new ChangeGroupStateCommandResult(group);
   }
 
   private buildMessage(nextState: GroupState): string {
