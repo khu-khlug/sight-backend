@@ -8,7 +8,10 @@ import {
 
 import { Transactional } from '@sight/core/persistence/transaction/Transactional';
 
-import { ModifyGroupCommand } from '@sight/app/application/group/command/modifyGroup/ModifyGroupCommand';
+import {
+  ModifyGroupCommand,
+  ModifyGroupParams,
+} from '@sight/app/application/group/command/modifyGroup/ModifyGroupCommand';
 import { ModifyGroupCommandResult } from '@sight/app/application/group/command/modifyGroup/ModifyGroupCommandResult';
 
 import { Group } from '@sight/app/domain/group/model/Group';
@@ -27,6 +30,32 @@ import {
 } from '@sight/app/domain/interest/IInterestRepository';
 
 import { Message } from '@sight/constant/message';
+import {
+  GroupLogger,
+  IGroupLogger,
+} from '@sight/app/domain/group/IGroupLogger';
+import { isDifferentStringArray } from '@sight/util/isDifferentStringArray';
+
+type UpdatedItem =
+  | 'category'
+  | 'title'
+  | 'purpose'
+  | 'interests'
+  | 'technology'
+  | 'grade'
+  | 'repository'
+  | 'allowJoin';
+
+const updatedItemToKorean: Record<UpdatedItem, string> = {
+  category: '분류',
+  title: '그룹 이름',
+  purpose: '목표',
+  interests: 'IT 분야',
+  technology: '기술',
+  grade: '공개 범위',
+  repository: '저장소',
+  allowJoin: '참여 신청 허용 여부',
+};
 
 @CommandHandler(ModifyGroupCommand)
 export class ModifyGroupCommandHandler
@@ -39,6 +68,8 @@ export class ModifyGroupCommandHandler
     private readonly groupMemberRepository: IGroupMemberRepository,
     @Inject(InterestRepository)
     private readonly interestRepository: IInterestRepository,
+    @Inject(GroupLogger)
+    private readonly groupLogger: IGroupLogger,
   ) {}
 
   @Transactional()
@@ -47,6 +78,7 @@ export class ModifyGroupCommandHandler
   ): Promise<ModifyGroupCommandResult> {
     const { groupId, requesterUserId, params } = command;
     const {
+      category,
       title,
       purpose,
       interestIds,
@@ -54,10 +86,9 @@ export class ModifyGroupCommandHandler
       grade,
       repository,
       allowJoin,
-      category,
     } = params;
 
-    const group = await this.getGroupById(groupId);
+    const group = await this.getGroupOrThrow(groupId);
 
     this.checkGroupAdmin(group, requesterUserId);
     await this.checkGroupMember(group, requesterUserId);
@@ -65,6 +96,12 @@ export class ModifyGroupCommandHandler
     this.checkGroupEditable(group);
     await this.checkInterestExists(interestIds);
 
+    const updatedItems = this.diffUpdatedItem(group, params);
+    if (updatedItems.length === 0) {
+      return new ModifyGroupCommandResult(group);
+    }
+
+    group.updateCategory(category);
     group.updateTitle(title);
     group.updatePurpose(purpose);
     group.updateInterestIds(interestIds);
@@ -72,13 +109,15 @@ export class ModifyGroupCommandHandler
     group.updateGrade(grade);
     group.updateRepository(repository);
     group.updateAllowJoin(allowJoin);
-    group.updateCategory(category);
     await this.groupRepository.save(group);
+
+    const message = this.buildMessage(group, updatedItems);
+    await this.groupLogger.log(groupId, message);
 
     return new ModifyGroupCommandResult(group);
   }
 
-  private async getGroupById(groupId: string): Promise<Group> {
+  private async getGroupOrThrow(groupId: string): Promise<Group> {
     const group = await this.groupRepository.findById(groupId);
     if (!group) {
       throw new NotFoundException(Message.GROUP_NOT_FOUND);
@@ -122,5 +161,39 @@ export class ModifyGroupCommandHandler
     if (uniqueInterestIds.length !== uniqueInterests.length) {
       throw new NotFoundException(Message.SOME_INTERESTS_NOT_FOUND);
     }
+  }
+
+  private diffUpdatedItem(
+    group: Group,
+    params: ModifyGroupParams,
+  ): UpdatedItem[] {
+    const updatedItems: UpdatedItem[] = [];
+
+    if (group.category !== params.category) updatedItems.push('category');
+
+    if (group.title !== params.title) updatedItems.push('title');
+
+    if (group.purpose !== params.purpose) updatedItems.push('purpose');
+
+    if (isDifferentStringArray(group.interestIds, params.interestIds))
+      updatedItems.push('interests');
+
+    if (isDifferentStringArray(group.technology, params.technology))
+      updatedItems.push('technology');
+
+    if (group.grade !== params.grade) updatedItems.push('grade');
+
+    if (group.repository !== params.repository) updatedItems.push('repository');
+
+    if (group.allowJoin !== params.allowJoin) updatedItems.push('allowJoin');
+
+    return updatedItems;
+  }
+
+  private buildMessage(group: Group, updatedItems: UpdatedItem[]): string {
+    const updateItemsString = updatedItems
+      .map((item) => updatedItemToKorean[item])
+      .join(', ');
+    return `${group.title} 그룹의 ${updateItemsString}이(가) 수정되었습니다.`;
   }
 }

@@ -6,8 +6,6 @@ import { CreateGroupCommandHandler } from '@sight/app/application/group/command/
 
 import { GroupFactory } from '@sight/app/domain/group/GroupFactory';
 import { GroupMemberFactory } from '@sight/app/domain/group/GroupMemberFactory';
-import { Group } from '@sight/app/domain/group/model/Group';
-import { GroupMember } from '@sight/app/domain/group/model/GroupMember';
 import {
   GroupMemberRepository,
   IGroupMemberRepository,
@@ -25,37 +23,57 @@ import {
   InterestRepository,
 } from '@sight/app/domain/interest/IInterestRepository';
 
-import { DomainFixture } from '@sight/__test__/fixtures';
-import { generateEmptyProviders } from '@sight/__test__/util';
 import { Message } from '@sight/constant/message';
+import { SlackSender } from '@sight/app/domain/adapter/ISlackSender';
+import { GroupFixture } from '@sight/__test__/fixtures/GroupFixture';
+import { DomainFixture } from '@sight/__test__/fixtures';
+import { PointGrantService } from '@sight/app/domain/user/service/PointGrantService';
+import { Point } from '@sight/constant/point';
 
 describe('CreateGroupCommandHandler', () => {
   let handler: CreateGroupCommandHandler;
-  let groupFactory: jest.Mocked<GroupFactory>;
-  let groupMemberFactory: jest.Mocked<GroupMemberFactory>;
+  let groupFactory: GroupFactory;
+  let groupMemberFactory: GroupMemberFactory;
+  let pointGrantService: jest.Mocked<PointGrantService>;
   let groupRepository: jest.Mocked<IGroupRepository>;
   let groupMemberRepository: jest.Mocked<IGroupMemberRepository>;
   let interestRepository: jest.Mocked<IInterestRepository>;
 
-  beforeAll(async () => {
-    advanceTo(new Date());
+  beforeAll(() => advanceTo(new Date()));
 
+  beforeEach(async () => {
     const testModule = await Test.createTestingModule({
       providers: [
         CreateGroupCommandHandler,
-        ...generateEmptyProviders(
-          GroupFactory,
-          GroupMemberFactory,
-          GroupRepository,
-          GroupMemberRepository,
-          InterestRepository,
-        ),
+        GroupFactory,
+        GroupMemberFactory,
+        {
+          provide: PointGrantService,
+          useValue: { grant: jest.fn() },
+        },
+        {
+          provide: GroupRepository,
+          useValue: { nextId: jest.fn(), save: jest.fn() },
+        },
+        {
+          provide: GroupMemberRepository,
+          useValue: { nextId: jest.fn(), save: jest.fn() },
+        },
+        {
+          provide: InterestRepository,
+          useValue: { findByIds: jest.fn() },
+        },
+        {
+          provide: SlackSender,
+          useValue: { send: jest.fn() },
+        },
       ],
     }).compile();
 
     handler = testModule.get(CreateGroupCommandHandler);
     groupFactory = testModule.get(GroupFactory);
     groupMemberFactory = testModule.get(GroupMemberFactory);
+    pointGrantService = testModule.get(PointGrantService);
     groupRepository = testModule.get(GroupRepository);
     groupMemberRepository = testModule.get(GroupMemberRepository);
     interestRepository = testModule.get(InterestRepository);
@@ -66,76 +84,100 @@ describe('CreateGroupCommandHandler', () => {
   });
 
   describe('execute', () => {
-    let command: CreateGroupCommand;
-    let newGroup: Group;
-    let groupMember: GroupMember;
-
-    const userId = 'userId';
-    const title = 'title';
-    const category = GroupCategory.DOCUMENTATION;
-    const grade = GroupAccessGrade.MEMBER;
-    const interestIds = ['interestId'];
-    const purpose = 'purpose';
-    const technology = ['github', 'typescript'];
-    const allowJoin = true;
-    const repository = 'https://repo.sito.ry';
-
-    beforeEach(() => {
-      command = new CreateGroupCommand(
-        userId,
-        title,
-        category,
-        grade,
-        interestIds,
-        purpose,
-        technology,
-        allowJoin,
-        repository,
-      );
-      newGroup = DomainFixture.generateGroup();
-      groupMember = DomainFixture.generateGroupMember({
-        groupId: newGroup.id,
-        userId: userId,
-      });
-
-      const interests = interestIds.map((interestId) =>
-        DomainFixture.generateInterest({ id: interestId }),
-      );
-
-      interestRepository.findByIds = jest.fn().mockResolvedValue(interests);
-      groupFactory.create = jest.fn().mockReturnValue(newGroup);
-      groupRepository.nextId = jest.fn().mockReturnValue(newGroup.id);
-      groupMemberFactory.create = jest.fn().mockReturnValue(groupMember);
-      groupMemberRepository.nextId = jest.fn().mockReturnValue(groupMember.id);
-
-      groupRepository.save = jest.fn();
-      groupMemberRepository.save = jest.fn();
-    });
-
     test('존재하지 않는 관심사일 때 예외가 발생해야 한다', async () => {
-      interestRepository.findByIds = jest.fn().mockResolvedValue([]);
+      interestRepository.findByIds.mockResolvedValue([]);
 
+      const command = new CreateGroupCommand({
+        requesterUserId: 'userId',
+        title: 'title',
+        category: GroupCategory.DOCUMENTATION,
+        grade: GroupAccessGrade.MEMBER,
+        interestIds: ['not-exist-interest-id'],
+        purpose: 'purpose',
+        technology: [],
+        allowJoin: true,
+        repository: 'https://repo.sitory',
+      });
       await expect(handler.execute(command)).rejects.toThrowError(
         Message.SOME_INTERESTS_NOT_FOUND,
       );
     });
 
     test('새로운 그룹을 생성한 뒤 저장해야 한다', async () => {
+      const newGroup = GroupFixture.inProgressJoinable();
+
+      groupRepository.nextId.mockReturnValue('newGroupId');
+      interestRepository.findByIds.mockResolvedValue([]);
+      jest.spyOn(groupFactory, 'create').mockReturnValue(newGroup);
+
+      const command = new CreateGroupCommand({
+        requesterUserId: 'userId',
+        title: 'title',
+        category: GroupCategory.DOCUMENTATION,
+        grade: GroupAccessGrade.MEMBER,
+        interestIds: [],
+        purpose: 'purpose',
+        technology: [],
+        allowJoin: true,
+        repository: 'https://repo.sitory',
+      });
       await handler.execute(command);
 
-      expect(groupFactory.create).toBeCalledTimes(1);
-
-      expect(groupRepository.save).toBeCalledTimes(1);
       expect(groupRepository.save).toBeCalledWith(newGroup);
     });
 
     test('새로운 그룹 멤버 정보를 생성한 뒤 저장해야 한다', async () => {
+      const newGroupMember = DomainFixture.generateGroupMember();
+
+      groupRepository.nextId.mockReturnValue('newGroupId');
+      interestRepository.findByIds.mockResolvedValue([]);
+      jest.spyOn(groupMemberFactory, 'create').mockReturnValue(newGroupMember);
+
+      const command = new CreateGroupCommand({
+        requesterUserId: 'userId',
+        title: 'title',
+        category: GroupCategory.DOCUMENTATION,
+        grade: GroupAccessGrade.MEMBER,
+        interestIds: [],
+        purpose: 'purpose',
+        technology: [],
+        allowJoin: true,
+        repository: 'https://repo.sitory',
+      });
       await handler.execute(command);
 
-      expect(groupMemberFactory.create).toBeCalledTimes(1);
+      expect(groupMemberFactory.create).toBeCalled();
 
-      expect(groupMemberRepository.save).toBeCalledTimes(1);
-      expect(groupMemberRepository.save).toBeCalledWith(groupMember);
+      expect(groupMemberRepository.save).toBeCalled();
+      expect(groupMemberRepository.save).toBeCalledWith(newGroupMember);
+    });
+
+    test('그룹장에게 그룹 생성 포인트를 부여해야 한다', async () => {
+      const newGroup = GroupFixture.inProgressJoinable();
+
+      groupRepository.nextId.mockReturnValue('newGroupId');
+      interestRepository.findByIds.mockResolvedValue([]);
+      jest.spyOn(groupFactory, 'create').mockReturnValue(newGroup);
+
+      const command = new CreateGroupCommand({
+        requesterUserId: 'userId',
+        title: 'title',
+        category: GroupCategory.DOCUMENTATION,
+        grade: GroupAccessGrade.MEMBER,
+        interestIds: [],
+        purpose: 'purpose',
+        technology: [],
+        allowJoin: true,
+        repository: 'https://repo.sitory',
+      });
+      await handler.execute(command);
+
+      expect(pointGrantService.grant).toBeCalledWith(
+        expect.objectContaining({
+          targetUserIds: [newGroup.adminUserId],
+          amount: Point.GROUP_CREATED,
+        }),
+      );
     });
   });
 });

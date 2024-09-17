@@ -19,6 +19,13 @@ import {
 } from '@sight/app/domain/group/IGroupRepository';
 
 import { Message } from '@sight/constant/message';
+import {
+  ISlackSender,
+  SlackSender,
+} from '@sight/app/domain/adapter/ISlackSender';
+import { SlackMessageCategory } from '@sight/app/domain/message/model/constant';
+import { Template } from '@sight/constant/template';
+import { MessageBuilder } from '@sight/core/message/MessageBuilder';
 
 @CommandHandler(RemoveBookmarkCommand)
 export class RemoveBookmarkCommandHandler
@@ -29,6 +36,8 @@ export class RemoveBookmarkCommandHandler
     private readonly groupRepository: IGroupRepository,
     @Inject(GroupBookmarkRepository)
     private readonly groupBookmarkRepository: IGroupBookmarkRepository,
+    @Inject(SlackSender)
+    private readonly slackSender: ISlackSender,
   ) {}
 
   @Transactional()
@@ -52,8 +61,15 @@ export class RemoveBookmarkCommandHandler
     if (!prevBookmark) {
       return;
     }
-
-    prevBookmark.remove();
     await this.groupBookmarkRepository.remove(prevBookmark);
+
+    this.slackSender.send({
+      category: SlackMessageCategory.GROUP_ACTIVITY_FOR_ME,
+      targetUserId: userId,
+      message: MessageBuilder.build(
+        Template.REMOVE_GROUP_BOOKMARK.notification,
+        { groupId, groupTitle: group.title },
+      ),
+    });
   }
 }
