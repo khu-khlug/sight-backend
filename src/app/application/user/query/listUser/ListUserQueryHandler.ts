@@ -4,9 +4,9 @@ import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import {
   IUserQuery,
   UserQuery,
-} from '@sight/app/application/user/query/IUserQuery';
-import { ListUserQuery } from '@sight/app/application/user/query/listUser/ListUserQuery';
-import { ListUserQueryResult } from '@sight/app/application/user/query/listUser/ListUserQueryResult';
+} from '@khlug/app/application/user/query/IUserQuery';
+import { ListUserQuery } from '@khlug/app/application/user/query/listUser/ListUserQuery';
+import { ListUserQueryResult } from '@khlug/app/application/user/query/listUser/ListUserQueryResult';
 
 @Injectable()
 @QueryHandler(ListUserQuery)

@@ -1,38 +1,38 @@
 import { Test } from '@nestjs/testing';
 import { advanceTo, clear } from 'jest-date-mock';
 
-import { UpdateUserCommand } from '@sight/app/application/user/command/updateUser/UpdateUserCommand';
-import { UpdateUserCommandHandler } from '@sight/app/application/user/command/updateUser/UpdateUserCommandHandler';
-import { UpdateUserCommandResult } from '@sight/app/application/user/command/updateUser/UpdateUserCommandResult';
+import { UpdateUserCommand } from '@khlug/app/application/user/command/updateUser/UpdateUserCommand';
+import { UpdateUserCommandHandler } from '@khlug/app/application/user/command/updateUser/UpdateUserCommandHandler';
+import { UpdateUserCommandResult } from '@khlug/app/application/user/command/updateUser/UpdateUserCommandResult';
 
-import { Interest } from '@sight/app/domain/interest/model/Interest';
-import { UserInterestFactory } from '@sight/app/domain/interest/UserInterestFactory';
-import { UserState } from '@sight/app/domain/user/model/constant';
-import { User } from '@sight/app/domain/user/model/User';
 import {
   ISlackSender,
   SlackSender,
-} from '@sight/app/domain/adapter/ISlackSender';
+} from '@khlug/app/domain/adapter/ISlackSender';
 import {
   IInterestRepository,
   InterestRepository,
-} from '@sight/app/domain/interest/IInterestRepository';
+} from '@khlug/app/domain/interest/IInterestRepository';
 import {
   IUserInterestRepository,
   UserInterestRepository,
-} from '@sight/app/domain/interest/IUserInterestRepository';
+} from '@khlug/app/domain/interest/IUserInterestRepository';
+import { Interest } from '@khlug/app/domain/interest/model/Interest';
+import { UserInterestFactory } from '@khlug/app/domain/interest/UserInterestFactory';
 import {
   IUserRepository,
   UserRepository,
-} from '@sight/app/domain/user/IUserRepository';
+} from '@khlug/app/domain/user/IUserRepository';
+import { UserState } from '@khlug/app/domain/user/model/constant';
+import { User } from '@khlug/app/domain/user/model/User';
 
-import { Message } from '@sight/constant/message';
 import {
   generateInterest,
   generateUser,
-} from '@sight/__test__/fixtures/domain';
+} from '@khlug/__test__/fixtures/domain';
+import { Message } from '@khlug/constant/message';
 
-jest.mock('@sight/core/persistence/transaction/Transactional', () => ({
+jest.mock('@khlug/core/persistence/transaction/Transactional', () => ({
   Transactional: () => () => {},
 }));
 

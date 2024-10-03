@@ -1,27 +1,27 @@
 import { Inject, NotFoundException } from '@nestjs/common';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 
-import { Transactional } from '@sight/core/persistence/transaction/Transactional';
+import { Transactional } from '@khlug/core/persistence/transaction/Transactional';
 
-import { UpdateUserCommand } from '@sight/app/application/user/command/updateUser/UpdateUserCommand';
-import { UpdateUserCommandResult } from '@sight/app/application/user/command/updateUser/UpdateUserCommandResult';
+import { UpdateUserCommand } from '@khlug/app/application/user/command/updateUser/UpdateUserCommand';
+import { UpdateUserCommandResult } from '@khlug/app/application/user/command/updateUser/UpdateUserCommandResult';
 
-import { UserInterest } from '@sight/app/domain/interest/model/UserInterest';
-import { UserInterestFactory } from '@sight/app/domain/interest/UserInterestFactory';
 import {
   IInterestRepository,
   InterestRepository,
-} from '@sight/app/domain/interest/IInterestRepository';
+} from '@khlug/app/domain/interest/IInterestRepository';
 import {
   IUserInterestRepository,
   UserInterestRepository,
-} from '@sight/app/domain/interest/IUserInterestRepository';
+} from '@khlug/app/domain/interest/IUserInterestRepository';
+import { UserInterest } from '@khlug/app/domain/interest/model/UserInterest';
+import { UserInterestFactory } from '@khlug/app/domain/interest/UserInterestFactory';
 import {
   IUserRepository,
   UserRepository,
-} from '@sight/app/domain/user/IUserRepository';
+} from '@khlug/app/domain/user/IUserRepository';
 
-import { Message } from '@sight/constant/message';
+import { Message } from '@khlug/constant/message';
 
 @CommandHandler(UpdateUserCommand)
 export class UpdateUserCommandHandler

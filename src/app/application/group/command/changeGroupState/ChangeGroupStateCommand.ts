@@ -1,4 +1,4 @@
-import { GroupState } from '@sight/app/domain/group/model/constant';
+import { GroupState } from '@khlug/app/domain/group/model/constant';
 
 type ChangeGroupStateRequester = {
   userId: string;

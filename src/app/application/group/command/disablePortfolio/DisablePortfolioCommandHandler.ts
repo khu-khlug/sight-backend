@@ -1,39 +1,39 @@
-import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import {
   ForbiddenException,
   Inject,
   NotFoundException,
   UnprocessableEntityException,
 } from '@nestjs/common';
+import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 
-import { Transactional } from '@sight/core/persistence/transaction/Transactional';
+import { MessageBuilder } from '@khlug/core/message/MessageBuilder';
+import { Transactional } from '@khlug/core/persistence/transaction/Transactional';
 
-import { DisablePortfolioCommand } from '@sight/app/application/group/command/disablePortfolio/DisablePortfolioCommand';
+import { DisablePortfolioCommand } from '@khlug/app/application/group/command/disablePortfolio/DisablePortfolioCommand';
 
 import {
-  GroupRepository,
-  IGroupRepository,
-} from '@sight/app/domain/group/IGroupRepository';
-
-import { Message } from '@sight/constant/message';
-import {
-  SlackSender,
   ISlackSender,
-} from '@sight/app/domain/adapter/ISlackSender';
+  SlackSender,
+} from '@khlug/app/domain/adapter/ISlackSender';
 import {
   GroupLogger,
   IGroupLogger,
-} from '@sight/app/domain/group/IGroupLogger';
+} from '@khlug/app/domain/group/IGroupLogger';
 import {
   GroupMemberRepository,
   IGroupMemberRepository,
-} from '@sight/app/domain/group/IGroupMemberRepository';
-import { Group } from '@sight/app/domain/group/model/Group';
-import { Template } from '@sight/constant/template';
-import { SlackMessageCategory } from '@sight/app/domain/message/model/constant';
-import { Point } from '@sight/constant/point';
-import { PointGrantService } from '@sight/app/domain/user/service/PointGrantService';
-import { MessageBuilder } from '@sight/core/message/MessageBuilder';
+} from '@khlug/app/domain/group/IGroupMemberRepository';
+import {
+  GroupRepository,
+  IGroupRepository,
+} from '@khlug/app/domain/group/IGroupRepository';
+import { Group } from '@khlug/app/domain/group/model/Group';
+import { SlackMessageCategory } from '@khlug/app/domain/message/model/constant';
+import { PointGrantService } from '@khlug/app/domain/user/service/PointGrantService';
+
+import { Message } from '@khlug/constant/message';
+import { Point } from '@khlug/constant/point';
+import { Template } from '@khlug/constant/template';
 
 @CommandHandler(DisablePortfolioCommand)
 export class DisablePortfolioCommandHandler

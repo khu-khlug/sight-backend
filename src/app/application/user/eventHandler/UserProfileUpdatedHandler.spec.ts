@@ -1,16 +1,16 @@
 import { Test } from '@nestjs/testing';
 import { advanceTo, clear } from 'jest-date-mock';
 
-import { UserProfileUpdatedHandler } from '@sight/app/application/user/eventHandler/UserProfileUpdatedHandler';
+import { UserProfileUpdatedHandler } from '@khlug/app/application/user/eventHandler/UserProfileUpdatedHandler';
 
-import { UserProfileUpdated } from '@sight/app/domain/user/event/UserProfileUpdated';
-import { User } from '@sight/app/domain/user/model/User';
 import {
   ISlackSender,
   SlackSender,
-} from '@sight/app/domain/adapter/ISlackSender';
+} from '@khlug/app/domain/adapter/ISlackSender';
+import { UserProfileUpdated } from '@khlug/app/domain/user/event/UserProfileUpdated';
+import { User } from '@khlug/app/domain/user/model/User';
 
-import { generateUser } from '@sight/__test__/fixtures/domain';
+import { generateUser } from '@khlug/__test__/fixtures/domain';
 
 describe('UserProfileUpdatedHandler', () => {
   let handler: UserProfileUpdatedHandler;

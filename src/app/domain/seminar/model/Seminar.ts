@@ -3,7 +3,7 @@ import { AggregateRoot } from '@nestjs/cqrs';
 import {
   SeminarSemester,
   SeminarState,
-} from '@sight/app/domain/seminar/model/constant';
+} from '@khlug/app/domain/seminar/model/constant';
 
 export type SeminarConstructorParams = {
   id: string;

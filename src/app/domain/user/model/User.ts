@@ -1,11 +1,11 @@
 import { UnprocessableEntityException } from '@nestjs/common';
 import { AggregateRoot } from '@nestjs/cqrs';
 
-import { UserProfileUpdated } from '@sight/app/domain/user/event/UserProfileUpdated';
-import { UserState } from '@sight/app/domain/user/model/constant';
-import { Profile } from '@sight/app/domain/user/model/Profile';
+import { UserProfileUpdated } from '@khlug/app/domain/user/event/UserProfileUpdated';
+import { UserState } from '@khlug/app/domain/user/model/constant';
+import { Profile } from '@khlug/app/domain/user/model/Profile';
 
-import { Message } from '@sight/constant/message';
+import { Message } from '@khlug/constant/message';
 
 export type UserConstructorParams = {
   id: string;

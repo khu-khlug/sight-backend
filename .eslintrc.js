@@ -5,7 +5,7 @@ module.exports = {
     tsconfigRootDir: __dirname,
     sourceType: 'module',
   },
-  plugins: ['@typescript-eslint/eslint-plugin'],
+  plugins: ['@typescript-eslint/eslint-plugin', 'simple-import-sort'],
   extends: [
     'plugin:@typescript-eslint/recommended',
     'plugin:prettier/recommended',
@@ -27,5 +27,24 @@ module.exports = {
         endOfLine: 'auto',
       },
     ],
+    'simple-import-sort/imports': [
+      'error',
+      {
+        groups: [
+          ['^\\u0000'],
+          ['^node:'],
+          ['^@?\\w'],
+          ['^@khlug/core'],
+          ['^@khlug/\\w+/infra'],
+          ['^@khlug/\\w+/interface'],
+          ['^@khlug/\\w+/application'],
+          ['^@khlug/\\w+/domain'],
+          ['^@khlug'],
+          ['^'],
+          ['^\\.'],
+        ],
+      },
+    ],
+    'simple-import-sort/exports': 'error',
   },
 };

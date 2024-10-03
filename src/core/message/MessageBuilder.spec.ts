@@ -1,6 +1,6 @@
 import { advanceTo, clear } from 'jest-date-mock';
 
-import { MessageBuilder } from '@sight/core/message/MessageBuilder';
+import { MessageBuilder } from '@khlug/core/message/MessageBuilder';
 
 describe('MessageBuilder', () => {
   beforeEach(() => advanceTo(new Date()));

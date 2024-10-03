@@ -1,4 +1,4 @@
-import { isDifferentStringArray } from '@sight/util/isDifferentStringArray';
+import { isDifferentStringArray } from '@khlug/util/isDifferentStringArray';
 
 describe('isDifferentStringArray', () => {
   test('같은 항목, 같은 순서를 갖는 두 배열에 대해 false를 반환해야 한다', () => {

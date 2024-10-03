@@ -4,9 +4,9 @@ import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import {
   GroupQuery,
   IGroupQuery,
-} from '@sight/app/application/group/query/IGroupQuery';
-import { ListGroupMemberQuery } from '@sight/app/application/group/query/listGroupMember/ListGroupMemberQuery';
-import { ListGroupMemberQueryResult } from '@sight/app/application/group/query/listGroupMember/ListGroupMemberQueryResult';
+} from '@khlug/app/application/group/query/IGroupQuery';
+import { ListGroupMemberQuery } from '@khlug/app/application/group/query/listGroupMember/ListGroupMemberQuery';
+import { ListGroupMemberQueryResult } from '@khlug/app/application/group/query/listGroupMember/ListGroupMemberQueryResult';
 
 @QueryHandler(ListGroupMemberQuery)
 export class ListGroupMemberQueryHandler

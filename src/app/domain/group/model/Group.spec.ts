@@ -1,9 +1,9 @@
 import { advanceTo, clear } from 'jest-date-mock';
 
-import { GroupState } from '@sight/app/domain/group/model/constant';
+import { GroupState } from '@khlug/app/domain/group/model/constant';
 
-import { Message } from '@sight/constant/message';
-import { GroupFixture } from '@sight/__test__/fixtures/GroupFixture';
+import { GroupFixture } from '@khlug/__test__/fixtures/GroupFixture';
+import { Message } from '@khlug/constant/message';
 
 describe('Group', () => {
   beforeAll(() => {

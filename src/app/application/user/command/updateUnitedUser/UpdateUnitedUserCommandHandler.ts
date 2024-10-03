@@ -1,17 +1,17 @@
 import { Inject, NotFoundException } from '@nestjs/common';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 
-import { Transactional } from '@sight/core/persistence/transaction/Transactional';
+import { Transactional } from '@khlug/core/persistence/transaction/Transactional';
 
-import { UpdateUnitedUserCommand } from '@sight/app/application/user/command/updateUnitedUser/UpdateUnitedUserCommand';
-import { UpdateUnitedUserCommandResult } from '@sight/app/application/user/command/updateUnitedUser/UpdateUnitedUserCommandResult';
+import { UpdateUnitedUserCommand } from '@khlug/app/application/user/command/updateUnitedUser/UpdateUnitedUserCommand';
+import { UpdateUnitedUserCommandResult } from '@khlug/app/application/user/command/updateUnitedUser/UpdateUnitedUserCommandResult';
 
 import {
   IUserRepository,
   UserRepository,
-} from '@sight/app/domain/user/IUserRepository';
+} from '@khlug/app/domain/user/IUserRepository';
 
-import { Message } from '@sight/constant/message';
+import { Message } from '@khlug/constant/message';
 
 @CommandHandler(UpdateUnitedUserCommand)
 export class UpdateUnitedUserCommandHandler

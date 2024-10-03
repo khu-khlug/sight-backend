@@ -1,9 +1,11 @@
 import { ICommand } from '@nestjs/cqrs';
+
 import {
   GroupAccessGrade,
   GroupCategory,
-} from '@sight/app/domain/group/model/constant';
-import { Typeof } from '@sight/util/types';
+} from '@khlug/app/domain/group/model/constant';
+
+import { Typeof } from '@khlug/util/types';
 
 export class CreateGroupCommand implements ICommand {
   readonly requesterUserId: string;

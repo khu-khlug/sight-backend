@@ -13,9 +13,9 @@
 //   PrimaryKey,
 // } from '@mikro-orm/core';
 
-// import { TRANSACTIONAL_ENTITY_MANAGER } from '@sight/core/persistence/transaction/constant';
-// import { Transactional } from '@sight/core/persistence/transaction/Transactional';
-// import { TransactionalDecorator } from '@sight/core/persistence/transaction/TransactionalDecorator';
+// import { TRANSACTIONAL_ENTITY_MANAGER } from '@khlug/core/persistence/transaction/constant';
+// import { Transactional } from '@khlug/core/persistence/transaction/Transactional';
+// import { TransactionalDecorator } from '@khlug/core/persistence/transaction/TransactionalDecorator';
 
 // @Entity({ tableName: 'Mock' })
 // class MockEntity {

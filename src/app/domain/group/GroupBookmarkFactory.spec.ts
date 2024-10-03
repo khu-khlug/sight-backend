@@ -1,8 +1,8 @@
 import { Test } from '@nestjs/testing';
 import { advanceTo, clear } from 'jest-date-mock';
 
-import { GroupBookmarkFactory } from '@sight/app/domain/group/GroupBookmarkFactory';
-import { GroupBookmark } from '@sight/app/domain/group/model/GroupBookmark';
+import { GroupBookmarkFactory } from '@khlug/app/domain/group/GroupBookmarkFactory';
+import { GroupBookmark } from '@khlug/app/domain/group/model/GroupBookmark';
 
 describe('GroupBookmarkFactory', () => {
   let groupBookmarkFactory: GroupBookmarkFactory;

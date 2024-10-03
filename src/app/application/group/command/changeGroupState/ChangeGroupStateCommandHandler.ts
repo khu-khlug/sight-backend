@@ -1,27 +1,27 @@
-import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import {
   ForbiddenException,
   Inject,
   NotFoundException,
   UnprocessableEntityException,
 } from '@nestjs/common';
+import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 
-import { Transactional } from '@sight/core/persistence/transaction/Transactional';
+import { Transactional } from '@khlug/core/persistence/transaction/Transactional';
 
-import { ChangeGroupStateCommand } from '@sight/app/application/group/command/changeGroupState/ChangeGroupStateCommand';
-import { ChangeGroupStateCommandResult } from '@sight/app/application/group/command/changeGroupState/ChangeGroupStateCommandResult';
+import { ChangeGroupStateCommand } from '@khlug/app/application/group/command/changeGroupState/ChangeGroupStateCommand';
+import { ChangeGroupStateCommandResult } from '@khlug/app/application/group/command/changeGroupState/ChangeGroupStateCommandResult';
 
-import { GroupState } from '@sight/app/domain/group/model/constant';
 import {
   GroupLogger,
   IGroupLogger,
-} from '@sight/app/domain/group/IGroupLogger';
+} from '@khlug/app/domain/group/IGroupLogger';
 import {
   GroupRepository,
   IGroupRepository,
-} from '@sight/app/domain/group/IGroupRepository';
+} from '@khlug/app/domain/group/IGroupRepository';
+import { GroupState } from '@khlug/app/domain/group/model/constant';
 
-import { Message } from '@sight/constant/message';
+import { Message } from '@khlug/constant/message';
 
 @CommandHandler(ChangeGroupStateCommand)
 export class ChangeGroupStateCommandHandler

@@ -1,39 +1,39 @@
-import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import {
   ForbiddenException,
   Inject,
   NotFoundException,
   UnprocessableEntityException,
 } from '@nestjs/common';
+import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 
-import { Transactional } from '@sight/core/persistence/transaction/Transactional';
+import { MessageBuilder } from '@khlug/core/message/MessageBuilder';
+import { Transactional } from '@khlug/core/persistence/transaction/Transactional';
 
-import { EnablePortfolioCommand } from '@sight/app/application/group/command/enablePortfolio/EnablePortfolioCommand';
+import { EnablePortfolioCommand } from '@khlug/app/application/group/command/enablePortfolio/EnablePortfolioCommand';
 
-import {
-  GroupRepository,
-  IGroupRepository,
-} from '@sight/app/domain/group/IGroupRepository';
-
-import { Message } from '@sight/constant/message';
-import { Group } from '@sight/app/domain/group/model/Group';
-import { Template } from '@sight/constant/template';
-import {
-  GroupMemberRepository,
-  IGroupMemberRepository,
-} from '@sight/app/domain/group/IGroupMemberRepository';
-import {
-  GroupLogger,
-  IGroupLogger,
-} from '@sight/app/domain/group/IGroupLogger';
 import {
   ISlackSender,
   SlackSender,
-} from '@sight/app/domain/adapter/ISlackSender';
-import { MessageBuilder } from '@sight/core/message/MessageBuilder';
-import { PointGrantService } from '@sight/app/domain/user/service/PointGrantService';
-import { Point } from '@sight/constant/point';
-import { SlackMessageCategory } from '@sight/app/domain/message/model/constant';
+} from '@khlug/app/domain/adapter/ISlackSender';
+import {
+  GroupLogger,
+  IGroupLogger,
+} from '@khlug/app/domain/group/IGroupLogger';
+import {
+  GroupMemberRepository,
+  IGroupMemberRepository,
+} from '@khlug/app/domain/group/IGroupMemberRepository';
+import {
+  GroupRepository,
+  IGroupRepository,
+} from '@khlug/app/domain/group/IGroupRepository';
+import { Group } from '@khlug/app/domain/group/model/Group';
+import { SlackMessageCategory } from '@khlug/app/domain/message/model/constant';
+import { PointGrantService } from '@khlug/app/domain/user/service/PointGrantService';
+
+import { Message } from '@khlug/constant/message';
+import { Point } from '@khlug/constant/point';
+import { Template } from '@khlug/constant/template';
 
 @CommandHandler(EnablePortfolioCommand)
 export class EnablePortfolioCommandHandler

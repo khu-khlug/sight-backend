@@ -4,13 +4,13 @@ import { advanceTo, clear } from 'jest-date-mock';
 import {
   GroupQuery,
   IGroupQuery,
-} from '@sight/app/application/group/query/IGroupQuery';
-import { ListGroupMemberQuery } from '@sight/app/application/group/query/listGroupMember/ListGroupMemberQuery';
-import { ListGroupMemberQueryHandler } from '@sight/app/application/group/query/listGroupMember/ListGroupMemberQueryHandler';
-import { ListGroupMemberQueryResult } from '@sight/app/application/group/query/listGroupMember/ListGroupMemberQueryResult';
-import { GroupMemberListView } from '@sight/app/application/group/query/view/GroupMemberListView';
+} from '@khlug/app/application/group/query/IGroupQuery';
+import { ListGroupMemberQuery } from '@khlug/app/application/group/query/listGroupMember/ListGroupMemberQuery';
+import { ListGroupMemberQueryHandler } from '@khlug/app/application/group/query/listGroupMember/ListGroupMemberQueryHandler';
+import { ListGroupMemberQueryResult } from '@khlug/app/application/group/query/listGroupMember/ListGroupMemberQueryResult';
+import { GroupMemberListView } from '@khlug/app/application/group/query/view/GroupMemberListView';
 
-import { ViewFixture } from '@sight/__test__/fixtures';
+import { ViewFixture } from '@khlug/__test__/fixtures';
 
 describe('ListGroupMemberQueryHandler', () => {
   let handler: ListGroupMemberQueryHandler;

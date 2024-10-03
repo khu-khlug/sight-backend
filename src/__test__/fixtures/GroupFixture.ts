@@ -1,16 +1,16 @@
 import { faker } from '@faker-js/faker';
+
 import {
   CUSTOMER_SERVICE_GROUP_ID,
   GroupAccessGrade,
   GroupCategory,
   GroupState,
   PRACTICE_GROUP_ID,
-} from '@sight/app/domain/group/model/constant';
-
+} from '@khlug/app/domain/group/model/constant';
 import {
   Group,
   GroupConstructorParams,
-} from '@sight/app/domain/group/model/Group';
+} from '@khlug/app/domain/group/model/Group';
 
 function generator(params: Partial<GroupConstructorParams> = {}): Group {
   return new Group({

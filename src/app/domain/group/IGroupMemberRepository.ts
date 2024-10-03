@@ -1,6 +1,6 @@
-import { IGenericRepository } from '@sight/core/persistence/IGenericRepository';
+import { IGenericRepository } from '@khlug/core/persistence/IGenericRepository';
 
-import { GroupMember } from '@sight/app/domain/group/model/GroupMember';
+import { GroupMember } from '@khlug/app/domain/group/model/GroupMember';
 
 export const GroupMemberRepository = Symbol('GroupMemberRepository');
 

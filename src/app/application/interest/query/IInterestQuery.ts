@@ -1,4 +1,4 @@
-import { InterestListView } from '@sight/app/application/interest/query/view/InterestListView';
+import { InterestListView } from '@khlug/app/application/interest/query/view/InterestListView';
 
 export const InterestQuery = Symbol('InterestQuery');
 

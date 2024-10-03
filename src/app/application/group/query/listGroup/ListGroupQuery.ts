@@ -1,6 +1,6 @@
 import { IQuery } from '@nestjs/cqrs';
 
-import { ToUnion } from '@sight/util/types';
+import { ToUnion } from '@khlug/util/types';
 
 export const GroupListQueryType = {
   MY: 'MY',

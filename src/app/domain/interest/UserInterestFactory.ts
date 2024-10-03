@@ -3,7 +3,7 @@ import { Injectable } from '@nestjs/common';
 import {
   UserInterest,
   UserInterestConstructorParams,
-} from '@sight/app/domain/interest/model/UserInterest';
+} from '@khlug/app/domain/interest/model/UserInterest';
 
 type UserInterestCreateParams = Omit<
   UserInterestConstructorParams,

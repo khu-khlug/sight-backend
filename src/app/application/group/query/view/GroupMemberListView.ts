@@ -1,4 +1,4 @@
-import { GroupMemberView } from '@sight/app/application/group/query/view/GroupMemberView';
+import { GroupMemberView } from '@khlug/app/application/group/query/view/GroupMemberView';
 
 export interface GroupMemberListView {
   count: number;

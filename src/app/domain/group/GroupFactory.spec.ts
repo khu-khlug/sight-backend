@@ -1,13 +1,13 @@
 import { Test } from '@nestjs/testing';
 import { advanceTo, clear } from 'jest-date-mock';
 
-import { GroupFactory } from '@sight/app/domain/group/GroupFactory';
-import { Group } from '@sight/app/domain/group/model/Group';
+import { GroupFactory } from '@khlug/app/domain/group/GroupFactory';
 import {
   GroupAccessGrade,
   GroupCategory,
   GroupState,
-} from '@sight/app/domain/group/model/constant';
+} from '@khlug/app/domain/group/model/constant';
+import { Group } from '@khlug/app/domain/group/model/Group';
 
 describe('GroupFactory', () => {
   let groupFactory: GroupFactory;

@@ -1,6 +1,6 @@
-import { IGenericRepository } from '@sight/core/persistence/IGenericRepository';
+import { IGenericRepository } from '@khlug/core/persistence/IGenericRepository';
 
-import { User } from '@sight/app/domain/user/model/User';
+import { User } from '@khlug/app/domain/user/model/User';
 
 export const UserRepository = Symbol('UserRepository');
 

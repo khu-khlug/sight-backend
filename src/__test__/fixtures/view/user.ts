@@ -1,11 +1,11 @@
 import { faker } from '@faker-js/faker';
 
-import { InterestListView } from '@sight/app/application/interest/query/view/InterestListView';
-import { InterestView } from '@sight/app/application/interest/query/view/InterestView';
-import { UserListView } from '@sight/app/application/user/query/view/UserListView';
-import { UserView } from '@sight/app/application/user/query/view/UserView';
+import { InterestListView } from '@khlug/app/application/interest/query/view/InterestListView';
+import { InterestView } from '@khlug/app/application/interest/query/view/InterestView';
+import { UserListView } from '@khlug/app/application/user/query/view/UserListView';
+import { UserView } from '@khlug/app/application/user/query/view/UserView';
 
-import { UserState } from '@sight/app/domain/user/model/constant';
+import { UserState } from '@khlug/app/domain/user/model/constant';
 
 export function generateUserView(params?: Partial<UserView>): UserView {
   return {

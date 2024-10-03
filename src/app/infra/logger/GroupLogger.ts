@@ -1,14 +1,14 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { ClsService } from 'nestjs-cls';
 
-import { IRequester } from '@sight/core/auth/IRequester';
+import { IRequester } from '@khlug/core/auth/IRequester';
 
-import { GroupLogFactory } from '@sight/app/domain/group/GroupLogFactory';
-import { IGroupLogger } from '@sight/app/domain/group/IGroupLogger';
+import { GroupLogFactory } from '@khlug/app/domain/group/GroupLogFactory';
+import { IGroupLogger } from '@khlug/app/domain/group/IGroupLogger';
 import {
   GroupLogRepository,
   IGroupLogRepository,
-} from '@sight/app/domain/group/IGroupLogRepository';
+} from '@khlug/app/domain/group/IGroupLogRepository';
 
 @Injectable()
 export class GroupLoggerImpl implements IGroupLogger {

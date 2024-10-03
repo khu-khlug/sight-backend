@@ -1,14 +1,14 @@
 import { ForbiddenException, Injectable } from '@nestjs/common';
 
-import { User } from '@sight/app/domain/user/model/User';
 import {
   GroupAccessGrade,
   GroupCategory,
   ManagerOnlyGroupAccessGrade,
   ManagerOnlyGroupCategory,
-} from '@sight/app/domain/group/model/constant';
+} from '@khlug/app/domain/group/model/constant';
+import { User } from '@khlug/app/domain/user/model/User';
 
-import { Message } from '@sight/constant/message';
+import { Message } from '@khlug/constant/message';
 
 type CreateGroupParams = {
   user: User;

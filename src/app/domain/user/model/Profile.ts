@@ -1,4 +1,4 @@
-import { ValueObject } from '@sight/core/ddd/ValueObject';
+import { ValueObject } from '@khlug/core/ddd/ValueObject';
 
 export type ProfileConstructorParams = {
   name: string;

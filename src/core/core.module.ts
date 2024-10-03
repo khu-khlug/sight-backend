@@ -3,8 +3,8 @@ import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ClsModule } from 'nestjs-cls';
 
-import { DatabaseConfig } from '@sight/core/config/DatabaseConfig';
-import { TransactionModule } from '@sight/core/persistence/transaction/TransactionModule';
+import { DatabaseConfig } from '@khlug/core/config/DatabaseConfig';
+import { TransactionModule } from '@khlug/core/persistence/transaction/TransactionModule';
 
 @Module({
   imports: [

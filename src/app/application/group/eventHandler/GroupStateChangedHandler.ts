@@ -1,26 +1,26 @@
 import { Inject } from '@nestjs/common';
 import { EventsHandler, IEventHandler } from '@nestjs/cqrs';
 
-import { Transactional } from '@sight/core/persistence/transaction/Transactional';
+import { Transactional } from '@khlug/core/persistence/transaction/Transactional';
 
-import { GroupStateChanged } from '@sight/app/domain/group/event/GroupStateChanged';
-import { GroupState } from '@sight/app/domain/group/model/constant';
-import { SlackMessageCategory } from '@sight/app/domain/message/model/constant';
 import {
   ISlackSender,
   SlackSender,
-} from '@sight/app/domain/adapter/ISlackSender';
+} from '@khlug/app/domain/adapter/ISlackSender';
+import { GroupStateChanged } from '@khlug/app/domain/group/event/GroupStateChanged';
 import {
   GroupMemberRepository,
   IGroupMemberRepository,
-} from '@sight/app/domain/group/IGroupMemberRepository';
+} from '@khlug/app/domain/group/IGroupMemberRepository';
 import {
   GroupRepository,
   IGroupRepository,
-} from '@sight/app/domain/group/IGroupRepository';
+} from '@khlug/app/domain/group/IGroupRepository';
+import { GroupState } from '@khlug/app/domain/group/model/constant';
+import { SlackMessageCategory } from '@khlug/app/domain/message/model/constant';
+import { PointGrantService } from '@khlug/app/domain/user/service/PointGrantService';
 
-import { Point } from '@sight/constant/point';
-import { PointGrantService } from '@sight/app/domain/user/service/PointGrantService';
+import { Point } from '@khlug/constant/point';
 
 // TODO[lery]: 그룹 상태 핸들러가 분리되면 그때 제거하기
 @EventsHandler(GroupStateChanged)

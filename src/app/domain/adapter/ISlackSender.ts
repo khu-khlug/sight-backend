@@ -1,4 +1,4 @@
-import { SlackMessageCategory } from '@sight/app/domain/message/model/constant';
+import { SlackMessageCategory } from '@khlug/app/domain/message/model/constant';
 
 export type SlackSendParams = {
   sourceUserId?: string;

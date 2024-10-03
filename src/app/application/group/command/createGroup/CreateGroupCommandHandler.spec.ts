@@ -1,34 +1,34 @@
 import { Test } from '@nestjs/testing';
 import { advanceTo, clear } from 'jest-date-mock';
 
-import { CreateGroupCommand } from '@sight/app/application/group/command/createGroup/CreateGroupCommand';
-import { CreateGroupCommandHandler } from '@sight/app/application/group/command/createGroup/CreateGroupCommandHandler';
+import { CreateGroupCommand } from '@khlug/app/application/group/command/createGroup/CreateGroupCommand';
+import { CreateGroupCommandHandler } from '@khlug/app/application/group/command/createGroup/CreateGroupCommandHandler';
 
-import { GroupFactory } from '@sight/app/domain/group/GroupFactory';
-import { GroupMemberFactory } from '@sight/app/domain/group/GroupMemberFactory';
+import { SlackSender } from '@khlug/app/domain/adapter/ISlackSender';
+import { GroupFactory } from '@khlug/app/domain/group/GroupFactory';
+import { GroupMemberFactory } from '@khlug/app/domain/group/GroupMemberFactory';
 import {
   GroupMemberRepository,
   IGroupMemberRepository,
-} from '@sight/app/domain/group/IGroupMemberRepository';
+} from '@khlug/app/domain/group/IGroupMemberRepository';
 import {
   GroupRepository,
   IGroupRepository,
-} from '@sight/app/domain/group/IGroupRepository';
+} from '@khlug/app/domain/group/IGroupRepository';
 import {
   GroupAccessGrade,
   GroupCategory,
-} from '@sight/app/domain/group/model/constant';
+} from '@khlug/app/domain/group/model/constant';
 import {
   IInterestRepository,
   InterestRepository,
-} from '@sight/app/domain/interest/IInterestRepository';
+} from '@khlug/app/domain/interest/IInterestRepository';
+import { PointGrantService } from '@khlug/app/domain/user/service/PointGrantService';
 
-import { Message } from '@sight/constant/message';
-import { SlackSender } from '@sight/app/domain/adapter/ISlackSender';
-import { GroupFixture } from '@sight/__test__/fixtures/GroupFixture';
-import { DomainFixture } from '@sight/__test__/fixtures';
-import { PointGrantService } from '@sight/app/domain/user/service/PointGrantService';
-import { Point } from '@sight/constant/point';
+import { DomainFixture } from '@khlug/__test__/fixtures';
+import { GroupFixture } from '@khlug/__test__/fixtures/GroupFixture';
+import { Message } from '@khlug/constant/message';
+import { Point } from '@khlug/constant/point';
 
 describe('CreateGroupCommandHandler', () => {
   let handler: CreateGroupCommandHandler;

@@ -1,15 +1,16 @@
+import { faker } from '@faker-js/faker';
 import { Test } from '@nestjs/testing';
 import { advanceTo, clear } from 'jest-date-mock';
 
-import { PointGrantService } from './PointGrantService';
-import { IUserRepository, UserRepository } from '../IUserRepository';
-import { PointHistoryFactory } from '../PointHistoryFactory';
+import { DomainFixture } from '@khlug/__test__/fixtures';
+
 import {
   IPointHistoryRepository,
   PointHistoryRepository,
 } from '../IPointHistoryRepository';
-import { faker } from '@faker-js/faker';
-import { DomainFixture } from '@sight/__test__/fixtures';
+import { IUserRepository, UserRepository } from '../IUserRepository';
+import { PointHistoryFactory } from '../PointHistoryFactory';
+import { PointGrantService } from './PointGrantService';
 
 describe('PointGrantService', () => {
   let pointGrantService: PointGrantService;

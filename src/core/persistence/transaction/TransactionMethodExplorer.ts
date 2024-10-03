@@ -4,9 +4,9 @@ import { ICommandHandler, IEventHandler } from '@nestjs/cqrs';
 
 import {
   COMMAND_HANDLER_METADATA,
-  TRANSACTIONAL_DECORATOR,
   EVENTS_HANDLER_METADATA,
-} from '@sight/core/persistence/transaction/constant';
+  TRANSACTIONAL_DECORATOR,
+} from '@khlug/core/persistence/transaction/constant';
 
 @Injectable()
 export class TransactionMethodExplorer {

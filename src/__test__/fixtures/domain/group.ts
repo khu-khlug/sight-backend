@@ -3,11 +3,11 @@ import { faker } from '@faker-js/faker';
 import {
   GroupLog,
   GroupLogConstructorParams,
-} from '@sight/app/domain/group/model/GroupLog';
+} from '@khlug/app/domain/group/model/GroupLog';
 import {
   GroupMember,
   GroupMemberConstructorParams,
-} from '@sight/app/domain/group/model/GroupMember';
+} from '@khlug/app/domain/group/model/GroupMember';
 
 export function generateGroupMember(
   params?: Partial<GroupMemberConstructorParams>,

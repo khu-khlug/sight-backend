@@ -2,18 +2,18 @@ import { Test } from '@nestjs/testing';
 import { advanceTo, clear } from 'jest-date-mock';
 import { ClsService } from 'nestjs-cls';
 
-import { IRequester } from '@sight/core/auth/IRequester';
-import { UserRole } from '@sight/core/auth/UserRole';
+import { IRequester } from '@khlug/core/auth/IRequester';
+import { UserRole } from '@khlug/core/auth/UserRole';
 
-import { GroupLoggerImpl } from '@sight/app/infra/logger/GroupLogger';
+import { GroupLoggerImpl } from '@khlug/app/infra/logger/GroupLogger';
 
-import { GroupLogFactory } from '@sight/app/domain/group/GroupLogFactory';
+import { GroupLogFactory } from '@khlug/app/domain/group/GroupLogFactory';
 import {
   GroupLogRepository,
   IGroupLogRepository,
-} from '@sight/app/domain/group/IGroupLogRepository';
+} from '@khlug/app/domain/group/IGroupLogRepository';
 
-import { generateEmptyProviders } from '@sight/__test__/util';
+import { generateEmptyProviders } from '@khlug/__test__/util';
 
 describe('GroupLogger', () => {
   let groupLogger: GroupLoggerImpl;

@@ -1,14 +1,14 @@
 import { faker } from '@faker-js/faker';
 
-import { GroupListView } from '@sight/app/application/group/query/view/GroupListView';
-import { GroupMemberListView } from '@sight/app/application/group/query/view/GroupMemberListView';
-import { GroupMemberView } from '@sight/app/application/group/query/view/GroupMemberView';
-import { GroupView } from '@sight/app/application/group/query/view/GroupView';
+import { GroupListView } from '@khlug/app/application/group/query/view/GroupListView';
+import { GroupMemberListView } from '@khlug/app/application/group/query/view/GroupMemberListView';
+import { GroupMemberView } from '@khlug/app/application/group/query/view/GroupMemberView';
+import { GroupView } from '@khlug/app/application/group/query/view/GroupView';
 
 import {
   GroupCategory,
   GroupState,
-} from '@sight/app/domain/group/model/constant';
+} from '@khlug/app/domain/group/model/constant';
 
 export function generateGroupView(params?: Partial<GroupView>): GroupView {
   return {

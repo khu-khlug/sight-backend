@@ -1,6 +1,6 @@
-import { IGenericRepository } from '@sight/core/persistence/IGenericRepository';
+import { IGenericRepository } from '@khlug/core/persistence/IGenericRepository';
 
-import { GroupBookmark } from '@sight/app/domain/group/model/GroupBookmark';
+import { GroupBookmark } from '@khlug/app/domain/group/model/GroupBookmark';
 
 export const GroupBookmarkRepository = Symbol('GroupBookmarkRepository');
 

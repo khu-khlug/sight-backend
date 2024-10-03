@@ -1,31 +1,31 @@
 import { Test } from '@nestjs/testing';
 import { advanceTo, clear } from 'jest-date-mock';
 
-import { DisablePortfolioCommand } from '@sight/app/application/group/command/disablePortfolio/DisablePortfolioCommand';
-import { DisablePortfolioCommandHandler } from '@sight/app/application/group/command/disablePortfolio/DisablePortfolioCommandHandler';
+import { DisablePortfolioCommand } from '@khlug/app/application/group/command/disablePortfolio/DisablePortfolioCommand';
+import { DisablePortfolioCommandHandler } from '@khlug/app/application/group/command/disablePortfolio/DisablePortfolioCommandHandler';
 
-import {
-  GroupRepository,
-  IGroupRepository,
-} from '@sight/app/domain/group/IGroupRepository';
-
-import {
-  GroupMemberRepository,
-  IGroupMemberRepository,
-} from '@sight/app/domain/group/IGroupMemberRepository';
-import {
-  GroupLogger,
-  IGroupLogger,
-} from '@sight/app/domain/group/IGroupLogger';
 import {
   ISlackSender,
   SlackSender,
-} from '@sight/app/domain/adapter/ISlackSender';
-import { Message } from '@sight/constant/message';
-import { GroupFixture } from '@sight/__test__/fixtures/GroupFixture';
-import { PointGrantService } from '@sight/app/domain/user/service/PointGrantService';
-import { DomainFixture } from '@sight/__test__/fixtures';
-import { Point } from '@sight/constant/point';
+} from '@khlug/app/domain/adapter/ISlackSender';
+import {
+  GroupLogger,
+  IGroupLogger,
+} from '@khlug/app/domain/group/IGroupLogger';
+import {
+  GroupMemberRepository,
+  IGroupMemberRepository,
+} from '@khlug/app/domain/group/IGroupMemberRepository';
+import {
+  GroupRepository,
+  IGroupRepository,
+} from '@khlug/app/domain/group/IGroupRepository';
+import { PointGrantService } from '@khlug/app/domain/user/service/PointGrantService';
+
+import { DomainFixture } from '@khlug/__test__/fixtures';
+import { GroupFixture } from '@khlug/__test__/fixtures/GroupFixture';
+import { Message } from '@khlug/constant/message';
+import { Point } from '@khlug/constant/point';
 
 describe('DisablePortfolioCommandHandler', () => {
   let handler: DisablePortfolioCommandHandler;

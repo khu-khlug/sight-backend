@@ -1,10 +1,10 @@
 import { advanceTo, clear } from 'jest-date-mock';
 
-import { UserState } from '@sight/app/domain/user/model/constant';
-import { User } from '@sight/app/domain/user/model/User';
+import { UserState } from '@khlug/app/domain/user/model/constant';
+import { User } from '@khlug/app/domain/user/model/User';
 
-import { DomainFixture } from '@sight/__test__/fixtures';
-import { Message } from '@sight/constant/message';
+import { DomainFixture } from '@khlug/__test__/fixtures';
+import { Message } from '@khlug/constant/message';
 
 describe('User', () => {
   let user: User;

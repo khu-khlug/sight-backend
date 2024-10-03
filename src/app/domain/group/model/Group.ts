@@ -7,8 +7,9 @@ import {
   GroupCategory,
   GroupState,
   PRACTICE_GROUP_ID,
-} from '@sight/app/domain/group/model/constant';
-import { Message } from '@sight/constant/message';
+} from '@khlug/app/domain/group/model/constant';
+
+import { Message } from '@khlug/constant/message';
 
 export type GroupConstructorParams = {
   id: string;
