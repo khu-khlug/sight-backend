@@ -1,6 +1,6 @@
-import { IGenericRepository } from '@sight/core/persistence/IGenericRepository';
+import { IGenericRepository } from '@khlug/core/persistence/IGenericRepository';
 
-import { UserInterest } from '@sight/app/domain/interest/model/UserInterest';
+import { UserInterest } from '@khlug/app/domain/interest/model/UserInterest';
 
 export const UserInterestRepository = Symbol('UserInterestRepository');
 

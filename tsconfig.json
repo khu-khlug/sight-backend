@@ -13,8 +13,8 @@
     "outDir": "./dist",
     "baseUrl": "./",
     "paths": {
-      "@sight": ["src"],
-      "@sight/*": ["src/*"]
+      "@khlug": ["src"],
+      "@khlug/*": ["src/*"]
     },
     "incremental": true,
     "skipLibCheck": true,

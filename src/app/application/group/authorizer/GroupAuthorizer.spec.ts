@@ -1,18 +1,18 @@
 import { Test } from '@nestjs/testing';
 import { advanceTo, clear } from 'jest-date-mock';
 
-import { GroupAuthorizer } from '@sight/app/application/group/authorizer/GroupAuthorizer';
+import { GroupAuthorizer } from '@khlug/app/application/group/authorizer/GroupAuthorizer';
 
-import { User } from '@sight/app/domain/user/model/User';
 import {
   GroupAccessGrade,
   GroupCategory,
   ManagerOnlyGroupAccessGrade,
   ManagerOnlyGroupCategory,
-} from '@sight/app/domain/group/model/constant';
+} from '@khlug/app/domain/group/model/constant';
+import { User } from '@khlug/app/domain/user/model/User';
 
-import { DomainFixture } from '@sight/__test__/fixtures';
-import { Message } from '@sight/constant/message';
+import { DomainFixture } from '@khlug/__test__/fixtures';
+import { Message } from '@khlug/constant/message';
 
 describe('GroupAuthorizer', () => {
   let authorizer: GroupAuthorizer;

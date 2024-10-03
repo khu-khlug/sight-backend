@@ -3,7 +3,7 @@ import { Injectable } from '@nestjs/common';
 import {
   PointHistory,
   PointHistoryConstructorParams,
-} from '@sight/app/domain/user/model/PointHistory';
+} from '@khlug/app/domain/user/model/PointHistory';
 
 type PointHistoryCreateParams = Omit<
   PointHistoryConstructorParams,

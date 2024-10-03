@@ -3,7 +3,7 @@ import { faker } from '@faker-js/faker';
 import {
   GroupBookmark,
   GroupBookmarkConstructorParams,
-} from '@sight/app/domain/group/model/GroupBookmark';
+} from '@khlug/app/domain/group/model/GroupBookmark';
 
 function generator(
   params: Partial<GroupBookmarkConstructorParams> = {},

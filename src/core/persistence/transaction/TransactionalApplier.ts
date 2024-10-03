@@ -3,8 +3,8 @@ import { Injectable } from '@nestjs/common';
 import { ICommandHandler, IEventHandler } from '@nestjs/cqrs';
 import { ClsService } from 'nestjs-cls';
 
-import { TRANSACTIONAL_ENTITY_MANAGER } from '@sight/core/persistence/transaction/constant';
-import { TransactionMethodExplorer } from '@sight/core/persistence/transaction/TransactionMethodExplorer';
+import { TRANSACTIONAL_ENTITY_MANAGER } from '@khlug/core/persistence/transaction/constant';
+import { TransactionMethodExplorer } from '@khlug/core/persistence/transaction/TransactionMethodExplorer';
 
 type AsyncFn = (...args: any[]) => Promise<any>;
 

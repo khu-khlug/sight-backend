@@ -3,7 +3,7 @@ import { Injectable } from '@nestjs/common';
 import {
   GroupMember,
   GroupMemberConstructorParams,
-} from '@sight/app/domain/group/model/GroupMember';
+} from '@khlug/app/domain/group/model/GroupMember';
 
 type GroupMemberCreateParams = Omit<GroupMemberConstructorParams, 'createdAt'>;
 type GroupMemberReconstituteParams = GroupMemberConstructorParams;

@@ -1,14 +1,14 @@
 import { Inject, Injectable } from '@nestjs/common';
 
-import { PointHistoryFactory } from '@sight/app/domain/user/PointHistoryFactory';
-import {
-  IUserRepository,
-  UserRepository,
-} from '@sight/app/domain/user/IUserRepository';
 import {
   IPointHistoryRepository,
   PointHistoryRepository,
-} from '@sight/app/domain/user/IPointHistoryRepository';
+} from '@khlug/app/domain/user/IPointHistoryRepository';
+import {
+  IUserRepository,
+  UserRepository,
+} from '@khlug/app/domain/user/IUserRepository';
+import { PointHistoryFactory } from '@khlug/app/domain/user/PointHistoryFactory';
 
 @Injectable()
 export class PointGrantService {

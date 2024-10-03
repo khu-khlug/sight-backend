@@ -1,20 +1,22 @@
 import { Test } from '@nestjs/testing';
 import { advanceTo, clear } from 'jest-date-mock';
 
-import { RemoveBookmarkCommandHandler } from './RemoveBookmarkCommandHandler';
-import {
-  GroupRepository,
-  IGroupRepository,
-} from '@sight/app/domain/group/IGroupRepository';
+import { SlackSender } from '@khlug/app/domain/adapter/ISlackSender';
 import {
   GroupBookmarkRepository,
   IGroupBookmarkRepository,
-} from '@sight/app/domain/group/IGroupBookmarkRepository';
-import { SlackSender } from '@sight/app/domain/adapter/ISlackSender';
+} from '@khlug/app/domain/group/IGroupBookmarkRepository';
+import {
+  GroupRepository,
+  IGroupRepository,
+} from '@khlug/app/domain/group/IGroupRepository';
+
+import { GroupBookmarkFixture } from '@khlug/__test__/fixtures/GroupBookmarkFixture';
+import { GroupFixture } from '@khlug/__test__/fixtures/GroupFixture';
+import { Message } from '@khlug/constant/message';
+
 import { RemoveBookmarkCommand } from './RemoveBookmarkCommand';
-import { Message } from '@sight/constant/message';
-import { GroupFixture } from '@sight/__test__/fixtures/GroupFixture';
-import { GroupBookmarkFixture } from '@sight/__test__/fixtures/GroupBookmarkFixture';
+import { RemoveBookmarkCommandHandler } from './RemoveBookmarkCommandHandler';
 
 describe('RemoveBookmarkCommandHandler', () => {
   let handler: RemoveBookmarkCommandHandler;

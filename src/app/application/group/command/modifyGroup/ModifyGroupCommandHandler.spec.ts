@@ -1,31 +1,33 @@
 import { Test } from '@nestjs/testing';
 import { advanceTo, clear } from 'jest-date-mock';
 
-import { ModifyGroupCommandHandler } from './ModifyGroupCommandHandler';
-import {
-  GroupRepository,
-  IGroupRepository,
-} from '@sight/app/domain/group/IGroupRepository';
-import {
-  GroupMemberRepository,
-  IGroupMemberRepository,
-} from '@sight/app/domain/group/IGroupMemberRepository';
-import {
-  IInterestRepository,
-  InterestRepository,
-} from '@sight/app/domain/interest/IInterestRepository';
 import {
   GroupLogger,
   IGroupLogger,
-} from '@sight/app/domain/group/IGroupLogger';
-import { ModifyGroupCommand } from './ModifyGroupCommand';
+} from '@khlug/app/domain/group/IGroupLogger';
+import {
+  GroupMemberRepository,
+  IGroupMemberRepository,
+} from '@khlug/app/domain/group/IGroupMemberRepository';
+import {
+  GroupRepository,
+  IGroupRepository,
+} from '@khlug/app/domain/group/IGroupRepository';
 import {
   GroupAccessGrade,
   GroupCategory,
-} from '@sight/app/domain/group/model/constant';
-import { Message } from '@sight/constant/message';
-import { GroupFixture } from '@sight/__test__/fixtures/GroupFixture';
-import { DomainFixture } from '@sight/__test__/fixtures';
+} from '@khlug/app/domain/group/model/constant';
+import {
+  IInterestRepository,
+  InterestRepository,
+} from '@khlug/app/domain/interest/IInterestRepository';
+
+import { DomainFixture } from '@khlug/__test__/fixtures';
+import { GroupFixture } from '@khlug/__test__/fixtures/GroupFixture';
+import { Message } from '@khlug/constant/message';
+
+import { ModifyGroupCommand } from './ModifyGroupCommand';
+import { ModifyGroupCommandHandler } from './ModifyGroupCommandHandler';
 
 describe('ModifyGroupCommandHandler', () => {
   let handler: ModifyGroupCommandHandler;

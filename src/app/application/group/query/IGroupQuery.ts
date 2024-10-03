@@ -1,6 +1,6 @@
-import { GroupListQueryType } from '@sight/app/application/group/query/listGroup/ListGroupQuery';
-import { GroupListView } from '@sight/app/application/group/query/view/GroupListView';
-import { GroupMemberListView } from '@sight/app/application/group/query/view/GroupMemberListView';
+import { GroupListQueryType } from '@khlug/app/application/group/query/listGroup/ListGroupQuery';
+import { GroupListView } from '@khlug/app/application/group/query/view/GroupListView';
+import { GroupMemberListView } from '@khlug/app/application/group/query/view/GroupMemberListView';
 
 type ListGroupParams = {
   queryType: GroupListQueryType;

@@ -1,40 +1,40 @@
-import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import {
   ForbiddenException,
   Inject,
   NotFoundException,
   UnprocessableEntityException,
 } from '@nestjs/common';
+import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 
-import { Transactional } from '@sight/core/persistence/transaction/Transactional';
+import { Transactional } from '@khlug/core/persistence/transaction/Transactional';
 
 import {
   ModifyGroupCommand,
   ModifyGroupParams,
-} from '@sight/app/application/group/command/modifyGroup/ModifyGroupCommand';
-import { ModifyGroupCommandResult } from '@sight/app/application/group/command/modifyGroup/ModifyGroupCommandResult';
+} from '@khlug/app/application/group/command/modifyGroup/ModifyGroupCommand';
+import { ModifyGroupCommandResult } from '@khlug/app/application/group/command/modifyGroup/ModifyGroupCommandResult';
 
-import { Group } from '@sight/app/domain/group/model/Group';
-import {
-  GroupMemberRepository,
-  IGroupMemberRepository,
-} from '@sight/app/domain/group/IGroupMemberRepository';
-import {
-  GroupRepository,
-  IGroupRepository,
-} from '@sight/app/domain/group/IGroupRepository';
-import { GroupCategory } from '@sight/app/domain/group/model/constant';
-import {
-  IInterestRepository,
-  InterestRepository,
-} from '@sight/app/domain/interest/IInterestRepository';
-
-import { Message } from '@sight/constant/message';
 import {
   GroupLogger,
   IGroupLogger,
-} from '@sight/app/domain/group/IGroupLogger';
-import { isDifferentStringArray } from '@sight/util/isDifferentStringArray';
+} from '@khlug/app/domain/group/IGroupLogger';
+import {
+  GroupMemberRepository,
+  IGroupMemberRepository,
+} from '@khlug/app/domain/group/IGroupMemberRepository';
+import {
+  GroupRepository,
+  IGroupRepository,
+} from '@khlug/app/domain/group/IGroupRepository';
+import { GroupCategory } from '@khlug/app/domain/group/model/constant';
+import { Group } from '@khlug/app/domain/group/model/Group';
+import {
+  IInterestRepository,
+  InterestRepository,
+} from '@khlug/app/domain/interest/IInterestRepository';
+
+import { Message } from '@khlug/constant/message';
+import { isDifferentStringArray } from '@khlug/util/isDifferentStringArray';
 
 type UpdatedItem =
   | 'category'

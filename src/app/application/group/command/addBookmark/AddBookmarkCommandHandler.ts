@@ -1,33 +1,33 @@
-import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import {
   Inject,
   NotFoundException,
   UnprocessableEntityException,
 } from '@nestjs/common';
+import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 
-import { Transactional } from '@sight/core/persistence/transaction/Transactional';
+import { MessageBuilder } from '@khlug/core/message/MessageBuilder';
+import { Transactional } from '@khlug/core/persistence/transaction/Transactional';
 
-import { AddBookmarkCommand } from '@sight/app/application/group/command/addBookmark/AddBookmarkCommand';
-import { AddBookmarkCommandResult } from '@sight/app/application/group/command/addBookmark/AddBookmarkCommandResult';
+import { AddBookmarkCommand } from '@khlug/app/application/group/command/addBookmark/AddBookmarkCommand';
+import { AddBookmarkCommandResult } from '@khlug/app/application/group/command/addBookmark/AddBookmarkCommandResult';
 
-import { GroupBookmarkFactory } from '@sight/app/domain/group/GroupBookmarkFactory';
-import {
-  GroupBookmarkRepository,
-  IGroupBookmarkRepository,
-} from '@sight/app/domain/group/IGroupBookmarkRepository';
-import {
-  GroupRepository,
-  IGroupRepository,
-} from '@sight/app/domain/group/IGroupRepository';
-
-import { Message } from '@sight/constant/message';
-import { Template } from '@sight/constant/template';
 import {
   ISlackSender,
   SlackSender,
-} from '@sight/app/domain/adapter/ISlackSender';
-import { SlackMessageCategory } from '@sight/app/domain/message/model/constant';
-import { MessageBuilder } from '@sight/core/message/MessageBuilder';
+} from '@khlug/app/domain/adapter/ISlackSender';
+import { GroupBookmarkFactory } from '@khlug/app/domain/group/GroupBookmarkFactory';
+import {
+  GroupBookmarkRepository,
+  IGroupBookmarkRepository,
+} from '@khlug/app/domain/group/IGroupBookmarkRepository';
+import {
+  GroupRepository,
+  IGroupRepository,
+} from '@khlug/app/domain/group/IGroupRepository';
+import { SlackMessageCategory } from '@khlug/app/domain/message/model/constant';
+
+import { Message } from '@khlug/constant/message';
+import { Template } from '@khlug/constant/template';
 
 @CommandHandler(AddBookmarkCommand)
 export class AddBookmarkCommandHandler

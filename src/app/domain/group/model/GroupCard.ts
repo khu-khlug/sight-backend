@@ -1,6 +1,6 @@
 import { AggregateRoot } from '@nestjs/cqrs';
 
-import { GroupCardState } from '@sight/app/domain/group/model/constant';
+import { GroupCardState } from '@khlug/app/domain/group/model/constant';
 
 export type GroupCardConstructorParams = {
   id: string;

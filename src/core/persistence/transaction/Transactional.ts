@@ -1,8 +1,8 @@
 import { ICommandHandler, IEventHandler } from '@nestjs/cqrs';
 
-import { TRANSACTIONAL_DECORATOR } from '@sight/core/persistence/transaction/constant';
+import { TRANSACTIONAL_DECORATOR } from '@khlug/core/persistence/transaction/constant';
 
-import { IsAsyncFunction } from '@sight/util/types';
+import { IsAsyncFunction } from '@khlug/util/types';
 
 export type KeyOf<T extends ICommandHandler | IEventHandler> =
   T extends ICommandHandler

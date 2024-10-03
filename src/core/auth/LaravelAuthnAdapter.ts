@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import fs from 'fs/promises';
 import crypto from 'crypto';
+import fs from 'fs/promises';
 import { unserialize } from 'php-serialize';
 
 import { LaravelSessionConfig } from '../config/LaravelSessionConfig';

@@ -4,16 +4,16 @@ import { advanceTo, clear } from 'jest-date-mock';
 import {
   GroupQuery,
   IGroupQuery,
-} from '@sight/app/application/group/query/IGroupQuery';
+} from '@khlug/app/application/group/query/IGroupQuery';
 import {
   GroupListQueryType,
   ListGroupQuery,
-} from '@sight/app/application/group/query/listGroup/ListGroupQuery';
-import { ListGroupQueryHandler } from '@sight/app/application/group/query/listGroup/ListGroupQueryHandler';
-import { ListGroupQueryResult } from '@sight/app/application/group/query/listGroup/ListGroupQueryResult';
-import { GroupListView } from '@sight/app/application/group/query/view/GroupListView';
+} from '@khlug/app/application/group/query/listGroup/ListGroupQuery';
+import { ListGroupQueryHandler } from '@khlug/app/application/group/query/listGroup/ListGroupQueryHandler';
+import { ListGroupQueryResult } from '@khlug/app/application/group/query/listGroup/ListGroupQueryResult';
+import { GroupListView } from '@khlug/app/application/group/query/view/GroupListView';
 
-import { ViewFixture } from '@sight/__test__/fixtures';
+import { ViewFixture } from '@khlug/__test__/fixtures';
 
 describe('ListGroupQueryHandler', () => {
   let handler: ListGroupQueryHandler;

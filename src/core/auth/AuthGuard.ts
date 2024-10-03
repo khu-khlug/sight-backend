@@ -1,18 +1,20 @@
-import { Request } from 'express';
-import { ClsService } from 'nestjs-cls';
+import { EntityRepository } from '@mikro-orm/core';
+import { InjectRepository } from '@mikro-orm/nestjs';
 import {
   CanActivate,
   ExecutionContext,
   Injectable,
   UnauthorizedException,
 } from '@nestjs/common';
+import { Request } from 'express';
+import { ClsService } from 'nestjs-cls';
 
-import { Message } from '@sight/constant/message';
-import { LaravelAuthnAdapter } from './LaravelAuthnAdapter';
+import { User } from '@khlug/app/domain/user/model/User';
+
+import { Message } from '@khlug/constant/message';
+
 import { IRequester } from './IRequester';
-import { InjectRepository } from '@mikro-orm/nestjs';
-import { User } from '@sight/app/domain/user/model/User';
-import { EntityRepository } from '@mikro-orm/core';
+import { LaravelAuthnAdapter } from './LaravelAuthnAdapter';
 import { UserRole } from './UserRole';
 
 @Injectable()

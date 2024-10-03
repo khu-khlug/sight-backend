@@ -1,5 +1,5 @@
-import * as db from '@sight/core/config/DatabaseConfig';
-import * as session from '@sight/core/config/LaravelSessionConfig';
+import * as db from '@khlug/core/config/DatabaseConfig';
+import * as session from '@khlug/core/config/LaravelSessionConfig';
 
 export const configuration = (): {
   database: db.DatabaseConfig;

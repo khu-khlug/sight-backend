@@ -1,6 +1,6 @@
 import { IQuery } from '@nestjs/cqrs';
 
-import { UserState } from '@sight/app/domain/user/model/constant';
+import { UserState } from '@khlug/app/domain/user/model/constant';
 
 export class ListUserQuery implements IQuery {
   constructor(

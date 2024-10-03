@@ -1,8 +1,8 @@
 import { Test } from '@nestjs/testing';
 import { advanceTo, clear } from 'jest-date-mock';
 
-import { PointHistory } from '@sight/app/domain/user/model/PointHistory';
-import { PointHistoryFactory } from '@sight/app/domain/user/PointHistoryFactory';
+import { PointHistory } from '@khlug/app/domain/user/model/PointHistory';
+import { PointHistoryFactory } from '@khlug/app/domain/user/PointHistoryFactory';
 
 describe('PointHistoryFactory', () => {
   let pointHistoryFactory: PointHistoryFactory;

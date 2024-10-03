@@ -1,8 +1,8 @@
 import { Test } from '@nestjs/testing';
 import { advanceTo, clear } from 'jest-date-mock';
 
-import { UserInterest } from '@sight/app/domain/interest/model/UserInterest';
-import { UserInterestFactory } from '@sight/app/domain/interest/UserInterestFactory';
+import { UserInterest } from '@khlug/app/domain/interest/model/UserInterest';
+import { UserInterestFactory } from '@khlug/app/domain/interest/UserInterestFactory';
 
 describe('UserInterestFactory', () => {
   let userInterestFactory: UserInterestFactory;

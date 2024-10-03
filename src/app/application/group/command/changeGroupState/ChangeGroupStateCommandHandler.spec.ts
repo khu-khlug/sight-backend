@@ -1,24 +1,24 @@
 import { Test } from '@nestjs/testing';
 import { advanceTo, clear } from 'jest-date-mock';
 
-import { ChangeGroupStateCommand } from '@sight/app/application/group/command/changeGroupState/ChangeGroupStateCommand';
-import { ChangeGroupStateCommandHandler } from '@sight/app/application/group/command/changeGroupState/ChangeGroupStateCommandHandler';
-import { ChangeGroupStateCommandResult } from '@sight/app/application/group/command/changeGroupState/ChangeGroupStateCommandResult';
+import { ChangeGroupStateCommand } from '@khlug/app/application/group/command/changeGroupState/ChangeGroupStateCommand';
+import { ChangeGroupStateCommandHandler } from '@khlug/app/application/group/command/changeGroupState/ChangeGroupStateCommandHandler';
+import { ChangeGroupStateCommandResult } from '@khlug/app/application/group/command/changeGroupState/ChangeGroupStateCommandResult';
 
-import { GroupState } from '@sight/app/domain/group/model/constant';
-import { Group } from '@sight/app/domain/group/model/Group';
 import {
   GroupLogger,
   IGroupLogger,
-} from '@sight/app/domain/group/IGroupLogger';
+} from '@khlug/app/domain/group/IGroupLogger';
 import {
   GroupRepository,
   IGroupRepository,
-} from '@sight/app/domain/group/IGroupRepository';
+} from '@khlug/app/domain/group/IGroupRepository';
+import { GroupState } from '@khlug/app/domain/group/model/constant';
+import { Group } from '@khlug/app/domain/group/model/Group';
 
-import { generateEmptyProviders } from '@sight/__test__/util';
-import { Message } from '@sight/constant/message';
-import { GroupFixture } from '@sight/__test__/fixtures/GroupFixture';
+import { GroupFixture } from '@khlug/__test__/fixtures/GroupFixture';
+import { generateEmptyProviders } from '@khlug/__test__/util';
+import { Message } from '@khlug/constant/message';
 
 describe('ChangeGroupStateCommandHandler', () => {
   let handler: ChangeGroupStateCommandHandler;

@@ -1,12 +1,12 @@
-import { Injectable, Inject } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 
 import {
   IInterestQuery,
   InterestQuery,
-} from '@sight/app/application/interest/query/IInterestQuery';
-import { ListInterestQuery } from '@sight/app/application/interest/query/listInterest/ListInterestQuery';
-import { ListInterestQueryResult } from '@sight/app/application/interest/query/listInterest/ListInterestQueryResult';
+} from '@khlug/app/application/interest/query/IInterestQuery';
+import { ListInterestQuery } from '@khlug/app/application/interest/query/listInterest/ListInterestQuery';
+import { ListInterestQueryResult } from '@khlug/app/application/interest/query/listInterest/ListInterestQueryResult';
 
 @Injectable()
 @QueryHandler(ListInterestQuery)

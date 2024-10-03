@@ -1,31 +1,31 @@
-import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import {
   Inject,
   NotFoundException,
   UnprocessableEntityException,
 } from '@nestjs/common';
+import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 
-import { Transactional } from '@sight/core/persistence/transaction/Transactional';
+import { MessageBuilder } from '@khlug/core/message/MessageBuilder';
+import { Transactional } from '@khlug/core/persistence/transaction/Transactional';
 
-import { RemoveBookmarkCommand } from '@sight/app/application/group/command/removeBookmark/RemoveBookmarkCommand';
+import { RemoveBookmarkCommand } from '@khlug/app/application/group/command/removeBookmark/RemoveBookmarkCommand';
 
-import {
-  GroupBookmarkRepository,
-  IGroupBookmarkRepository,
-} from '@sight/app/domain/group/IGroupBookmarkRepository';
-import {
-  GroupRepository,
-  IGroupRepository,
-} from '@sight/app/domain/group/IGroupRepository';
-
-import { Message } from '@sight/constant/message';
 import {
   ISlackSender,
   SlackSender,
-} from '@sight/app/domain/adapter/ISlackSender';
-import { SlackMessageCategory } from '@sight/app/domain/message/model/constant';
-import { Template } from '@sight/constant/template';
-import { MessageBuilder } from '@sight/core/message/MessageBuilder';
+} from '@khlug/app/domain/adapter/ISlackSender';
+import {
+  GroupBookmarkRepository,
+  IGroupBookmarkRepository,
+} from '@khlug/app/domain/group/IGroupBookmarkRepository';
+import {
+  GroupRepository,
+  IGroupRepository,
+} from '@khlug/app/domain/group/IGroupRepository';
+import { SlackMessageCategory } from '@khlug/app/domain/message/model/constant';
+
+import { Message } from '@khlug/constant/message';
+import { Template } from '@khlug/constant/template';
 
 @CommandHandler(RemoveBookmarkCommand)
 export class RemoveBookmarkCommandHandler

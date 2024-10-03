@@ -1,20 +1,20 @@
 import { Test } from '@nestjs/testing';
 import { advanceTo, clear } from 'jest-date-mock';
 
-import { UpdateUnitedUserCommand } from '@sight/app/application/user/command/updateUnitedUser/UpdateUnitedUserCommand';
-import { UpdateUnitedUserCommandHandler } from '@sight/app/application/user/command/updateUnitedUser/UpdateUnitedUserCommandHandler';
+import { UpdateUnitedUserCommand } from '@khlug/app/application/user/command/updateUnitedUser/UpdateUnitedUserCommand';
+import { UpdateUnitedUserCommandHandler } from '@khlug/app/application/user/command/updateUnitedUser/UpdateUnitedUserCommandHandler';
 
-import { UserState } from '@sight/app/domain/user/model/constant';
-import { User } from '@sight/app/domain/user/model/User';
 import {
   IUserRepository,
   UserRepository,
-} from '@sight/app/domain/user/IUserRepository';
+} from '@khlug/app/domain/user/IUserRepository';
+import { UserState } from '@khlug/app/domain/user/model/constant';
+import { User } from '@khlug/app/domain/user/model/User';
 
-import { generateUser } from '@sight/__test__/fixtures/domain';
-import { Message } from '@sight/constant/message';
+import { generateUser } from '@khlug/__test__/fixtures/domain';
+import { Message } from '@khlug/constant/message';
 
-jest.mock('@sight/core/persistence/transaction/Transactional', () => ({
+jest.mock('@khlug/core/persistence/transaction/Transactional', () => ({
   Transactional: () => () => {},
 }));
 

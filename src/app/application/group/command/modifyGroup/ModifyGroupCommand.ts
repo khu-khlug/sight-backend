@@ -1,8 +1,9 @@
 import { ICommand } from '@nestjs/cqrs';
+
 import {
   GroupAccessGrade,
   GroupCategory,
-} from '@sight/app/domain/group/model/constant';
+} from '@khlug/app/domain/group/model/constant';
 
 export type ModifyGroupParams = {
   readonly title: string;

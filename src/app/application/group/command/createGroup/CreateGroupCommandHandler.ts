@@ -1,35 +1,35 @@
 import { Inject, NotFoundException } from '@nestjs/common';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 
-import { Transactional } from '@sight/core/persistence/transaction/Transactional';
+import { Transactional } from '@khlug/core/persistence/transaction/Transactional';
 
-import { CreateGroupCommand } from '@sight/app/application/group/command/createGroup/CreateGroupCommand';
-import { CreateGroupCommandResult } from '@sight/app/application/group/command/createGroup/CreateGroupCommandResult';
+import { CreateGroupCommand } from '@khlug/app/application/group/command/createGroup/CreateGroupCommand';
+import { CreateGroupCommandResult } from '@khlug/app/application/group/command/createGroup/CreateGroupCommandResult';
 
-import { GroupFactory } from '@sight/app/domain/group/GroupFactory';
-import { GroupMemberFactory } from '@sight/app/domain/group/GroupMemberFactory';
-import { GroupState } from '@sight/app/domain/group/model/constant';
-import {
-  GroupMemberRepository,
-  IGroupMemberRepository,
-} from '@sight/app/domain/group/IGroupMemberRepository';
-import {
-  GroupRepository,
-  IGroupRepository,
-} from '@sight/app/domain/group/IGroupRepository';
-import {
-  IInterestRepository,
-  InterestRepository,
-} from '@sight/app/domain/interest/IInterestRepository';
 import {
   ISlackSender,
   SlackSender,
-} from '@sight/app/domain/adapter/ISlackSender';
+} from '@khlug/app/domain/adapter/ISlackSender';
+import { GroupFactory } from '@khlug/app/domain/group/GroupFactory';
+import { GroupMemberFactory } from '@khlug/app/domain/group/GroupMemberFactory';
+import {
+  GroupMemberRepository,
+  IGroupMemberRepository,
+} from '@khlug/app/domain/group/IGroupMemberRepository';
+import {
+  GroupRepository,
+  IGroupRepository,
+} from '@khlug/app/domain/group/IGroupRepository';
+import { GroupState } from '@khlug/app/domain/group/model/constant';
+import {
+  IInterestRepository,
+  InterestRepository,
+} from '@khlug/app/domain/interest/IInterestRepository';
+import { SlackMessageCategory } from '@khlug/app/domain/message/model/constant';
+import { PointGrantService } from '@khlug/app/domain/user/service/PointGrantService';
 
-import { Message } from '@sight/constant/message';
-import { Point } from '@sight/constant/point';
-import { SlackMessageCategory } from '@sight/app/domain/message/model/constant';
-import { PointGrantService } from '@sight/app/domain/user/service/PointGrantService';
+import { Message } from '@khlug/constant/message';
+import { Point } from '@khlug/constant/point';
 
 @CommandHandler(CreateGroupCommand)
 export class CreateGroupCommandHandler

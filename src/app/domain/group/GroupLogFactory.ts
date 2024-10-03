@@ -3,7 +3,7 @@ import { Injectable } from '@nestjs/common';
 import {
   GroupLog,
   GroupLogConstructorParams,
-} from '@sight/app/domain/group/model/GroupLog';
+} from '@khlug/app/domain/group/model/GroupLog';
 
 type GroupLogCreateParams = Omit<GroupLogConstructorParams, 'createdAt'>;
 type GroupLogReconstituteParams = GroupLogConstructorParams;

@@ -1,7 +1,7 @@
 import { Module, OnModuleInit } from '@nestjs/common';
 import { DiscoveryModule } from '@nestjs/core';
 
-import { TransactionalApplier } from '@sight/core/persistence/transaction/TransactionalApplier';
+import { TransactionalApplier } from '@khlug/core/persistence/transaction/TransactionalApplier';
 
 @Module({
   imports: [DiscoveryModule],

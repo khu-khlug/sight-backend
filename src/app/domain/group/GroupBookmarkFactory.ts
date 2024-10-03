@@ -3,7 +3,7 @@ import { Injectable } from '@nestjs/common';
 import {
   GroupBookmark,
   GroupBookmarkConstructorParams,
-} from '@sight/app/domain/group/model/GroupBookmark';
+} from '@khlug/app/domain/group/model/GroupBookmark';
 
 type GroupBookmarkCreateParams = Omit<
   GroupBookmarkConstructorParams,

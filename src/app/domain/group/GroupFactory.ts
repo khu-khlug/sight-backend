@@ -3,7 +3,7 @@ import { Injectable } from '@nestjs/common';
 import {
   Group,
   GroupConstructorParams,
-} from '@sight/app/domain/group/model/Group';
+} from '@khlug/app/domain/group/model/Group';
 
 type GroupCreateParams = Omit<
   GroupConstructorParams,

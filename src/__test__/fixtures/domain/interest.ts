@@ -1,9 +1,9 @@
 import { faker } from '@faker-js/faker';
 
 import {
-  InterestConstructorParams,
   Interest,
-} from '@sight/app/domain/interest/model/Interest';
+  InterestConstructorParams,
+} from '@khlug/app/domain/interest/model/Interest';
 
 export function generateInterest(
   params?: Partial<InterestConstructorParams>,

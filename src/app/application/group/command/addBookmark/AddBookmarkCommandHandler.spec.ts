@@ -1,23 +1,23 @@
 import { Test } from '@nestjs/testing';
 import { advanceTo, clear } from 'jest-date-mock';
 
-import { AddBookmarkCommand } from '@sight/app/application/group/command/addBookmark/AddBookmarkCommand';
-import { AddBookmarkCommandHandler } from '@sight/app/application/group/command/addBookmark/AddBookmarkCommandHandler';
+import { AddBookmarkCommand } from '@khlug/app/application/group/command/addBookmark/AddBookmarkCommand';
+import { AddBookmarkCommandHandler } from '@khlug/app/application/group/command/addBookmark/AddBookmarkCommandHandler';
 
-import { GroupBookmarkFactory } from '@sight/app/domain/group/GroupBookmarkFactory';
+import { SlackSender } from '@khlug/app/domain/adapter/ISlackSender';
+import { GroupBookmarkFactory } from '@khlug/app/domain/group/GroupBookmarkFactory';
 import {
   GroupBookmarkRepository,
   IGroupBookmarkRepository,
-} from '@sight/app/domain/group/IGroupBookmarkRepository';
+} from '@khlug/app/domain/group/IGroupBookmarkRepository';
 import {
   GroupRepository,
   IGroupRepository,
-} from '@sight/app/domain/group/IGroupRepository';
+} from '@khlug/app/domain/group/IGroupRepository';
 
-import { Message } from '@sight/constant/message';
-import { SlackSender } from '@sight/app/domain/adapter/ISlackSender';
-import { GroupFixture } from '@sight/__test__/fixtures/GroupFixture';
-import { GroupBookmarkFixture } from '@sight/__test__/fixtures/GroupBookmarkFixture';
+import { GroupBookmarkFixture } from '@khlug/__test__/fixtures/GroupBookmarkFixture';
+import { GroupFixture } from '@khlug/__test__/fixtures/GroupFixture';
+import { Message } from '@khlug/constant/message';
 
 describe('AddBookmarkCommandHandler', () => {
   let handler: AddBookmarkCommandHandler;
