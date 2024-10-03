@@ -3,39 +3,53 @@ import { ClsService } from 'nestjs-cls';
 import {
   CanActivate,
   ExecutionContext,
-  Inject,
   Injectable,
   UnauthorizedException,
 } from '@nestjs/common';
 
-import { ITokenVerifier, TokenVerifier } from '@sight/core/auth/ITokenVerifier';
-
 import { Message } from '@sight/constant/message';
+import { LaravelAuthnAdapter } from './LaravelAuthnAdapter';
+import { IRequester } from './IRequester';
+import { InjectRepository } from '@mikro-orm/nestjs';
+import { User } from '@sight/app/domain/user/model/User';
+import { EntityRepository } from '@mikro-orm/core';
+import { UserRole } from './UserRole';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
   constructor(
-    @Inject(TokenVerifier)
-    private readonly tokenVerifier: ITokenVerifier,
+    private readonly laravelAuthnAdapter: LaravelAuthnAdapter,
     private readonly clsService: ClsService,
+
+    @InjectRepository(User)
+    private readonly userRepository: EntityRepository<User>,
   ) {}
 
-  canActivate(context: ExecutionContext): boolean {
+  async canActivate(context: ExecutionContext): Promise<boolean> {
     const req: Request = context.switchToHttp().getRequest();
-    const authorizationHeader = req.headers['authorization'];
+    const rawSession = req.cookies['khlug_session'];
 
-    if (!authorizationHeader) {
+    if (!rawSession) {
       throw new UnauthorizedException(Message.TOKEN_REQUIRED);
     }
 
-    const token = authorizationHeader.split(' ')[1];
-    if (!token) {
-      throw new UnauthorizedException(Message.TOKEN_REQUIRED);
+    const requesterUserId =
+      await this.laravelAuthnAdapter.authenticate(rawSession);
+    if (!requesterUserId) {
+      throw new UnauthorizedException();
     }
 
-    const requester = this.tokenVerifier.verify(token);
+    const user = await this.userRepository.findOne({ id: requesterUserId });
+    if (!user) {
+      throw new UnauthorizedException();
+    }
+
+    const requester: IRequester = {
+      userId: requesterUserId,
+      role: user.manager ? UserRole.MANAGER : UserRole.USER,
+    };
+
     req['requester'] = requester;
-
     this.clsService.set('requester', requester);
 
     return true;
