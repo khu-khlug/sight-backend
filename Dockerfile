@@ -1,4 +1,4 @@
-FROM node:18.18.0-alpine as builder
+FROM node:20-alpine as builder
 
 ENV NODE_ENV build
 WORKDIR /sight
@@ -9,7 +9,7 @@ RUN npm ci
 RUN npm run build \
   && npm prune --production
 
-FROM node:18.18.0-alpine
+FROM node:20-alpine
 
 ENV NODE_ENV production
 WORKDIR /sight
