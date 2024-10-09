@@ -4,20 +4,21 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ClsModule } from 'nestjs-cls';
 
 import { DatabaseConfig } from '@khlug/core/config/DatabaseConfig';
+import { EntityModels } from '@khlug/core/persistence/Entities';
 import { TransactionModule } from '@khlug/core/persistence/transaction/TransactionModule';
 
 @Module({
   imports: [
     ClsModule.forRoot({ middleware: { mount: true } }),
-    ConfigModule.forRoot(),
+    ConfigModule.forRoot({ envFilePath: `.env.${process.env.NODE_ENV}` }),
     MikroOrmModule.forRootAsync({
       inject: [ConfigService],
       useFactory: (configService: ConfigService) => {
-        const databaseConfig = configService.get<DatabaseConfig>('database');
+        const databaseConfig =
+          configService.getOrThrow<DatabaseConfig>('database');
 
         return {
-          entities: ['./dist/**/entities/*.js'],
-          entitiesTs: ['./src/**/entities/*.ts'],
+          entities: EntityModels,
           type: 'mysql',
           host: databaseConfig?.host,
           port: databaseConfig?.port,
