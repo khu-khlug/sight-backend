@@ -13,6 +13,7 @@ export const Message = {
   USER_NOT_FOUND: 'User not found',
   SOME_INTERESTS_NOT_FOUND: 'Some interests not found',
   GROUP_NOT_FOUND: 'Group not found',
+  SOME_DOOR_LOCK_PASSWORD_NOT_FOUND: '일부 도어락 비밀번호가 존재하지 않습니다',
 
   // 422 Unprocessable Entity
   GRADUATED_USER_ONLY_CAN_CHANGE_EMAIL: 'Graduated user only can change email',
