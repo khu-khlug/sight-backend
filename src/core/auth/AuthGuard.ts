@@ -9,13 +9,12 @@ import {
 import { Request } from 'express';
 import { ClsService } from 'nestjs-cls';
 
+import { AUTH_DECORATOR_METADATA_KEY } from '@khlug/core/auth/Auth';
+import { IRequester } from '@khlug/core/auth/IRequester';
+import { LaravelAuthnAdapter } from '@khlug/core/auth/LaravelAuthnAdapter';
+import { UserRole } from '@khlug/core/auth/UserRole';
+
 import { User } from '@khlug/app/domain/user/model/User';
-
-import { Message } from '@khlug/constant/message';
-
-import { IRequester } from './IRequester';
-import { LaravelAuthnAdapter } from './LaravelAuthnAdapter';
-import { UserRole } from './UserRole';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
@@ -29,10 +28,19 @@ export class AuthGuard implements CanActivate {
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const req: Request = context.switchToHttp().getRequest();
+
+    const authMetadata = Reflect.getMetadata(
+      AUTH_DECORATOR_METADATA_KEY,
+      context.getHandler(),
+    );
+    if (!authMetadata) {
+      return true;
+    }
+
     const rawSession = req.cookies['khlug_session'];
 
     if (!rawSession) {
-      throw new UnauthorizedException(Message.TOKEN_REQUIRED);
+      throw new UnauthorizedException();
     }
 
     const requesterUserId =
@@ -50,6 +58,11 @@ export class AuthGuard implements CanActivate {
       userId: requesterUserId,
       role: user.manager ? UserRole.MANAGER : UserRole.USER,
     };
+
+    const { roles } = authMetadata;
+    if (!roles.includes(requester.role)) {
+      throw new UnauthorizedException();
+    }
 
     req['requester'] = requester;
     this.clsService.set('requester', requester);
