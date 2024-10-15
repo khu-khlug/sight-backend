@@ -15,6 +15,7 @@ ENV NODE_ENV production
 WORKDIR /sight
 
 COPY --from=builder /sight/package*.json ./
+COPY --from=builder /sight/.env.* ./
 COPY --from=builder /sight/node_modules/ ./node_modules/
 COPY --from=builder /sight/dist/ ./dist/
 
