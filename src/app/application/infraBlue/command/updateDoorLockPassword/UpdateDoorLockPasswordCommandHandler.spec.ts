@@ -4,14 +4,9 @@ import { Test } from '@nestjs/testing';
 import { advanceTo, clear } from 'jest-date-mock';
 
 import { UpdateDoorLockPasswordCommand } from '@khlug/app/application/infraBlue/command/updateDoorLockPassword/UpdateDoorLockPasswordCommand';
-import {
-  FACILITY_TEAM_PASSWORD_CACHE_ID,
-  JAJUDY_PASSWORD_CACHE_ID,
-  MASTER_PASSWORD_CACHE_ID,
-  UpdateDoorLockPasswordCommandHandler,
-} from '@khlug/app/application/infraBlue/command/updateDoorLockPassword/UpdateDoorLockPasswordCommandHandler';
+import { UpdateDoorLockPasswordCommandHandler } from '@khlug/app/application/infraBlue/command/updateDoorLockPassword/UpdateDoorLockPasswordCommandHandler';
 
-import { Cache } from '@khlug/app/domain/cache/model/Cache';
+import { Cache, CacheId } from '@khlug/app/domain/cache/model/Cache';
 
 import { CacheFixture } from '@khlug/__test__/fixtures/CacheFixture';
 import { Message } from '@khlug/constant/message';
@@ -58,15 +53,15 @@ describe('UpdateDoorLockPasswordCommandHandler', () => {
 
     test('비밀번호를 변경해야 한다', async () => {
       const masterPassword = CacheFixture.raw({
-        id: MASTER_PASSWORD_CACHE_ID,
+        id: CacheId.masterPassword,
         content: 'oldMaster',
       });
       const jajudyPassword = CacheFixture.raw({
-        id: JAJUDY_PASSWORD_CACHE_ID,
+        id: CacheId.jajudyPassword,
         content: 'oldJajudy',
       });
       const facilityTeamPassword = CacheFixture.raw({
-        id: FACILITY_TEAM_PASSWORD_CACHE_ID,
+        id: CacheId.facilityTeamPassword,
         content: 'oldFacilityTeam',
       });
 
