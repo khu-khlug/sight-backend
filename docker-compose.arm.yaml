@@ -1,0 +1,3 @@
+services:
+  mysql:
+    platform: linux/arm64
