@@ -5,9 +5,11 @@ import { CoreModule } from '@khlug/core/core.module';
 
 import { Cache } from '@khlug/app/domain/cache/model/Cache';
 
+import { AppModule } from '@khlug/app/AppModule';
+
 @Module({
-  imports: [CoreModule, MikroOrmModule.forFeature([Cache])],
+  imports: [AppModule, CoreModule, MikroOrmModule.forFeature([Cache])],
   controllers: [],
   providers: [],
 })
-export class AppModule {}
+export class RootModule {}
