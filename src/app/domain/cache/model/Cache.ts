@@ -10,6 +10,12 @@ export type CacheConstructorParams = {
   updatedAt: Date;
 };
 
+export const CacheId = {
+  masterPassword: '100',
+  jajudyPassword: '101',
+  facilityTeamPassword: '102',
+};
+
 // 흔히 사용되는 용어 "캐시"를 가리키는 것이 아님.
 // 레거시 모델로써, 테이블로 만들기에는 데이터의 수가 상당히 적으나,
 // 동적으로 변경되어야 하는 데이터들이 모여있는 테이블.

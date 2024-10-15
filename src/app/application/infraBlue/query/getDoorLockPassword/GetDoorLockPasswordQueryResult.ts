@@ -1,7 +1,15 @@
 import { IQueryResult } from '@nestjs/cqrs';
 
-import { DoorLockPasswordView } from '@khlug/app/application/infraBlue/query/view/DoorLockPasswordView';
+import { Typeof } from '@khlug/util/types';
 
 export class GetDoorLockPasswordQueryResult implements IQueryResult {
-  constructor(readonly view: DoorLockPasswordView) {}
+  master: string;
+  forJajudy: string;
+  forFacilityTeam: string;
+
+  constructor(params: Typeof<GetDoorLockPasswordQueryResult>) {
+    this.master = params.master;
+    this.forJajudy = params.forJajudy;
+    this.forFacilityTeam = params.forFacilityTeam;
+  }
 }
