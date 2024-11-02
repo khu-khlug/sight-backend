@@ -1,19 +1,19 @@
 import { Entity, PrimaryKey, Property } from '@mikro-orm/core';
-import { IsDate, IsNotEmpty, IsString, Length } from 'class-validator';
+import { IsDate, IsInt, IsNotEmpty, IsString, Length } from 'class-validator';
 
 import { ClassValidator } from '@khlug/util/validator/ClassValidator';
 
 export type CacheConstructorParams = {
-  id: string;
+  id: number;
   name: string;
   content: string;
   updatedAt: Date;
 };
 
 export const CacheId = {
-  masterPassword: '100',
-  jajudyPassword: '101',
-  facilityTeamPassword: '102',
+  masterPassword: 100,
+  jajudyPassword: 101,
+  facilityTeamPassword: 102,
 };
 
 // 흔히 사용되는 용어 "캐시"를 가리키는 것이 아님.
@@ -21,10 +21,10 @@ export const CacheId = {
 // 동적으로 변경되어야 하는 데이터들이 모여있는 테이블.
 @Entity({ tableName: 'khlug_cache' })
 export class Cache {
-  @PrimaryKey({ type: 'varchar', length: 50, name: 'id' })
-  @IsString()
+  @PrimaryKey({ type: 'int', length: 11, name: 'id' })
+  @IsInt()
   @IsNotEmpty()
-  private _id: string;
+  private _id: number;
 
   @Property({ type: 'varchar', length: 255, name: 'name' })
   @IsString()
@@ -54,7 +54,7 @@ export class Cache {
     ClassValidator.validate(this);
   }
 
-  get id(): string {
+  get id(): number {
     return this._id;
   }
 
