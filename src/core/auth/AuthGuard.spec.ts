@@ -1,5 +1,4 @@
-import { EntityRepository } from '@mikro-orm/mysql';
-import { getRepositoryToken } from '@mikro-orm/nestjs';
+import { EntityManager } from '@mikro-orm/mysql';
 import { ExecutionContext, UnauthorizedException } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
 import { advanceTo, clear } from 'jest-date-mock';
@@ -14,15 +13,11 @@ import { IRequester } from '@khlug/core/auth/IRequester';
 import { LaravelAuthnAdapter } from '@khlug/core/auth/LaravelAuthnAdapter';
 import { UserRole } from '@khlug/core/auth/UserRole';
 
-import { User } from '@khlug/app/domain/user/model/User';
-
-import { generateUser } from '@khlug/__test__/fixtures/domain';
-
 describe('AuthGuard', () => {
   let authGuard: AuthGuard;
   let laravelAuthnAdapter: jest.Mocked<LaravelAuthnAdapter>;
   let clsService: jest.Mocked<ClsService>;
-  let userRepository: jest.Mocked<EntityRepository<User>>;
+  let entityManager: jest.Mocked<EntityManager>;
 
   beforeAll(() => advanceTo(new Date()));
 
@@ -45,9 +40,12 @@ describe('AuthGuard', () => {
           },
         },
         {
-          provide: getRepositoryToken(User),
+          provide: EntityManager,
           useValue: {
-            findOne: jest.fn(),
+            getConnection: (() => {
+              const connectionMock = { execute: jest.fn() };
+              return () => connectionMock;
+            })(),
           },
         },
       ],
@@ -56,7 +54,7 @@ describe('AuthGuard', () => {
     authGuard = testModule.get(AuthGuard);
     laravelAuthnAdapter = testModule.get(LaravelAuthnAdapter);
     clsService = testModule.get(ClsService);
-    userRepository = testModule.get(getRepositoryToken(User));
+    entityManager = testModule.get(EntityManager);
   });
 
   afterEach(() => clear());
@@ -121,7 +119,7 @@ describe('AuthGuard', () => {
         context.getHandler(),
       );
       laravelAuthnAdapter.authenticate.mockResolvedValue('1');
-      userRepository.findOne.mockResolvedValue(null);
+      entityManager.getConnection().execute = jest.fn().mockResolvedValue([]);
 
       await expect(authGuard.canActivate(context)).rejects.toThrow(
         UnauthorizedException,
@@ -138,9 +136,9 @@ describe('AuthGuard', () => {
         context.getHandler(),
       );
       laravelAuthnAdapter.authenticate.mockResolvedValue('1');
-      userRepository.findOne.mockResolvedValue(
-        generateUser({ manager: false }),
-      );
+      entityManager.getConnection().execute = jest
+        .fn()
+        .mockResolvedValue([{ id: '1', manager: false }]);
 
       await expect(authGuard.canActivate(context)).rejects.toThrow(
         UnauthorizedException,
@@ -158,9 +156,9 @@ describe('AuthGuard', () => {
         context.getHandler(),
       );
       laravelAuthnAdapter.authenticate.mockResolvedValue(userId);
-      userRepository.findOne.mockResolvedValue(
-        generateUser({ id: userId, manager: false }),
-      );
+      entityManager.getConnection().execute = jest
+        .fn()
+        .mockResolvedValue([{ id: userId, manager: false }]);
 
       await expect(authGuard.canActivate(context)).resolves.toBe(true);
 
@@ -184,9 +182,9 @@ describe('AuthGuard', () => {
         context.getHandler(),
       );
       laravelAuthnAdapter.authenticate.mockResolvedValue(userId);
-      userRepository.findOne.mockResolvedValue(
-        generateUser({ id: userId, manager: false }),
-      );
+      entityManager.getConnection().execute = jest
+        .fn()
+        .mockResolvedValue([{ id: userId, manager: false }]);
 
       await expect(authGuard.canActivate(context)).resolves.toBe(true);
 

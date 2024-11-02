@@ -5,6 +5,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { CqrsModule } from '@nestjs/cqrs';
 import { ClsModule } from 'nestjs-cls';
 
+import { AuthModule } from '@khlug/core/auth/AuthModule';
 import { configuration } from '@khlug/core/config';
 import { DatabaseConfig } from '@khlug/core/config/DatabaseConfig';
 import { EntityModels } from '@khlug/core/persistence/Entities';
@@ -12,6 +13,7 @@ import { EntityModels } from '@khlug/core/persistence/Entities';
 @Global()
 @Module({
   imports: [
+    AuthModule,
     ClsModule.forRoot({ middleware: { mount: true } }),
     ConfigModule.forRoot({
       envFilePath: `.env.${process.env.NODE_ENV}`,

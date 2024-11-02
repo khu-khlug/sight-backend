@@ -1,5 +1,4 @@
-import { EntityRepository } from '@mikro-orm/core';
-import { InjectRepository } from '@mikro-orm/nestjs';
+import { EntityManager } from '@mikro-orm/mysql';
 import {
   CanActivate,
   ExecutionContext,
@@ -14,16 +13,12 @@ import { IRequester } from '@khlug/core/auth/IRequester';
 import { LaravelAuthnAdapter } from '@khlug/core/auth/LaravelAuthnAdapter';
 import { UserRole } from '@khlug/core/auth/UserRole';
 
-import { User } from '@khlug/app/domain/user/model/User';
-
 @Injectable()
 export class AuthGuard implements CanActivate {
   constructor(
     private readonly laravelAuthnAdapter: LaravelAuthnAdapter,
     private readonly clsService: ClsService,
-
-    @InjectRepository(User)
-    private readonly userRepository: EntityRepository<User>,
+    private readonly em: EntityManager,
   ) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
@@ -49,11 +44,15 @@ export class AuthGuard implements CanActivate {
       throw new UnauthorizedException();
     }
 
-    const user = await this.userRepository.findOne({ id: requesterUserId });
-    if (!user) {
+    // TODO: User 엔티티 정의 후 수정 필요
+    const result: { manager: boolean }[] = await this.em
+      .getConnection()
+      .execute('SELECT * FROM khlug_member WHERE id = ?', [requesterUserId]);
+    if (!result || result.length === 0) {
       throw new UnauthorizedException();
     }
 
+    const user = result[0];
     const requester: IRequester = {
       userId: requesterUserId,
       role: user.manager ? UserRole.MANAGER : UserRole.USER,
