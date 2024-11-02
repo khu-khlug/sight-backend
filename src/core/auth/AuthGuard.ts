@@ -47,7 +47,7 @@ export class AuthGuard implements CanActivate {
     // TODO: User 엔티티 정의 후 수정 필요
     const result: { manager: boolean }[] = await this.em
       .getConnection()
-      .execute('SELECT * FROM khlug_member WHERE id = ?', [requesterUserId]);
+      .execute('SELECT * FROM khlug_members WHERE id = ?', [requesterUserId]);
     if (!result || result.length === 0) {
       throw new UnauthorizedException();
     }
