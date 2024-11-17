@@ -13,7 +13,10 @@ async function bootstrap() {
   const appConfig = app.get(ConfigService).getOrThrow<AppConfig>('app');
   const corsOptions: CorsOptions | undefined =
     appConfig.env === 'production'
-      ? { origin: ['https://khlug.org', 'https://app.khlug.org'] }
+      ? {
+          origin: ['https://khlug.org', 'https://app.khlug.org'],
+          credentials: true,
+        }
       : undefined;
 
   app.enableCors(corsOptions);
