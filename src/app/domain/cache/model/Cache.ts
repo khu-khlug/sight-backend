@@ -35,7 +35,7 @@ export class Cache {
   @IsString()
   private _content: string;
 
-  @Property({ type: 'timestamp', name: 'updatedAt' })
+  @Property({ type: 'timestamp', name: 'updated_at' })
   @IsDate()
   private _updatedAt: Date;
 
