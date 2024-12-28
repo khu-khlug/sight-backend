@@ -3,7 +3,7 @@ export interface GroupMemberView {
   groupId: string;
   memberId: string;
   memberName: string;
-  languages: string[] | null;
+  language: string | null;
   interests: {
     id: string;
     name: string;

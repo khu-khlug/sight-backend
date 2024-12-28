@@ -40,7 +40,7 @@ export class UpdateUserCommandHandler
 
   @Transactional()
   async execute(command: UpdateUserCommand): Promise<UpdateUserCommandResult> {
-    const { userId, email, phone, homepage, languages, interestIds, prefer } =
+    const { userId, email, phone, homepage, language, interestIds, prefer } =
       command;
 
     const user = await this.userRepository.findById(userId);
@@ -48,7 +48,7 @@ export class UpdateUserCommandHandler
       throw new NotFoundException(Message.USER_NOT_FOUND);
     }
 
-    user.setProfile({ email, phone, homepage, languages, prefer });
+    user.setProfile({ email, phone, homepage, language, prefer });
     await this.updateInterests(userId, interestIds);
 
     await this.userRepository.save(user);

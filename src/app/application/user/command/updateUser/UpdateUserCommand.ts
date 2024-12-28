@@ -6,7 +6,7 @@ export class UpdateUserCommand implements ICommand {
     readonly email: string,
     readonly phone: string | null,
     readonly homepage: string,
-    readonly languages: string[],
+    readonly language: string,
     readonly interestIds: string[],
     readonly prefer: string,
   ) {}

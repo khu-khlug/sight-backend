@@ -1,5 +1,21 @@
+import {
+  Embedded,
+  Entity,
+  PrimaryKey,
+  Property,
+  Unique,
+} from '@mikro-orm/core';
 import { UnprocessableEntityException } from '@nestjs/common';
 import { AggregateRoot } from '@nestjs/cqrs';
+import {
+  IsBoolean,
+  IsDate,
+  IsInt,
+  IsNotEmpty,
+  IsOptional,
+  IsString,
+  Length,
+} from 'class-validator';
 
 import { UserProfileUpdated } from '@khlug/app/domain/user/event/UserProfileUpdated';
 import { UserState } from '@khlug/app/domain/user/model/constant';
@@ -28,25 +44,114 @@ export type UserConstructorParams = {
   updatedAt: Date;
 };
 
+@Entity({ tableName: 'khlug_members' })
 export class User extends AggregateRoot {
+  @PrimaryKey({ type: 'bigint', length: 20, name: 'id' })
+  @IsInt()
+  @IsNotEmpty()
   private _id: string;
+
+  @Property({ type: 'varchar', length: 127, name: 'name' })
+  @Unique({ name: 'users_name_unique' })
+  @IsString()
+  @Length(1, 127)
   private _name: string;
+
+  @Property({ type: 'varchar', length: 255, name: 'password', nullable: true })
+  @IsString()
+  @IsOptional()
   private _password: string | null;
-  private _profile: Profile;
+
+  @Property({ type: 'char', length: 2, name: 'admission' })
+  @IsString()
+  @Length(2, 2)
   private _admission: string;
+
+  @Property({ type: 'bigint', length: 20, name: 'state' })
+  @IsInt()
   private _state: UserState;
+
+  @Property({ type: 'bigint', length: 20, name: 'expoint' })
+  @IsInt()
   private _point: number;
+
+  @Property({ type: 'tinyint', length: 1, name: 'active' })
+  @IsBoolean()
   private _active: boolean;
+
+  @Property({ type: 'tinyint', length: 1, name: 'manager' })
+  @IsBoolean()
   private _manager: boolean;
+
+  @Property({ type: 'varchar', length: 100, name: 'slack', nullable: true })
+  @IsString()
+  @IsOptional()
   private _slack: string | null;
+
+  @Property({
+    type: 'varchar',
+    length: 100,
+    name: 'remember_token',
+    nullable: true,
+  })
+  @IsString()
+  @IsOptional()
   private _rememberToken: string | null;
+
+  @Property({
+    type: 'timestamp',
+    name: 'khuisauth_at',
+  })
+  @IsDate()
   private _khuisAuthAt: Date;
+
+  @Property({ type: 'timestamp', name: 'return_at', nullable: true })
+  @IsDate()
+  @IsOptional()
   private _returnAt: Date | null;
+
+  @Property({
+    type: 'varchar',
+    length: 191,
+    name: 'return_reason',
+    nullable: true,
+  })
+  @IsString()
+  @IsOptional()
   private _returnReason: string | null;
-  private _lastLoginAt: Date;
-  private _lastEnterAt: Date;
-  private _createdAt: Date;
+
+  @Property({
+    type: 'timestamp',
+    name: 'updated_at',
+    onUpdate: () => new Date(),
+  })
+  @IsDate()
   private _updatedAt: Date;
+
+  @Property({
+    type: 'timestamp',
+    name: 'created_at',
+    onCreate: () => new Date(),
+  })
+  @IsDate()
+  private _createdAt: Date;
+
+  @Property({
+    type: 'timestamp',
+    name: 'last_login',
+  })
+  @IsDate()
+  private _lastLoginAt: Date;
+
+  @Property({
+    type: 'timestamp',
+    name: 'last_enter',
+  })
+  @IsDate()
+  private _lastEnterAt: Date;
+
+  @Embedded(() => Profile)
+  private _profile: Profile;
 
   constructor(params: UserConstructorParams) {
     super();

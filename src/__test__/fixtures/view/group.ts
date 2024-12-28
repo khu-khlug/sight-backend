@@ -50,7 +50,7 @@ export function generateGroupMemberView(
     groupId: faker.string.uuid(),
     memberId: faker.string.uuid(),
     memberName: faker.lorem.word(),
-    languages: [faker.lorem.word()],
+    language: faker.lorem.word(),
     interests: [
       {
         id: faker.string.uuid(),

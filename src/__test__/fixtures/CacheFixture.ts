@@ -7,7 +7,7 @@ import {
 
 function generator(params: Partial<CacheConstructorParams> = {}): Cache {
   return new Cache({
-    id: params.id ?? faker.string.numeric(3),
+    id: params.id ?? faker.number.int(),
     name: params.name ?? faker.string.alpha(10),
     content: params.content ?? faker.string.alpha(10),
     updatedAt: params.updatedAt ?? new Date(),
