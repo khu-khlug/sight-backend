@@ -20,7 +20,7 @@ export function generateUserView(params?: Partial<UserView>): UserView {
       email: faker.internet.email(),
       phone: faker.phone.number(),
       homepage: faker.internet.url(),
-      languages: [faker.lorem.word()],
+      language: faker.lorem.word(),
       prefer: faker.lorem.word(),
     },
     admission: faker.lorem.word(),

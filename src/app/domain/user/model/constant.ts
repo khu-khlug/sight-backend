@@ -1,7 +1,7 @@
 export const UserState = {
-  UNITED: 'UNITED', // 교류
-  ABSENCE: 'ABSENCE', // 휴학
-  UNDERGRADUATE: 'UNDERGRADUATE', // 재학
-  GRADUATE: 'GRADUATE', // 졸업
+  UNITED: -1, // 교류
+  ABSENCE: 0, // 휴학
+  UNDERGRADUATE: 1, // 재학
+  GRADUATE: 2, // 졸업
 } as const;
 export type UserState = (typeof UserState)[keyof typeof UserState];

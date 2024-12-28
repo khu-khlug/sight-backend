@@ -8,7 +8,7 @@ export interface ProfileView {
   email: string | null;
   phone: string | null;
   homepage: string | null;
-  languages: string[] | null;
+  language: string | null;
   prefer: string | null;
 }
 

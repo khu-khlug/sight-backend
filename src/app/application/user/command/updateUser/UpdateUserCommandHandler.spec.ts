@@ -81,7 +81,7 @@ describe('UpdateUserCommandHandler', () => {
     const email = 'email@email.com';
     const phone = null;
     const homepage = 'https://some.home.page/';
-    const languages = ['some', 'languages'];
+    const language = 'some, language';
     const interestIds = ['interest1', 'interest2'];
     const prefer = 'some-prefers';
 
@@ -95,7 +95,7 @@ describe('UpdateUserCommandHandler', () => {
         email,
         phone,
         homepage,
-        languages,
+        language,
         interestIds,
         prefer,
       );
@@ -140,7 +140,7 @@ describe('UpdateUserCommandHandler', () => {
         email,
         phone,
         homepage,
-        languages,
+        language,
         prefer,
       });
     });
