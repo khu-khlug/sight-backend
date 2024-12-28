@@ -1,3 +1,4 @@
+import { ValidationPipe } from '@nestjs/common';
 import { CorsOptions } from '@nestjs/common/interfaces/external/cors-options.interface';
 import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
@@ -21,6 +22,13 @@ async function bootstrap() {
 
   app.enableCors(corsOptions);
   app.use(cookieParser());
+
+  app.useGlobalPipes(
+    new ValidationPipe({
+      whitelist: false,
+      transform: true,
+    }),
+  );
 
   await app.listen(3000);
 }

@@ -44,6 +44,7 @@ export type UserConstructorParams = {
   updatedAt: Date;
 };
 
+// TODO: AggregateRoot 제거
 @Entity({ tableName: 'khlug_members' })
 export class User extends AggregateRoot {
   @PrimaryKey({ type: 'bigint', length: 20, name: 'id' })
