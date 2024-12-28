@@ -25,11 +25,11 @@ export class Profile {
   @Length(1, 255)
   readonly college: string;
 
-  @Property({ type: 'bigint', length: 20, name: 'grade' })
+  @Property({ type: 'int', name: 'grade' })
   @IsInt()
   readonly grade: number;
 
-  @Property({ type: 'bigint', length: 20, name: 'number', nullable: true })
+  @Property({ type: 'int', name: 'number', nullable: true })
   @IsInt()
   @IsOptional()
   readonly number: number | null;

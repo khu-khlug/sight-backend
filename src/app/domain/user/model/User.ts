@@ -47,7 +47,7 @@ export type UserConstructorParams = {
 // TODO: AggregateRoot 제거
 @Entity({ tableName: 'khlug_members' })
 export class User extends AggregateRoot {
-  @PrimaryKey({ type: 'bigint', length: 20, name: 'id' })
+  @PrimaryKey({ type: 'int', name: 'id' })
   @IsInt()
   @IsNotEmpty()
   private _id: string;
@@ -68,11 +68,11 @@ export class User extends AggregateRoot {
   @Length(2, 2)
   private _admission: string;
 
-  @Property({ type: 'bigint', length: 20, name: 'state' })
+  @Property({ type: 'int', name: 'state' })
   @IsInt()
   private _state: UserState;
 
-  @Property({ type: 'bigint', length: 20, name: 'expoint' })
+  @Property({ type: 'int', name: 'expoint' })
   @IsInt()
   private _point: number;
 
@@ -99,10 +99,7 @@ export class User extends AggregateRoot {
   @IsOptional()
   private _rememberToken: string | null;
 
-  @Property({
-    type: 'timestamp',
-    name: 'khuisauth_at',
-  })
+  @Property({ type: 'timestamp', name: 'khuisauth_at' })
   @IsDate()
   private _khuisAuthAt: Date;
 
@@ -137,21 +134,15 @@ export class User extends AggregateRoot {
   @IsDate()
   private _createdAt: Date;
 
-  @Property({
-    type: 'timestamp',
-    name: 'last_login',
-  })
+  @Property({ type: 'timestamp', name: 'last_login' })
   @IsDate()
   private _lastLoginAt: Date;
 
-  @Property({
-    type: 'timestamp',
-    name: 'last_enter',
-  })
+  @Property({ type: 'timestamp', name: 'last_enter' })
   @IsDate()
   private _lastEnterAt: Date;
 
-  @Embedded(() => Profile)
+  @Embedded(() => Profile, { prefix: '' })
   private _profile: Profile;
 
   constructor(params: UserConstructorParams) {
