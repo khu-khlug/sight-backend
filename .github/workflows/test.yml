@@ -27,4 +27,4 @@ jobs:
         run: yarn install --immutable
 
       - name: Run tests
-        run: yarn test:cov --maxWorkers=100%
+        run: yarn test --maxWorkers=100%
