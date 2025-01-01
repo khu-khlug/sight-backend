@@ -23,7 +23,7 @@ services:
   sight:
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.Local
     restart: always
     ports:
       - 3000:3000
@@ -32,3 +32,7 @@ services:
     depends_on:
       mysql:
         condition: service_healthy
+    volumes:
+      - .:/sight
+      # 개발 환경과 도커 환경의 OS가 다르기 때문에 `node_modules`를 공유하지 않습니다.
+      - /sight/node_modules

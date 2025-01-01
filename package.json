@@ -2,7 +2,10 @@
   "name": "sight-backend",
   "version": "0.0.1",
   "description": "",
-  "author": "Coalery",
+  "author": "KHLUG",
+  "maintainers": [
+    "Coalery <doralife12@gmail.com>"
+  ],
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
@@ -18,8 +21,7 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
-    "compose": "docker-compose down && docker-compose up",
-    "compose:arm": "docker-compose -f docker-compose.yaml -f docker-compose.arm.yaml down && docker-compose -f docker-compose.yaml -f docker-compose.arm.yaml up"
+    "compose": "docker-compose down && docker-compose up"
   },
   "dependencies": {
     "@mikro-orm/core": "^6.3.13",
