@@ -3,21 +3,23 @@ FROM node:20-alpine as builder
 ENV NODE_ENV build
 WORKDIR /sight
 
-COPY ./ /sight
+COPY . .
 
-RUN npm ci
-RUN npm run build \
-  && npm prune --production
+RUN corepack enable && corepack prepare yarn@4.6.0 --activate
+RUN yarn install --immutable
+RUN yarn build
 
 FROM node:20-alpine
 
 ENV NODE_ENV production
 WORKDIR /sight
 
-COPY --from=builder /sight/package*.json ./
+RUN corepack enable && corepack prepare yarn@4.6.0 --activate
+
+COPY --from=builder /sight/package.json /sight/yarn.lock  ./
 COPY --from=builder /sight/.env.* ./
 COPY --from=builder /sight/node_modules/ ./node_modules/
 COPY --from=builder /sight/dist/ ./dist/
 
 EXPOSE 3000
-CMD ["npm", "run", "start:prod"]
+CMD ["yarn", "start:prod"]

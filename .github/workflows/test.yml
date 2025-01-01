@@ -21,15 +21,28 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version-file: '.nvmrc'
+          cache: 'yarn'
+
+      - name: Prepare yarn
+        run: corepack enable && corepack prepare yarn@4.6.0 --activate
+
+      - name: Get yarn version
+        id: yarn-version
+        run: echo "YARN_VERSION=$(yarn -v)" >> $GITHUB_OUTPUT
+
+      - name: Get cache dir path
+        id: yarn-cache-dir-path
+        run: echo "CACHE_DIR=$(yarn config get cacheFolder)" >> $GITHUB_OUTPUT
 
       - name: Cache Node.js modules
         uses: actions/cache@v3
         with:
-          path: ~/.npm
-          key: ${{ runner.OS }}-node-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.OS }}-node-
-            ${{ runner.OS }}-
+          path: ${{ steps.yarn-cache-dir-path.outputs.CACHE_DIR }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}-${{ steps.yarn-version.outputs.YARN_VERSION }}
+          restore-keys: ${{ runner.OS }}-yarn-${{ hashFiles('**/yarn.lock') }}-
 
-      - run: npm ci
-      - run: npm run test -- --maxWorkers=100%
+      - name: Install dependencies
+        run: yarn install --immutable
+
+      - name: Run tests
+        run: yarn test:cov --maxWorkers=100%
