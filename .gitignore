@@ -37,4 +37,8 @@ test.sqlite3
 # yarn
 .yarn
 
+# 실수로 `npm install` 하는 경우를 방지하기 위함입니다.
+# `yarn install`을 사용해주세요.
+package-lock.json
+
 .env.production
