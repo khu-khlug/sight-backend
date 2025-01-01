@@ -1,14 +1,32 @@
-## SightBackend Repository
+# sight-backend
 
 쿠러그 사이트의 백엔드 레포지토리입니다.
 
 [![Coverage Status](https://coveralls.io/repos/github/khu-khlug/sight-backend/badge.svg?branch=main)](https://coveralls.io/github/khu-khlug/sight-backend?branch=main)
 
-## Stacks
+## 사전 준비
 
-![NestJS](https://img.shields.io/badge/nestjs-%23E0234E.svg?style=for-the-badge&logo=nestjs&logoColor=white)
-![Jest](https://img.shields.io/badge/-jest-%23C21325?style=for-the-badge&logo=jest&logoColor=white)
-![MySQL](https://img.shields.io/badge/mysql-%2300f.svg?style=for-the-badge&logo=mysql&logoColor=white)
-![AWS](https://img.shields.io/badge/AWS-%23FF9900.svg?style=for-the-badge&logo=amazon-aws&logoColor=white)
-![Docker](https://img.shields.io/badge/docker-%230db7ed.svg?style=for-the-badge&logo=docker&logoColor=white)
-![GitHub Actions](https://img.shields.io/badge/github%20actions-%232671E5.svg?style=for-the-badge&logo=githubactions&logoColor=white)
+- Node.js v20.17.0
+  - `nvm`을 사용하면 더 편합니다.
+- Docker
+  - 개발 환경이 도커로 이루어져 있습니다.
+
+## 설치
+
+```sh
+git clone https://github.com/khu-khlug/sight-backend.git
+npm install -g yarn
+yarn install
+```
+
+## 로컬 개발 시
+
+```sh
+yarn compose
+```
+
+## 테스트 실행
+
+```sh
+yarn test
+```
