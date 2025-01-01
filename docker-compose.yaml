@@ -14,8 +14,11 @@ services:
     volumes:
       - ./.mysql/:/docker-entrypoint-initdb.d
     healthcheck:
-      test: ["CMD", "mysqladmin" ,"ping", "-hlocalhost", "-ptest"]
-      interval: 5s
+      test: [
+        "CMD-SHELL", 
+        "mysql -uroot -ptest -e 'SELECT 1;' || exit 1"
+      ]
+      interval: 1s
       timeout: 1s
       retries: 20
       start_period: 5s
@@ -24,6 +27,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.Local
+    container_name: sight-backend
     restart: always
     ports:
       - 3000:3000

@@ -1,35 +1,30 @@
 name: Test for merged commit
 
 on:
-  push:
+  pull_request:
     paths-ignore:
       - 'docs/**'
     branches:
       - main
-  pull_request:
-    branches:
-      - main
 
 jobs:
-  build:
+  test:
     runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v4
 
+      - name: Prepare yarn
+        run: corepack enable && corepack prepare yarn@4.6.0 --activate
+
       - name: Setup NodeJS
         uses: actions/setup-node@v4
         with:
           node-version-file: '.nvmrc'
+          cache: 'yarn'
 
-      - name: Cache Node.js modules
-        uses: actions/cache@v3
-        with:
-          path: ~/.npm
-          key: ${{ runner.OS }}-node-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.OS }}-node-
-            ${{ runner.OS }}-
+      - name: Install dependencies
+        run: yarn install --immutable
 
-      - run: npm ci
-      - run: npm run test -- --maxWorkers=100%
+      - name: Run tests
+        run: yarn test --maxWorkers=100%
