@@ -1,6 +1,6 @@
 export class AddBookmarkCommand {
   constructor(
     readonly groupId: string,
-    readonly userId: string,
+    readonly userId: number,
   ) {}
 }

@@ -71,7 +71,7 @@ export class DisablePortfolioCommandHandler
     this.sendMessageToAdminUser(group);
   }
 
-  private checkGroupAdmin(group: Group, requesterUserId: string): void {
+  private checkGroupAdmin(group: Group, requesterUserId: number): void {
     if (group.adminUserId !== requesterUserId) {
       throw new ForbiddenException(Message.ONLY_GROUP_ADMIN_CAN_EDIT_GROUP);
     }

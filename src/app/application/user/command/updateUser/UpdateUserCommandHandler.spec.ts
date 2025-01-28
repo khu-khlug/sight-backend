@@ -77,7 +77,7 @@ describe('UpdateUserCommandHandler', () => {
 
     const newUserInterestIds = ['new-user-interest-1', 'new-user-interest-2'];
 
-    const userId = 'userId';
+    const userId = 123;
     const email = 'email@email.com';
     const phone = null;
     const homepage = 'https://some.home.page/';

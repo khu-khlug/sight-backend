@@ -88,7 +88,7 @@ describe('CreateGroupCommandHandler', () => {
       interestRepository.findByIds.mockResolvedValue([]);
 
       const command = new CreateGroupCommand({
-        requesterUserId: 'userId',
+        requesterUserId: 100,
         title: 'title',
         category: GroupCategory.DOCUMENTATION,
         grade: GroupAccessGrade.MEMBER,
@@ -111,7 +111,7 @@ describe('CreateGroupCommandHandler', () => {
       jest.spyOn(groupFactory, 'create').mockReturnValue(newGroup);
 
       const command = new CreateGroupCommand({
-        requesterUserId: 'userId',
+        requesterUserId: 100,
         title: 'title',
         category: GroupCategory.DOCUMENTATION,
         grade: GroupAccessGrade.MEMBER,
@@ -134,7 +134,7 @@ describe('CreateGroupCommandHandler', () => {
       jest.spyOn(groupMemberFactory, 'create').mockReturnValue(newGroupMember);
 
       const command = new CreateGroupCommand({
-        requesterUserId: 'userId',
+        requesterUserId: 100,
         title: 'title',
         category: GroupCategory.DOCUMENTATION,
         grade: GroupAccessGrade.MEMBER,
@@ -160,7 +160,7 @@ describe('CreateGroupCommandHandler', () => {
       jest.spyOn(groupFactory, 'create').mockReturnValue(newGroup);
 
       const command = new CreateGroupCommand({
-        requesterUserId: 'userId',
+        requesterUserId: 100,
         title: 'title',
         category: GroupCategory.DOCUMENTATION,
         grade: GroupAccessGrade.MEMBER,

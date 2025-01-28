@@ -24,7 +24,7 @@ import { Profile } from '@khlug/app/domain/user/model/Profile';
 import { Message } from '@khlug/constant/message';
 
 export type UserConstructorParams = {
-  id: string;
+  id: number;
   name: string;
   password: string | null;
   profile: Profile;
@@ -47,10 +47,10 @@ export type UserConstructorParams = {
 // TODO: AggregateRoot 제거
 @Entity({ tableName: 'khlug_members' })
 export class User extends AggregateRoot {
-  @PrimaryKey({ type: 'int', name: 'id' })
+  @PrimaryKey({ type: 'bigint', name: 'id' })
   @IsInt()
   @IsNotEmpty()
-  private _id: string;
+  private _id: number;
 
   @Property({ type: 'varchar', length: 127, name: 'name' })
   @Unique({ name: 'users_name_unique' })
@@ -199,7 +199,7 @@ export class User extends AggregateRoot {
     this._updatedAt = new Date();
   }
 
-  get id(): string {
+  get id(): number {
     return this._id;
   }
 

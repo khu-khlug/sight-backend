@@ -14,7 +14,7 @@ export function generateGroupMember(
 ): GroupMember {
   return new GroupMember({
     id: faker.string.uuid(),
-    userId: faker.string.uuid(),
+    userId: faker.number.int(),
     groupId: faker.string.uuid(),
     createdAt: faker.date.anytime(),
     ...params,

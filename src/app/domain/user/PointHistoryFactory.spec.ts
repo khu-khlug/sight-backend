@@ -10,7 +10,7 @@ describe('PointHistoryFactory', () => {
   const now = new Date();
 
   const pointHistoryId = 'point-history-id';
-  const userId = 'user-id';
+  const userId = 123;
   const reason = 'reason';
   const point = 10;
   const createdAt = now;

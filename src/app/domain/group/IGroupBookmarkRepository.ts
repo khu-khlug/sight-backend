@@ -8,6 +8,6 @@ export interface IGroupBookmarkRepository
   extends IGenericRepository<GroupBookmark, string> {
   findByGroupIdAndUserId: (
     groupId: string,
-    userId: string,
+    userId: number,
   ) => Promise<GroupBookmark | null>;
 }

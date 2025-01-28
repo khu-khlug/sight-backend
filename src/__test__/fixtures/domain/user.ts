@@ -10,7 +10,7 @@ import { User, UserConstructorParams } from '@khlug/app/domain/user/model/User';
 
 export function generateUser(params?: Partial<UserConstructorParams>): User {
   return new User({
-    id: faker.string.uuid(),
+    id: faker.number.int(),
     name: faker.lorem.word(),
     password: faker.lorem.word(),
     profile: new Profile({
@@ -47,7 +47,7 @@ export function generatePointHistory(
 ): PointHistory {
   return new PointHistory({
     id: faker.string.uuid(),
-    userId: faker.string.uuid(),
+    userId: faker.number.int(),
     point: faker.number.int(),
     reason: faker.lorem.sentence(),
     createdAt: faker.date.anytime(),

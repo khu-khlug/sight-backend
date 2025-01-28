@@ -2,14 +2,14 @@ import { AggregateRoot } from '@nestjs/cqrs';
 
 export type UserInterestConstructorParams = {
   id: string;
-  userId: string;
+  userId: number;
   interestId: string;
   createdAt: Date;
 };
 
 export class UserInterest extends AggregateRoot {
   private _id: string;
-  private _userId: string;
+  private _userId: number;
   private _interestId: string;
   private _createdAt: Date;
 
@@ -25,7 +25,7 @@ export class UserInterest extends AggregateRoot {
     return this._id;
   }
 
-  get userId(): string {
+  get userId(): number {
     return this._userId;
   }
 

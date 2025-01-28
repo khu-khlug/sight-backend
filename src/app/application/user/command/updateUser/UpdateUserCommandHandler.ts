@@ -57,7 +57,7 @@ export class UpdateUserCommandHandler
   }
 
   private async updateInterests(
-    userId: string,
+    userId: number,
     interestIds: string[],
   ): Promise<void> {
     const interests = await this.interestRepository.findByIds(interestIds);

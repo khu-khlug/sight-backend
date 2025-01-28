@@ -10,7 +10,7 @@ function generator(
 ): GroupBookmark {
   return new GroupBookmark({
     id: faker.string.uuid(),
-    userId: faker.string.uuid(),
+    userId: faker.number.int(),
     groupId: faker.string.uuid(),
     createdAt: faker.date.anytime(),
     ...params,

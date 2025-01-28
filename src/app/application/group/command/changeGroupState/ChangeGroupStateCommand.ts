@@ -1,7 +1,7 @@
 import { GroupState } from '@khlug/app/domain/group/model/constant';
 
 type ChangeGroupStateRequester = {
-  userId: string;
+  userId: number;
   isManager: boolean;
 };
 

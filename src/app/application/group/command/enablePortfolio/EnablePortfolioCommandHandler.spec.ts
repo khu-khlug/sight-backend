@@ -78,7 +78,7 @@ describe('EnablePortfolioCommandHandler', () => {
     test('그룹이 존재하지 않으면 예외를 발생시켜야 한다', async () => {
       groupRepository.findById.mockResolvedValue(null);
 
-      const command = new EnablePortfolioCommand('groupId', 'requesterUserId');
+      const command = new EnablePortfolioCommand('groupId', 100);
       await expect(handler.execute(command)).rejects.toThrow(
         Message.GROUP_NOT_FOUND,
       );
@@ -86,7 +86,7 @@ describe('EnablePortfolioCommandHandler', () => {
 
     test('요청자가 그룹장이 아니라면 예외를 발생시켜야 한다', async () => {
       const group = GroupFixture.inProgressJoinable({ hasPortfolio: false });
-      const notAdminUserId = 'not-admin-user-id';
+      const notAdminUserId = 999;
 
       groupRepository.findById.mockResolvedValue(group);
 
@@ -124,7 +124,7 @@ describe('EnablePortfolioCommandHandler', () => {
     test('모든 그룹원에게 포인트를 부여해야 한다', async () => {
       const group = GroupFixture.inProgressJoinable({ hasPortfolio: false });
       const adminUserId = group.adminUserId;
-      const groupMemberUserIds = ['user1', 'user2'];
+      const groupMemberUserIds = [101, 102];
 
       groupRepository.findById.mockResolvedValue(group);
       groupMemberRepository.findByGroupId.mockResolvedValue([

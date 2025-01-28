@@ -44,7 +44,7 @@ describe('UpdateUnitedUserCommandHandler', () => {
     let user: User;
     let command: UpdateUnitedUserCommand;
 
-    const userId = 'userId';
+    const userId = 123;
     const newEmail = 'new-email@email.com';
 
     beforeEach(() => {

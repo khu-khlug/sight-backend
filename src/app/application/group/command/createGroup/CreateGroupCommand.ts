@@ -8,7 +8,7 @@ import {
 import { Typeof } from '@khlug/util/types';
 
 export class CreateGroupCommand implements ICommand {
-  readonly requesterUserId: string;
+  readonly requesterUserId: number;
   readonly title: string;
   readonly category: GroupCategory;
   readonly grade: GroupAccessGrade;

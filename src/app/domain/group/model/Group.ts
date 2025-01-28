@@ -16,13 +16,13 @@ export type GroupConstructorParams = {
   category: GroupCategory;
   state: GroupState;
   title: string;
-  authorUserId: string;
-  adminUserId: string;
+  authorUserId: number;
+  adminUserId: number;
   purpose: string | null;
   interestIds: string[];
   technology: string[];
   grade: GroupAccessGrade;
-  lastUpdaterUserId: string;
+  lastUpdaterUserId: number;
   repository: string | null;
   allowJoin: boolean;
   hasPortfolio: boolean;
@@ -35,13 +35,13 @@ export class Group extends AggregateRoot {
   private _category: GroupCategory;
   private _state: GroupState;
   private _title: string;
-  private _authorUserId: string;
-  private _adminUserId: string; // 구 master
+  private _authorUserId: number;
+  private _adminUserId: number; // 구 master
   private _purpose: string | null;
   private _interestIds: string[];
   private _technology: string[];
   private _grade: GroupAccessGrade;
-  private _lastUpdaterUserId: string;
+  private _lastUpdaterUserId: number;
   private _repository: string | null;
   private _allowJoin: boolean;
   private _hasPortfolio: boolean;
@@ -182,11 +182,11 @@ export class Group extends AggregateRoot {
     return this._title;
   }
 
-  get authorUserId(): string {
+  get authorUserId(): number {
     return this._authorUserId;
   }
 
-  get adminUserId(): string {
+  get adminUserId(): number {
     return this._adminUserId;
   }
 
@@ -214,7 +214,7 @@ export class Group extends AggregateRoot {
     return this._grade;
   }
 
-  get lastUpdaterUserId(): string {
+  get lastUpdaterUserId(): number {
     return this._lastUpdaterUserId;
   }
 
