@@ -11,6 +11,7 @@
   "scripts": {
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
+    "typecheck": "tsc --noEmit",
     "start": "nest start",
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
@@ -19,7 +20,9 @@
     "test": "jest",
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
-    "compose": "docker-compose down && docker-compose up"
+    "mikro-orm": "node -r ts-node/register -r tsconfig-paths/register ./node_modules/.bin/mikro-orm",
+    "schema:update": "yarn mikro-orm schema:update --run",
+    "compose": "docker compose down && docker compose up"
   },
   "dependencies": {
     "@mikro-orm/core": "^6.4.2",
@@ -64,6 +67,7 @@
     "jest-date-mock": "^1.0.10",
     "prettier": "^3.4.2",
     "source-map-support": "^0.5.21",
+    "ts-node": "^10.9.2",
     "tsconfig-paths": "^4.2.0",
     "typescript": "^5.7.2"
   },
