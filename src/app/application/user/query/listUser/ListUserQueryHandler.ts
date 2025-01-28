@@ -25,23 +25,23 @@ export class ListUserQueryHandler
     const qb = this.userRepository.createQueryBuilder('user');
 
     if (email) {
-      qb.andWhere('profile.email LIKE ?', [`%${email}%`]);
+      qb.andWhere('email LIKE ?', [`%${email}%`]);
     }
 
     if (name) {
-      qb.andWhere('profile.name LIKE ?', [`%${name}%`]);
+      qb.andWhere('realname LIKE ?', [`%${name}%`]);
     }
 
     if (college) {
-      qb.andWhere('profile.college LIKE ?', [`%${college}%`]);
+      qb.andWhere('college LIKE ?', [`%${college}%`]);
     }
 
     if (grade) {
-      qb.andWhere('profile.grade = ?', [grade]);
+      qb.andWhere('grade = ?', [grade]);
     }
 
     if (state) {
-      qb.andWhere('profile.state = ?', [state]);
+      qb.andWhere('state = ?', [state]);
     }
 
     const [users, count] = await qb
