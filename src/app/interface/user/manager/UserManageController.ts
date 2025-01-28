@@ -15,7 +15,7 @@ export class UserManageController {
   constructor(private readonly queryBus: QueryBus) {}
 
   @Get('/manager/users')
-  @Auth([UserRole.MANAGER])
+  // @Auth([UserRole.MANAGER])
   @ApiOperation({ summary: '회원 목록 조회' })
   @ApiResponse({ status: HttpStatus.OK, type: ListUserResponseDto })
   async listUser(

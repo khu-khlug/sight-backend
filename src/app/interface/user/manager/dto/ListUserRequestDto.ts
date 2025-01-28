@@ -32,6 +32,7 @@ export class ListUserRequestDto {
   @Min(1)
   grade: number | null = null;
 
+  @Type(() => Number)
   @IsOptional()
   @IsEnum(UserState)
   state: UserState | null = null;
