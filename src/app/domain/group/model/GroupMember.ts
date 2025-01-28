@@ -2,14 +2,14 @@ import { AggregateRoot } from '@nestjs/cqrs';
 
 export type GroupMemberConstructorParams = {
   id: string;
-  userId: string;
+  userId: number;
   groupId: string;
   createdAt: Date;
 };
 
 export class GroupMember extends AggregateRoot {
   private _id: string;
-  private _userId: string;
+  private _userId: number;
   private _groupId: string;
   private _createdAt: Date;
 
@@ -25,7 +25,7 @@ export class GroupMember extends AggregateRoot {
     return this._id;
   }
 
-  get userId(): string {
+  get userId(): number {
     return this._userId;
   }
 

@@ -8,7 +8,7 @@ describe('GroupBookmarkFactory', () => {
   let groupBookmarkFactory: GroupBookmarkFactory;
 
   const bookmarkId = 'group-bookmark-id';
-  const userId = 'user-id';
+  const userId = 100;
   const groupId = 'group-id';
 
   beforeAll(async () => {

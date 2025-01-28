@@ -1,10 +1,12 @@
-import { Injectable } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
 import crypto from 'crypto';
 import fs from 'fs/promises';
+import { Injectable } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { unserialize } from 'php-serialize';
 
-import { LaravelSessionConfig } from '../config/LaravelSessionConfig';
+import { LaravelSessionConfig } from '@khlug/core/config/LaravelSessionConfig';
+
+type LoginKey = `login_${string}`;
 
 type EncryptedSession = {
   iv: string;
@@ -21,7 +23,7 @@ type SessionData = {
     old: any;
     new: any;
   };
-  [key: `login_${string}`]: number | undefined;
+  [key: LoginKey]: number | undefined;
 };
 
 @Injectable()
@@ -32,7 +34,7 @@ export class LaravelAuthnAdapter {
     this.config = configService.getOrThrow<LaravelSessionConfig>('session');
   }
 
-  async authenticate(rawSession: string): Promise<string | null> {
+  async authenticate(rawSession: string): Promise<number | null> {
     const session = this.normalize(rawSession);
     const decrypted = this.decrypt(session);
 
@@ -78,10 +80,10 @@ export class LaravelAuthnAdapter {
     return await fs.readFile(path, { encoding: 'utf8' });
   }
 
-  private getUserId(sessionData: SessionData): string | null {
-    const loginKey = Object.keys(sessionData).find((key) =>
-      key.startsWith('login_'),
+  private getUserId(sessionData: SessionData): number | null {
+    const loginKey: LoginKey | undefined = Object.keys(sessionData).find(
+      (key): key is LoginKey => key.startsWith('login_'),
     );
-    return loginKey ? String(sessionData[loginKey]) : null;
+    return loginKey ? (sessionData[loginKey] ?? null) : null;
   }
 }

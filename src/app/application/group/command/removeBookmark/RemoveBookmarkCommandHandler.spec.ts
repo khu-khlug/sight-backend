@@ -55,7 +55,7 @@ describe('RemoveBookmarkCommandHandler', () => {
 
   describe('execute', () => {
     test('그룹이 존재하지 않으면 예외를 발생시켜야 한다', async () => {
-      const command = new RemoveBookmarkCommand('groupId', 'userId');
+      const command = new RemoveBookmarkCommand('groupId', 123);
 
       groupRepository.findById.mockResolvedValue(null);
 
@@ -65,7 +65,7 @@ describe('RemoveBookmarkCommandHandler', () => {
     });
 
     test('대상 그룹이 고객 센터 그룹이라면 예외를 발생시켜야 한다', async () => {
-      const command = new RemoveBookmarkCommand('groupId', 'userId');
+      const command = new RemoveBookmarkCommand('groupId', 123);
       const group = GroupFixture.customerService();
 
       groupRepository.findById.mockResolvedValue(group);
@@ -76,7 +76,7 @@ describe('RemoveBookmarkCommandHandler', () => {
     });
 
     test('대상 그룹이 실습 그룹이라면 예외를 발생시켜야 한다', async () => {
-      const command = new RemoveBookmarkCommand('groupId', 'userId');
+      const command = new RemoveBookmarkCommand('groupId', 123);
       const group = GroupFixture.practice();
 
       groupRepository.findById.mockResolvedValue(group);
@@ -87,7 +87,7 @@ describe('RemoveBookmarkCommandHandler', () => {
     });
 
     test('이미 즐겨 찾는 그룹이 아니라면 즐겨찾기를 제거하지 않아야 한다', async () => {
-      const command = new RemoveBookmarkCommand('groupId', 'userId');
+      const command = new RemoveBookmarkCommand('groupId', 123);
       const group = GroupFixture.inProgressJoinable();
 
       groupRepository.findById.mockResolvedValue(group);
@@ -99,7 +99,7 @@ describe('RemoveBookmarkCommandHandler', () => {
     });
 
     test('그룹 즐겨찾기를 제거해야 한다', async () => {
-      const command = new RemoveBookmarkCommand('groupId', 'userId');
+      const command = new RemoveBookmarkCommand('groupId', 123);
       const group = GroupFixture.inProgressJoinable();
       const bookmark = GroupBookmarkFixture.normal();
 

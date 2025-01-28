@@ -22,7 +22,7 @@ export class PointGrantService {
   ) {}
 
   async grant(params: {
-    targetUserIds: string[];
+    targetUserIds: number[];
     amount: number;
     reason: string;
   }): Promise<void> {

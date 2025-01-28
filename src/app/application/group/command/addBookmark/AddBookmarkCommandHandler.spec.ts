@@ -65,7 +65,7 @@ describe('AddBookmarkCommandHandler', () => {
 
   describe('execute', () => {
     const groupId = 'groupId';
-    const userId = 'userId';
+    const userId = 123;
 
     test('그룹이 존재하지 않으면 예외가 발생해야 한다', async () => {
       groupRepository.findById = jest.fn().mockResolvedValue(null);

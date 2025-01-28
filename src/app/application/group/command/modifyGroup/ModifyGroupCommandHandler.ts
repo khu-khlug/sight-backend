@@ -125,7 +125,7 @@ export class ModifyGroupCommandHandler
     return group;
   }
 
-  private checkGroupAdmin(group: Group, userId: string): void {
+  private checkGroupAdmin(group: Group, userId: number): void {
     // 운영진 간 계층을 나타내지 않기 위해 운영 그룹은 그룹장 개념이 없음
     if (group.category === GroupCategory.MANAGE) {
       return;
@@ -136,7 +136,7 @@ export class ModifyGroupCommandHandler
     }
   }
 
-  private async checkGroupMember(group: Group, userId: string): Promise<void> {
+  private async checkGroupMember(group: Group, userId: number): Promise<void> {
     const groupMember = await this.groupMemberRepository.findByGroupIdAndUserId(
       group.id,
       userId,

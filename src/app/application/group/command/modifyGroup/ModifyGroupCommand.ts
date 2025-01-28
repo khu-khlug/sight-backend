@@ -19,7 +19,7 @@ export type ModifyGroupParams = {
 export class ModifyGroupCommand implements ICommand {
   constructor(
     readonly groupId: string,
-    readonly requesterUserId: string,
+    readonly requesterUserId: number,
     readonly params: ModifyGroupParams,
   ) {}
 }

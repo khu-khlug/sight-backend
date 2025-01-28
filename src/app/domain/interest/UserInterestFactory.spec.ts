@@ -10,7 +10,7 @@ describe('UserInterestFactory', () => {
   const now = new Date();
 
   const userInterestId = 'userInterestId';
-  const userId = 'userId';
+  const userId = 123;
   const interestId = 'interestId';
   const createdAt = now;
 

@@ -8,7 +8,7 @@ describe('GroupMemberFactory', () => {
   let groupMemberFactory: GroupMemberFactory;
 
   const groupMemberId = 'group-member-id';
-  const userId = 'user-id';
+  const userId = 123;
   const groupId = 'group-id';
 
   beforeAll(async () => {

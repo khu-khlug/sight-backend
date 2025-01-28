@@ -76,7 +76,7 @@ describe('ModifyGroupCommandHandler', () => {
     test('그룹이 존재하지 않으면 예외를 발생시켜야 한다', async () => {
       groupRepository.findById.mockResolvedValue(null);
 
-      const command = new ModifyGroupCommand('groupId', 'requesterUserId', {
+      const command = new ModifyGroupCommand('groupId', 123, {
         category: GroupCategory.DOCUMENTATION,
         title: 'title',
         purpose: 'purpose',
@@ -95,7 +95,7 @@ describe('ModifyGroupCommandHandler', () => {
       const group = GroupFixture.inProgressJoinable({
         category: GroupCategory.DOCUMENTATION,
       });
-      const notAdminUserId = 'notAdminUserId';
+      const notAdminUserId = 124;
 
       groupRepository.findById.mockResolvedValue(group);
 
@@ -121,7 +121,7 @@ describe('ModifyGroupCommandHandler', () => {
       const group = GroupFixture.inProgressJoinable({
         category: GroupCategory.MANAGE,
       });
-      const notAdminUserId = 'notAdminUserId';
+      const notAdminUserId = 124;
 
       groupRepository.findById.mockResolvedValue(group);
       groupMemberRepository.findByGroupIdAndUserId.mockResolvedValue(null);

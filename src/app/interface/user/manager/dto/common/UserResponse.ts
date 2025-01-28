@@ -13,7 +13,7 @@ export class UserProfileResponse {
 }
 
 export class UserResponse {
-  id!: string;
+  id!: number;
   name!: string;
   password!: string | null;
   profile!: UserProfileResponse;

@@ -52,7 +52,7 @@ describe('PointGrantService', () => {
 
   describe('grant', () => {
     test('주어진 유저에게 포인트를 부여해야 한다', async () => {
-      const targetUserIds = ['user1', 'user2'];
+      const targetUserIds = [1, 2];
       const users = [
         DomainFixture.generateUser({ id: targetUserIds[0], point: 0 }),
         DomainFixture.generateUser({ id: targetUserIds[1], point: 0 }),
@@ -72,7 +72,7 @@ describe('PointGrantService', () => {
     });
 
     test('각 유저마다 포인트 이력을 생성해야 한다', async () => {
-      const targetUserIds = ['user1', 'user2'];
+      const targetUserIds = [1, 2];
       const users = [
         DomainFixture.generateUser({ id: targetUserIds[0], point: 0 }),
         DomainFixture.generateUser({ id: targetUserIds[1], point: 0 }),

@@ -9,7 +9,7 @@ import { UserState } from '@khlug/app/domain/user/model/constant';
 
 export function generateUserView(params?: Partial<UserView>): UserView {
   return {
-    id: faker.string.uuid(),
+    id: faker.number.int(),
     name: faker.lorem.word(),
     password: faker.lorem.word(),
     profile: {

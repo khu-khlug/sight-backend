@@ -47,7 +47,7 @@ describe('ChangeGroupStateCommandHandler', () => {
   describe('execute', () => {
     let group: Group;
 
-    const requesterUserId = 'requester-user-id';
+    const requesterUserId = 123;
     const groupId = 'group-id';
     const nextState = GroupState.END_SUCCESS;
 
@@ -124,7 +124,7 @@ describe('ChangeGroupStateCommandHandler', () => {
       const isManager = false;
 
       test('요청자가 그룹의 관리자가 아니라면 예외를 발생시켜야 한다', async () => {
-        const otherUserId = 'other-user-id';
+        const otherUserId = 101;
 
         const command = new ChangeGroupStateCommand(
           { userId: otherUserId, isManager },
@@ -152,7 +152,7 @@ describe('ChangeGroupStateCommandHandler', () => {
       const isManager = true;
 
       test('요청자가 그룹의 관리자가 아니더라도 상태를 변경할 수 있어야 한다', async () => {
-        const otherManagerUserId = 'other-manager-user-id';
+        const otherManagerUserId = 102;
 
         const command = new ChangeGroupStateCommand(
           { userId: otherManagerUserId, isManager },

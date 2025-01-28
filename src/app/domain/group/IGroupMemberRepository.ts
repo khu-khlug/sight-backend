@@ -9,6 +9,6 @@ export interface IGroupMemberRepository
   findByGroupId: (groupId: string) => Promise<GroupMember[]>;
   findByGroupIdAndUserId: (
     groupId: string,
-    userId: string,
+    userId: number,
   ) => Promise<GroupMember | null>;
 }
