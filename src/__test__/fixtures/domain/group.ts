@@ -26,7 +26,7 @@ export function generateGroupLog(
 ): GroupLog {
   return new GroupLog({
     id: faker.string.uuid(),
-    userId: faker.string.uuid(),
+    userId: faker.number.int(),
     groupId: faker.string.uuid(),
     message: faker.lorem.sentence(),
     createdAt: faker.date.anytime(),
