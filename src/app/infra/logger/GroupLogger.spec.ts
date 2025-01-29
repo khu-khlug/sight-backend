@@ -50,7 +50,7 @@ describe('GroupLogger', () => {
     const message = 'message';
 
     beforeEach(() => {
-      requester = { userId: 'userId', role: UserRole.USER };
+      requester = { userId: 100, role: UserRole.USER };
 
       clsService.get = jest.fn().mockReturnValue(requester);
       groupLogRepository.nextId = jest.fn().mockReturnValue(newLogId);

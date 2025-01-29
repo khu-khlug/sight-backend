@@ -11,7 +11,6 @@ export function generateUserView(params?: Partial<UserView>): UserView {
   return {
     id: faker.number.int(),
     name: faker.lorem.word(),
-    password: faker.lorem.word(),
     profile: {
       name: faker.person.fullName(),
       college: faker.lorem.word(),

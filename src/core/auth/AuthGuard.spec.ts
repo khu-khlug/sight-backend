@@ -118,7 +118,7 @@ describe('AuthGuard', () => {
         authMetadata,
         context.getHandler(),
       );
-      laravelAuthnAdapter.authenticate.mockResolvedValue('1');
+      laravelAuthnAdapter.authenticate.mockResolvedValue(100);
       entityManager.getConnection().execute = jest.fn().mockResolvedValue([]);
 
       await expect(authGuard.canActivate(context)).rejects.toThrow(
@@ -135,7 +135,7 @@ describe('AuthGuard', () => {
         authMetadata,
         context.getHandler(),
       );
-      laravelAuthnAdapter.authenticate.mockResolvedValue('1');
+      laravelAuthnAdapter.authenticate.mockResolvedValue(100);
       entityManager.getConnection().execute = jest
         .fn()
         .mockResolvedValue([{ id: '1', manager: false }]);
@@ -148,7 +148,7 @@ describe('AuthGuard', () => {
     test('요청 객체에 요청자 정보를 저장해야 한다', async () => {
       const context = createExecutionContext({ khlug_session: 'session' });
       const authMetadata: AuthMetadata = { roles: [UserRole.USER] };
-      const userId = '1';
+      const userId = 100;
 
       Reflect.defineMetadata(
         AUTH_DECORATOR_METADATA_KEY,
@@ -174,7 +174,7 @@ describe('AuthGuard', () => {
     test('CLS에 요청자 정보를 저장해야 한다', async () => {
       const context = createExecutionContext({ khlug_session: 'session' });
       const authMetadata: AuthMetadata = { roles: [UserRole.USER] };
-      const userId = '1';
+      const userId = 100;
 
       Reflect.defineMetadata(
         AUTH_DECORATOR_METADATA_KEY,

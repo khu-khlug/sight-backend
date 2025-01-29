@@ -8,7 +8,7 @@ describe('GroupLogFactory', () => {
   let groupLogFactory: GroupLogFactory;
 
   const logId = 'group-log-id';
-  const userId = 'user-id';
+  const userId = 100;
   const groupId = 'group-id';
   const message = 'some-message-for-group-activity';
 

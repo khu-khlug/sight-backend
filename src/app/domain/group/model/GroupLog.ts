@@ -3,7 +3,7 @@ import { AggregateRoot } from '@nestjs/cqrs';
 export type GroupLogConstructorParams = {
   id: string;
   groupId: string;
-  userId: string;
+  userId: number;
   message: string;
   createdAt: Date;
 };
@@ -11,7 +11,7 @@ export type GroupLogConstructorParams = {
 export class GroupLog extends AggregateRoot {
   private _id: string;
   private _groupId: string;
-  private _userId: string;
+  private _userId: number;
   private _message: string;
   private _createdAt: Date;
 
@@ -32,7 +32,7 @@ export class GroupLog extends AggregateRoot {
     return this._groupId;
   }
 
-  get userId(): string {
+  get userId(): number {
     return this._userId;
   }
 
