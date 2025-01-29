@@ -15,7 +15,6 @@ export class UserProfileResponse {
 export class UserResponse {
   id!: number;
   name!: string;
-  password!: string | null;
   profile!: UserProfileResponse;
   admission!: string;
   state!: UserState;
