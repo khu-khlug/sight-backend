@@ -15,7 +15,6 @@ export class ListUserResponseDto {
       users: view.users.map((user) => ({
         id: user.id,
         name: user.name,
-        password: user.password,
         profile: {
           name: user.profile.name,
           college: user.profile.college,

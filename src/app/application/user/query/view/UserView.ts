@@ -15,7 +15,6 @@ export interface ProfileView {
 export interface UserView {
   id: number;
   name: string;
-  password: string | null;
   profile: ProfileView;
   admission: string;
   state: UserState;
