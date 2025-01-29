@@ -15,7 +15,7 @@ export class UserManageController {
   constructor(private readonly queryBus: QueryBus) {}
 
   @Get('/manager/users')
-  // @Auth([UserRole.MANAGER])
+  @Auth([UserRole.MANAGER])
   @ApiOperation({ summary: '회원 목록 조회' })
   @ApiResponse({ status: HttpStatus.OK, type: ListUserResponseDto })
   async listUser(
@@ -23,7 +23,9 @@ export class UserManageController {
   ): Promise<ListUserResponseDto> {
     const query = new ListUserQuery({
       email: dto.email,
+      phone: dto.phone,
       name: dto.name,
+      number: dto.number,
       college: dto.college,
       grade: dto.grade,
       state: dto.state,

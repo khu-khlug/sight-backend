@@ -29,6 +29,7 @@ export class Profile {
   @IsInt()
   readonly grade: number;
 
+  // TODO: 현재는 숫자 컬럼인데 문자열 컬럼으로 수정해야 함
   @Property({ type: 'int', name: 'number', nullable: true })
   @IsInt()
   @IsOptional()
