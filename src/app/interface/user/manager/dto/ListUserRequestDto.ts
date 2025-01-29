@@ -5,6 +5,7 @@ import {
   IsOptional,
   IsString,
   Length,
+  Matches,
   Max,
   Min,
 } from 'class-validator';
@@ -19,8 +20,19 @@ export class ListUserRequestDto {
 
   @IsOptional()
   @IsString()
+  @Length(1, 20)
+  phone: string | null = null;
+
+  @IsOptional()
+  @IsString()
   @Length(1, 255)
   name: string | null = null;
+
+  @IsOptional()
+  @IsString()
+  @Length(1, 10)
+  @Matches(/^\d+$/)
+  number: string | null = null;
 
   @IsOptional()
   @IsString()

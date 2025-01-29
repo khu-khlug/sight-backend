@@ -20,7 +20,8 @@ export class ListUserQueryHandler
   ) {}
 
   async execute(query: ListUserQuery): Promise<ListUserQueryResult> {
-    const { email, name, college, grade, state, limit, offset } = query;
+    const { email, phone, name, number, college, grade, state, limit, offset } =
+      query;
 
     const qb = this.userRepository.createQueryBuilder('user');
 
@@ -28,8 +29,16 @@ export class ListUserQueryHandler
       qb.andWhere('email LIKE ?', [`%${email}%`]);
     }
 
+    if (phone) {
+      qb.andWhere('phone LIKE ?', [`%${phone}%`]);
+    }
+
     if (name) {
       qb.andWhere('realname LIKE ?', [`%${name}%`]);
+    }
+
+    if (number) {
+      qb.andWhere('number LIKE ?', [`%${number}%`]);
     }
 
     if (college) {
