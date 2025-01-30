@@ -37,6 +37,7 @@
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.1",
     "cookie-parser": "^1.4.7",
+    "dayjs": "^1.11.13",
     "nestjs-cls": "^4.5.0",
     "php-serialize": "^5.0.1",
     "reflect-metadata": "^0.2.2",
@@ -84,6 +85,9 @@
     },
     "collectCoverageFrom": [
       "**/*.(t|j)s"
+    ],
+    "setupFiles": [
+      "../jest/setup.ts"
     ],
     "coverageDirectory": "../coverage",
     "testEnvironment": "node",
