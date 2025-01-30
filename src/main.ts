@@ -3,10 +3,16 @@ import { CorsOptions } from '@nestjs/common/interfaces/external/cors-options.int
 import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
 import cookieParser from 'cookie-parser';
+import dayjs from 'dayjs';
+import timezone from 'dayjs/plugin/timezone';
+import utc from 'dayjs/plugin/utc';
 
 import { AppConfig } from '@khlug/core/config/AppConfig';
 
 import { RootModule } from '@khlug/RootModule';
+
+dayjs.extend(utc);
+dayjs.extend(timezone);
 
 async function bootstrap() {
   const app = await NestFactory.create(RootModule);

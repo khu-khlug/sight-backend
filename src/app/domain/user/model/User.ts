@@ -16,6 +16,7 @@ import {
   IsString,
   Length,
 } from 'class-validator';
+import dayjs from 'dayjs';
 
 import { UserProfileUpdated } from '@khlug/app/domain/user/event/UserProfileUpdated';
 import { UserState } from '@khlug/app/domain/user/model/constant';
@@ -197,6 +198,43 @@ export class User extends AggregateRoot {
   grantPoint(point: number): void {
     this._point += point;
     this._updatedAt = new Date();
+  }
+
+  isStopped(): boolean {
+    return this._returnAt !== null;
+  }
+
+  needAuth(): boolean {
+    const checkTargetStates: UserState[] = [
+      UserState.ABSENCE,
+      UserState.UNDERGRADUATE,
+    ];
+
+    const today = dayjs().tz('Asia/Seoul');
+    const todayMMDD = today.format('MMDD');
+
+    const khuisAuthAt = dayjs(this._khuisAuthAt).tz('Asia/Seoul');
+    const khuisAuthAtMMDD = khuisAuthAt.format('MMDD');
+
+    // 3월 2일부터 8월 31일까지를 1학기, 9월 1일부터 3월 1일까지를 2학기로 구분합니다.
+    // 따라서, 3월 2일 이전 날짜는 전년도로 간주합니다.
+    const currentYear = todayMMDD < '0302' ? today.year() - 1 : today.year();
+    const currentSemester = todayMMDD >= '0302' && todayMMDD < '0901' ? 1 : 2;
+
+    // 2월 20일부터 8월 20일까지를 1학기 인증 기간, 8월 21일부터 2월 19일까지를 2학기 인증 기간으로 구분합니다.
+    // 따라서, 2월 20일 이전 날짜는 전년도로 간주합니다.
+    const lastAuthYear =
+      khuisAuthAtMMDD < '0220' ? khuisAuthAt.year() - 1 : khuisAuthAt.year();
+    const lastAuthSemester =
+      khuisAuthAtMMDD >= '0220' && khuisAuthAtMMDD < '0820' ? 1 : 2;
+
+    const isTarget =
+      checkTargetStates.includes(this._state) && !this.isStopped();
+    const authedInThisSemester =
+      `${currentYear}-${currentSemester}` <=
+      `${lastAuthYear}-${lastAuthSemester}`;
+
+    return isTarget && !authedInThisSemester;
   }
 
   get id(): number {
