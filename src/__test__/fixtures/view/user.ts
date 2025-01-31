@@ -5,7 +5,10 @@ import { InterestView } from '@khlug/app/application/interest/query/view/Interes
 import { UserListView } from '@khlug/app/application/user/query/view/UserListView';
 import { UserView } from '@khlug/app/application/user/query/view/UserView';
 
-import { StudentStatus } from '@khlug/app/domain/user/model/constant';
+import {
+  StudentStatus,
+  UserStatus,
+} from '@khlug/app/domain/user/model/constant';
 
 export function generateUserView(params?: Partial<UserView>): UserView {
   return {
@@ -25,7 +28,7 @@ export function generateUserView(params?: Partial<UserView>): UserView {
     admission: faker.lorem.word(),
     studentStatus: faker.helpers.enumValue(StudentStatus),
     point: faker.number.int(),
-    active: faker.datatype.boolean(),
+    status: faker.helpers.enumValue(UserStatus),
     manager: faker.datatype.boolean(),
     slack: faker.lorem.word(),
     rememberToken: faker.lorem.word(),

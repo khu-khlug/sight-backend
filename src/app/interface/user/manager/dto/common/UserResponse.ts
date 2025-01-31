@@ -1,4 +1,7 @@
-import { StudentStatus } from '@khlug/app/domain/user/model/constant';
+import {
+  StudentStatus,
+  UserStatus,
+} from '@khlug/app/domain/user/model/constant';
 
 export class UserProfileResponse {
   name!: string;
@@ -19,7 +22,7 @@ export class UserResponse {
   admission!: string;
   studentStatus!: StudentStatus;
   point!: number;
-  active!: boolean;
+  status!: UserStatus;
   manager!: boolean;
   slack!: string | null;
   rememberToken!: string | null;

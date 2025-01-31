@@ -99,7 +99,7 @@ export class ListUserQueryHandler
           admission: user.admission,
           studentStatus: user.studentStatus,
           point: user.point,
-          active: user.active,
+          status: user.status,
           manager: user.manager,
           slack: user.slack,
           rememberToken: user.rememberToken,

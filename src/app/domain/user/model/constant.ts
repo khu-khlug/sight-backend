@@ -5,3 +5,10 @@ export const StudentStatus = {
   GRADUATE: 2, // 졸업
 } as const;
 export type StudentStatus = (typeof StudentStatus)[keyof typeof StudentStatus];
+
+export const UserStatus = {
+  INACTIVE: -1, // 정지
+  UNAUTHORIZED: 0, // 미승인 혹은 탈퇴
+  ACTIVE: 1, // 활성
+} as const;
+export type UserStatus = (typeof UserStatus)[keyof typeof UserStatus];

@@ -19,7 +19,10 @@ import {
 import dayjs from 'dayjs';
 
 import { UserProfileUpdated } from '@khlug/app/domain/user/event/UserProfileUpdated';
-import { StudentStatus } from '@khlug/app/domain/user/model/constant';
+import {
+  StudentStatus,
+  UserStatus,
+} from '@khlug/app/domain/user/model/constant';
 import { Profile } from '@khlug/app/domain/user/model/Profile';
 
 import { Message } from '@khlug/constant/message';
@@ -32,7 +35,7 @@ export type UserConstructorParams = {
   admission: string;
   studentStatus: StudentStatus;
   point: number;
-  active: boolean;
+  status: UserStatus;
   manager: boolean;
   slack: string | null;
   rememberToken: string | null;
@@ -79,7 +82,7 @@ export class User extends AggregateRoot {
 
   @Property({ type: 'tinyint', length: 1, name: 'active' })
   @IsBoolean()
-  private _active: boolean;
+  private _status: UserStatus;
 
   @Property({ type: 'tinyint', length: 1, name: 'manager' })
   @IsBoolean()
@@ -155,7 +158,7 @@ export class User extends AggregateRoot {
     this._admission = params.admission;
     this._studentStatus = params.studentStatus;
     this._point = params.point;
-    this._active = params.active;
+    this._status = params.status;
     this._manager = params.manager;
     this._slack = params.slack;
     this._rememberToken = params.rememberToken;
@@ -266,8 +269,8 @@ export class User extends AggregateRoot {
     return this._point;
   }
 
-  get active(): boolean {
-    return this._active;
+  get status(): UserStatus {
+    return this._status;
   }
 
   get manager(): boolean {
