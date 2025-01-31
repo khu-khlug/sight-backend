@@ -31,3 +31,8 @@ export interface UserView {
   createdAt: Date;
   updatedAt: Date;
 }
+
+export interface UserWithTagView extends UserView {
+  normalTags: string[];
+  redTags: string[];
+}

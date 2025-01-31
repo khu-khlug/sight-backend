@@ -28,6 +28,8 @@ export class UserResponse {
   returnReason!: string | null;
   lastLoginAt!: Date;
   lastEnterAt!: Date;
+  normalTags!: string[];
+  redTags!: string[];
   createdAt!: Date;
   updatedAt!: Date;
 }
