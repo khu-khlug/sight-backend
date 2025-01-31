@@ -27,7 +27,7 @@ export class ListUserResponseDto {
           prefer: user.profile.prefer,
         },
         admission: user.admission,
-        state: user.state,
+        studentStatus: user.studentStatus,
         point: user.point,
         active: user.active,
         manager: user.manager,

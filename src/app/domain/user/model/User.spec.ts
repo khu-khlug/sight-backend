@@ -1,7 +1,7 @@
 import dayjs from 'dayjs';
 import { advanceTo, clear } from 'jest-date-mock';
 
-import { UserState } from '@khlug/app/domain/user/model/constant';
+import { StudentStatus } from '@khlug/app/domain/user/model/constant';
 
 import { DomainFixture } from '@khlug/__test__/fixtures';
 import { Message } from '@khlug/constant/message';
@@ -23,7 +23,9 @@ describe('User', () => {
     const name = '김러리';
 
     test('교류 회원이 이메일 외에 다른 정보를 변경할 때, 예외를 발생시켜야 한다', () => {
-      const user = DomainFixture.generateUser({ state: UserState.UNITED });
+      const user = DomainFixture.generateUser({
+        studentStatus: StudentStatus.UNITED,
+      });
 
       expect(() => user.setProfile({ phone: '010-0000-0000' })).toThrowError(
         Message.UNITED_USER_CAN_ONLY_CHANGE_EMAIL,
@@ -32,7 +34,7 @@ describe('User', () => {
 
     test('졸업 상태가 아닌 유저가 전화번호를 변경할 때, 예외를 발생시켜야 한다', () => {
       const user = DomainFixture.generateUser({
-        state: UserState.UNDERGRADUATE,
+        studentStatus: StudentStatus.UNDERGRADUATE,
       });
 
       expect(() => user.setProfile({ phone: '010-0000-0000' })).toThrowError(
@@ -42,7 +44,7 @@ describe('User', () => {
 
     test('주어진 프로필 정보로 유저의 프로필을 수정해야 한다', () => {
       const user = DomainFixture.generateUser({
-        state: UserState.UNDERGRADUATE,
+        studentStatus: StudentStatus.UNDERGRADUATE,
       });
 
       user.setProfile({ email, grade, name });
@@ -54,7 +56,7 @@ describe('User', () => {
 
     test('수정 후, updatedAt의 값이 갱신돼야 한다', () => {
       const user = DomainFixture.generateUser({
-        state: UserState.UNDERGRADUATE,
+        studentStatus: StudentStatus.UNDERGRADUATE,
       });
 
       user.setProfile({ email, grade, name });
@@ -65,7 +67,7 @@ describe('User', () => {
   describe('login', () => {
     test('로그인 할 때, lastLoginAt의 값이 지금 시각으로 변경되어야 한다', () => {
       const user = DomainFixture.generateUser({
-        state: UserState.UNDERGRADUATE,
+        studentStatus: StudentStatus.UNDERGRADUATE,
       });
 
       user.login();
@@ -75,7 +77,7 @@ describe('User', () => {
 
     test('로그인 할 때, updatedAt의 값이 갱신돼야 한다', () => {
       const user = DomainFixture.generateUser({
-        state: UserState.UNDERGRADUATE,
+        studentStatus: StudentStatus.UNDERGRADUATE,
       });
 
       user.login();
@@ -110,12 +112,16 @@ describe('User', () => {
   describe('needAuth', () => {
     describe('대상 유저가 아닌 경우', () => {
       test('교류 유저라면 `false`를 반환해야 한다', () => {
-        const user = DomainFixture.generateUser({ state: UserState.UNITED });
+        const user = DomainFixture.generateUser({
+          studentStatus: StudentStatus.UNITED,
+        });
         expect(user.needAuth()).toEqual(false);
       });
 
       test('졸업한 유저라면 `false`를 반환해야 한다', () => {
-        const user = DomainFixture.generateUser({ state: UserState.GRADUATE });
+        const user = DomainFixture.generateUser({
+          studentStatus: StudentStatus.GRADUATE,
+        });
         expect(user.needAuth()).toEqual(false);
       });
 
@@ -128,7 +134,7 @@ describe('User', () => {
     describe('대상 유저인 경우', () => {
       const createTargetUser = (khuisAuthAt: Date) =>
         DomainFixture.generateUser({
-          state: UserState.UNDERGRADUATE,
+          studentStatus: StudentStatus.UNDERGRADUATE,
           returnAt: null,
           khuisAuthAt,
         });

@@ -20,8 +20,17 @@ export class ListUserQueryHandler
   ) {}
 
   async execute(query: ListUserQuery): Promise<ListUserQueryResult> {
-    const { email, phone, name, number, college, grade, state, limit, offset } =
-      query;
+    const {
+      email,
+      phone,
+      name,
+      number,
+      college,
+      grade,
+      studentStatus,
+      limit,
+      offset,
+    } = query;
 
     const qb = this.userRepository.createQueryBuilder('user');
 
@@ -49,8 +58,8 @@ export class ListUserQueryHandler
       qb.andWhere('grade = ?', [grade]);
     }
 
-    if (state) {
-      qb.andWhere('state = ?', [state]);
+    if (studentStatus) {
+      qb.andWhere('state = ?', [studentStatus]);
     }
 
     const [users, count] = await qb
@@ -88,7 +97,7 @@ export class ListUserQueryHandler
             prefer: user.profile.prefer,
           },
           admission: user.admission,
-          state: user.state,
+          studentStatus: user.studentStatus,
           point: user.point,
           active: user.active,
           manager: user.manager,

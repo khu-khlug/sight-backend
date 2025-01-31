@@ -23,7 +23,7 @@ import {
   IUserRepository,
   UserRepository,
 } from '@khlug/app/domain/user/IUserRepository';
-import { UserState } from '@khlug/app/domain/user/model/constant';
+import { StudentStatus } from '@khlug/app/domain/user/model/constant';
 import { User } from '@khlug/app/domain/user/model/User';
 
 import {
@@ -86,7 +86,7 @@ describe('UpdateUserCommandHandler', () => {
     const prefer = 'some-prefers';
 
     beforeEach(() => {
-      user = generateUser({ state: UserState.UNDERGRADUATE });
+      user = generateUser({ studentStatus: StudentStatus.UNDERGRADUATE });
       interests = interestIds.map((interestId) =>
         generateInterest({ id: interestId }),
       );

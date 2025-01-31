@@ -8,7 +8,7 @@ import {
   IUserRepository,
   UserRepository,
 } from '@khlug/app/domain/user/IUserRepository';
-import { UserState } from '@khlug/app/domain/user/model/constant';
+import { StudentStatus } from '@khlug/app/domain/user/model/constant';
 import { User } from '@khlug/app/domain/user/model/User';
 
 import { generateUser } from '@khlug/__test__/fixtures/domain';
@@ -48,7 +48,7 @@ describe('UpdateUnitedUserCommandHandler', () => {
     const newEmail = 'new-email@email.com';
 
     beforeEach(() => {
-      user = generateUser({ id: userId, state: UserState.UNITED });
+      user = generateUser({ id: userId, studentStatus: StudentStatus.UNITED });
       command = new UpdateUnitedUserCommand(userId, newEmail);
 
       userRepository.findById = jest.fn().mockResolvedValue(user);

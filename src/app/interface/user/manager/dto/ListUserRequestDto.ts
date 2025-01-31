@@ -10,7 +10,7 @@ import {
   Min,
 } from 'class-validator';
 
-import { UserState } from '@khlug/app/domain/user/model/constant';
+import { StudentStatus } from '@khlug/app/domain/user/model/constant';
 
 export class ListUserRequestDto {
   @IsOptional()
@@ -46,8 +46,8 @@ export class ListUserRequestDto {
 
   @Type(() => Number)
   @IsOptional()
-  @IsEnum(UserState)
-  state: UserState | null = null;
+  @IsEnum(StudentStatus)
+  studentStatus: StudentStatus | null = null;
 
   @Type(() => Number)
   @IsInt()

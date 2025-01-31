@@ -1,4 +1,4 @@
-import { UserState } from '@khlug/app/domain/user/model/constant';
+import { StudentStatus } from '@khlug/app/domain/user/model/constant';
 
 export interface ProfileView {
   name: string;
@@ -17,7 +17,7 @@ export interface UserView {
   name: string;
   profile: ProfileView;
   admission: string;
-  state: UserState;
+  studentStatus: StudentStatus;
   point: number;
   active: boolean;
   manager: boolean;
