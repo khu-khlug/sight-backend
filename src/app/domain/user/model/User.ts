@@ -19,7 +19,10 @@ import {
 import dayjs from 'dayjs';
 
 import { UserProfileUpdated } from '@khlug/app/domain/user/event/UserProfileUpdated';
-import { UserState } from '@khlug/app/domain/user/model/constant';
+import {
+  StudentStatus,
+  UserStatus,
+} from '@khlug/app/domain/user/model/constant';
 import { Profile } from '@khlug/app/domain/user/model/Profile';
 
 import { Message } from '@khlug/constant/message';
@@ -30,9 +33,9 @@ export type UserConstructorParams = {
   password: string | null;
   profile: Profile;
   admission: string;
-  state: UserState;
+  studentStatus: StudentStatus;
   point: number;
-  active: boolean;
+  status: UserStatus;
   manager: boolean;
   slack: string | null;
   rememberToken: string | null;
@@ -71,7 +74,7 @@ export class User extends AggregateRoot {
 
   @Property({ type: 'int', name: 'state' })
   @IsInt()
-  private _state: UserState;
+  private _studentStatus: StudentStatus;
 
   @Property({ type: 'int', name: 'expoint' })
   @IsInt()
@@ -79,7 +82,7 @@ export class User extends AggregateRoot {
 
   @Property({ type: 'tinyint', length: 1, name: 'active' })
   @IsBoolean()
-  private _active: boolean;
+  private _status: UserStatus;
 
   @Property({ type: 'tinyint', length: 1, name: 'manager' })
   @IsBoolean()
@@ -153,9 +156,9 @@ export class User extends AggregateRoot {
     this._password = params.password;
     this._profile = params.profile;
     this._admission = params.admission;
-    this._state = params.state;
+    this._studentStatus = params.studentStatus;
     this._point = params.point;
-    this._active = params.active;
+    this._status = params.status;
     this._manager = params.manager;
     this._slack = params.slack;
     this._rememberToken = params.rememberToken;
@@ -171,14 +174,14 @@ export class User extends AggregateRoot {
   setProfile(profile: Partial<Profile>): void {
     if (
       !(Object.keys(profile).length === 1 && profile.email) &&
-      this.state === UserState.UNITED
+      this.studentStatus === StudentStatus.UNITED
     ) {
       throw new UnprocessableEntityException(
         Message.UNITED_USER_CAN_ONLY_CHANGE_EMAIL,
       );
     }
 
-    if (profile.phone && this.state !== UserState.GRADUATE) {
+    if (profile.phone && this.studentStatus !== StudentStatus.GRADUATE) {
       throw new UnprocessableEntityException(
         Message.GRADUATED_USER_ONLY_CAN_CHANGE_EMAIL,
       );
@@ -205,9 +208,9 @@ export class User extends AggregateRoot {
   }
 
   needAuth(): boolean {
-    const checkTargetStates: UserState[] = [
-      UserState.ABSENCE,
-      UserState.UNDERGRADUATE,
+    const checkTargetStudentStatus: StudentStatus[] = [
+      StudentStatus.ABSENCE,
+      StudentStatus.UNDERGRADUATE,
     ];
 
     const today = dayjs().tz('Asia/Seoul');
@@ -229,7 +232,8 @@ export class User extends AggregateRoot {
       khuisAuthAtMMDD >= '0220' && khuisAuthAtMMDD < '0820' ? 1 : 2;
 
     const isTarget =
-      checkTargetStates.includes(this._state) && !this.isStopped();
+      checkTargetStudentStatus.includes(this._studentStatus) &&
+      !this.isStopped();
     const authedInThisSemester =
       `${currentYear}-${currentSemester}` <=
       `${lastAuthYear}-${lastAuthSemester}`;
@@ -257,16 +261,16 @@ export class User extends AggregateRoot {
     return this._admission;
   }
 
-  get state(): UserState {
-    return this._state;
+  get studentStatus(): StudentStatus {
+    return this._studentStatus;
   }
 
   get point(): number {
     return this._point;
   }
 
-  get active(): boolean {
-    return this._active;
+  get status(): UserStatus {
+    return this._status;
   }
 
   get manager(): boolean {

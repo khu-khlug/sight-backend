@@ -1,6 +1,6 @@
 import { IQuery } from '@nestjs/cqrs';
 
-import { UserState } from '@khlug/app/domain/user/model/constant';
+import { StudentStatus } from '@khlug/app/domain/user/model/constant';
 
 import { Typeof } from '@khlug/util/types';
 
@@ -11,7 +11,7 @@ export class ListUserQuery implements IQuery {
   readonly number: string | null;
   readonly college: string | null;
   readonly grade: number | null;
-  readonly state: UserState | null;
+  readonly studentStatus: StudentStatus | null;
   readonly limit: number;
   readonly offset: number;
 
@@ -22,7 +22,7 @@ export class ListUserQuery implements IQuery {
     this.number = params.number;
     this.college = params.college;
     this.grade = params.grade;
-    this.state = params.state;
+    this.studentStatus = params.studentStatus;
     this.limit = params.limit;
     this.offset = params.offset;
   }

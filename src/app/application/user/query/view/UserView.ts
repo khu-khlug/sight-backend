@@ -1,4 +1,7 @@
-import { UserState } from '@khlug/app/domain/user/model/constant';
+import {
+  StudentStatus,
+  UserStatus,
+} from '@khlug/app/domain/user/model/constant';
 
 export interface ProfileView {
   name: string;
@@ -17,9 +20,9 @@ export interface UserView {
   name: string;
   profile: ProfileView;
   admission: string;
-  state: UserState;
+  studentStatus: StudentStatus;
   point: number;
-  active: boolean;
+  status: UserStatus;
   manager: boolean;
   slack: string | null;
   rememberToken: string | null;

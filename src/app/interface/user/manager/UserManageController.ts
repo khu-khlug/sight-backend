@@ -28,7 +28,7 @@ export class UserManageController {
       number: dto.number,
       college: dto.college,
       grade: dto.grade,
-      state: dto.state,
+      studentStatus: dto.studentStatus,
       limit: dto.limit,
       offset: dto.offset,
     });

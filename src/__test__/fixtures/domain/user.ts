@@ -1,6 +1,9 @@
 import { faker } from '@faker-js/faker';
 
-import { UserState } from '@khlug/app/domain/user/model/constant';
+import {
+  StudentStatus,
+  UserStatus,
+} from '@khlug/app/domain/user/model/constant';
 import {
   PointHistory,
   PointHistoryConstructorParams,
@@ -25,9 +28,9 @@ export function generateUser(params?: Partial<UserConstructorParams>): User {
       prefer: faker.lorem.word(),
     }),
     admission: faker.lorem.word(),
-    state: faker.helpers.enumValue(UserState),
+    studentStatus: faker.helpers.enumValue(StudentStatus),
     point: faker.number.int(),
-    active: faker.datatype.boolean(),
+    status: faker.helpers.enumValue(UserStatus),
     manager: faker.datatype.boolean(),
     slack: faker.lorem.word(),
     rememberToken: faker.lorem.word(),
