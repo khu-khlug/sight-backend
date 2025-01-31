@@ -5,7 +5,7 @@ import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 
 import { ListUserQuery } from '@khlug/app/application/user/query/listUser/ListUserQuery';
 import { ListUserQueryResult } from '@khlug/app/application/user/query/listUser/ListUserQueryResult';
-import { UserListView } from '@khlug/app/application/user/query/view/UserListView';
+import { UserWithTagListView } from '@khlug/app/application/user/query/view/UserListView';
 
 import { User } from '@khlug/app/domain/user/model/User';
 
@@ -59,7 +59,53 @@ export class ListUserQueryHandler
       .orderBy({ id: 'ASC' })
       .getResultAndCount();
 
-    const listView: UserListView = { count, users };
+    const listView: UserWithTagListView = {
+      count,
+      users: users.map((user) => {
+        const normalTags: string[] = [];
+        const redTags: string[] = [];
+
+        if (user.needAuth()) {
+          redTags.push('미인증');
+        }
+
+        if (user.point < 0) {
+          redTags.push('-exp');
+        }
+
+        return {
+          id: user.id,
+          name: user.name,
+          profile: {
+            name: user.profile.name,
+            college: user.profile.college,
+            grade: user.profile.grade,
+            number: user.profile.number,
+            email: user.profile.email,
+            phone: user.profile.phone,
+            homepage: user.profile.homepage,
+            language: user.profile.language,
+            prefer: user.profile.prefer,
+          },
+          admission: user.admission,
+          state: user.state,
+          point: user.point,
+          active: user.active,
+          manager: user.manager,
+          slack: user.slack,
+          rememberToken: user.rememberToken,
+          khuisAuthAt: user.khuisAuthAt,
+          returnAt: user.returnAt,
+          returnReason: user.returnReason,
+          lastLoginAt: user.lastLoginAt,
+          lastEnterAt: user.lastEnterAt,
+          createdAt: user.createdAt,
+          updatedAt: user.updatedAt,
+          normalTags,
+          redTags,
+        };
+      }),
+    };
     return new ListUserQueryResult(listView);
   }
 }

@@ -38,6 +38,8 @@ export class ListUserResponseDto {
         returnReason: user.returnReason,
         lastLoginAt: user.lastLoginAt,
         lastEnterAt: user.lastEnterAt,
+        normalTags: user.normalTags,
+        redTags: user.redTags,
         createdAt: user.createdAt,
         updatedAt: user.updatedAt,
       })),
