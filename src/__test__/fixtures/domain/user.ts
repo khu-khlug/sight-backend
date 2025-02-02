@@ -8,25 +8,20 @@ import {
   PointHistory,
   PointHistoryConstructorParams,
 } from '@khlug/app/domain/user/model/PointHistory';
-import { Profile } from '@khlug/app/domain/user/model/Profile';
+import {
+  Profile,
+  ProfileConstructorParams,
+} from '@khlug/app/domain/user/model/Profile';
 import { User, UserConstructorParams } from '@khlug/app/domain/user/model/User';
 
-export function generateUser(params?: Partial<UserConstructorParams>): User {
+export function generateUser(
+  params: Partial<UserConstructorParams> = {},
+): User {
   return new User({
     id: faker.number.int(),
     name: faker.lorem.word(),
     password: faker.lorem.word(),
-    profile: new Profile({
-      name: faker.person.fullName(),
-      college: faker.lorem.word(),
-      grade: faker.number.int(),
-      number: faker.number.int(),
-      email: faker.internet.email(),
-      phone: faker.phone.number(),
-      homepage: faker.internet.url(),
-      language: faker.lorem.word(),
-      prefer: faker.lorem.word(),
-    }),
+    profile: generateProfile(),
     admission: faker.lorem.word(),
     studentStatus: faker.helpers.enumValue(StudentStatus),
     point: faker.number.int(),
@@ -45,8 +40,25 @@ export function generateUser(params?: Partial<UserConstructorParams>): User {
   });
 }
 
+export function generateProfile(
+  params: Partial<ProfileConstructorParams> = {},
+): Profile {
+  return new Profile({
+    name: faker.person.fullName(),
+    college: faker.lorem.word(),
+    grade: faker.number.int(),
+    number: faker.number.int(),
+    email: faker.internet.email(),
+    phone: faker.phone.number(),
+    homepage: faker.internet.url(),
+    language: faker.lorem.word(),
+    prefer: faker.lorem.word(),
+    ...params,
+  });
+}
+
 export function generatePointHistory(
-  params?: Partial<PointHistoryConstructorParams>,
+  params: Partial<PointHistoryConstructorParams> = {},
 ): PointHistory {
   return new PointHistory({
     id: faker.string.uuid(),
