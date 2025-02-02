@@ -1,7 +1,7 @@
 import { Entity, PrimaryKey, Property } from '@mikro-orm/core';
 import { IsDate, IsInt } from 'class-validator';
 
-export type FeeConstructorParams = {
+export type FeeHistoryConstructorParams = {
   id: number;
   year: number;
   semester: number;
@@ -10,7 +10,7 @@ export type FeeConstructorParams = {
 };
 
 @Entity({ tableName: 'khlug_members_fee' })
-export class Fee {
+export class FeeHistory {
   @PrimaryKey({ type: 'int', name: 'id' })
   @IsInt()
   private _id: number;
@@ -36,7 +36,7 @@ export class Fee {
   @IsDate()
   private _createdAt: Date;
 
-  constructor(params: FeeConstructorParams) {
+  constructor(params: FeeHistoryConstructorParams) {
     this._id = params.id;
     this._year = params.year;
     this._semester = params.semester;

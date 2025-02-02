@@ -1,9 +1,14 @@
 import { faker } from '@faker-js/faker';
 
-import { Fee, FeeConstructorParams } from '@khlug/app/domain/fee/model/Fee';
+import {
+  FeeHistory,
+  FeeHistoryConstructorParams,
+} from '@khlug/app/domain/fee/model/FeeHistory';
 
-export function generateFee(params: Partial<FeeConstructorParams> = {}): Fee {
-  return new Fee({
+export function generateFeeHistory(
+  params: Partial<FeeHistoryConstructorParams> = {},
+): FeeHistory {
+  return new FeeHistory({
     id: faker.number.int(),
     year: faker.date.anytime().getFullYear(),
     semester: faker.number.int({ min: 1, max: 2 }),
