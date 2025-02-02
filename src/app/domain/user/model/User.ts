@@ -241,6 +241,33 @@ export class User extends AggregateRoot {
     return isTarget && !authedInThisSemester;
   }
 
+  // 회비 납부 대상 여부
+  needPayFee(): boolean {
+    // 재학 중이 아니면 회비 납부 대상이 아닙니다.
+    if (this._studentStatus !== StudentStatus.UNDERGRADUATE) {
+      return false;
+    }
+
+    // 운영진이면 회비 납부 대상이 아닙니다.
+    if (this._manager) {
+      return false;
+    }
+
+    // 4학년이면 회비 납부 대상이 아닙니다.
+    if (this._profile.grade >= 4) {
+      return false;
+    }
+
+    // 등록한지 309일이 안 된 경우 회비 납부 대상이 아닙니다.
+    // 이때, 309일은 방학을 제외한 1년입니다.
+    const joinedDays = dayjs().diff(this._createdAt, 'days');
+    if (joinedDays < 309) {
+      return false;
+    }
+
+    return true;
+  }
+
   get id(): number {
     return this._id;
   }

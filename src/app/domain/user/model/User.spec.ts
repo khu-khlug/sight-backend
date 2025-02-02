@@ -4,10 +4,13 @@ import { advanceTo, clear } from 'jest-date-mock';
 import { StudentStatus } from '@khlug/app/domain/user/model/constant';
 
 import { DomainFixture } from '@khlug/__test__/fixtures';
+import { generateProfile } from '@khlug/__test__/fixtures/domain';
 import { Message } from '@khlug/constant/message';
 
 describe('User', () => {
   const now = new Date();
+
+  const createKstDate = (date: string) => dayjs.tz(date, 'Asia/Seoul').toDate();
 
   beforeEach(() => {
     advanceTo(now);
@@ -138,9 +141,6 @@ describe('User', () => {
           returnAt: null,
           khuisAuthAt,
         });
-
-      const createKstDate = (date: string) =>
-        dayjs.tz(date, 'Asia/Seoul').toDate();
 
       describe('동년도 1학기 시작 전에 인증한 경우', () => {
         test('2025년 1월 1일(2학기 중)에 인증했고, 오늘이 2025년 2월 1일(2학기 중)이라면, `false`를 반환해야 한다', () => {
@@ -310,6 +310,51 @@ describe('User', () => {
           expect(user.needAuth()).toEqual(true);
         });
       });
+    });
+  });
+
+  describe('needPayFee', () => {
+    const createUser = (
+      params: Partial<{
+        studentStatus: StudentStatus;
+        manager: boolean;
+        grade: number;
+        createdAt: Date;
+      }> = {},
+    ) =>
+      DomainFixture.generateUser({
+        studentStatus: params.studentStatus ?? StudentStatus.UNDERGRADUATE,
+        manager: params.manager ?? false,
+        profile: generateProfile({ grade: params.grade ?? 1 }),
+        createdAt: params.createdAt ?? new Date('2025-05-01'),
+      });
+
+    test('재학 중이 아닌 경우 `false`를 반환해야 한다', () => {
+      const user = createUser({ studentStatus: StudentStatus.GRADUATE });
+      expect(user.needPayFee()).toEqual(false);
+    });
+
+    test('운영진인 경우 `false`를 반환해야 한다', () => {
+      const user = createUser({ manager: true });
+      expect(user.needPayFee()).toEqual(false);
+    });
+
+    test('4학년인 경우 `false`를 반환해야 한다', () => {
+      const user = createUser({ grade: 4 });
+      expect(user.needPayFee()).toEqual(false);
+    });
+
+    test('등록한지 309일이 안 된 경우 `false`를 반환해야 한다', () => {
+      const user = createUser({
+        createdAt: dayjs().subtract(308, 'days').toDate(),
+      });
+      expect(user.needPayFee()).toEqual(false);
+    });
+
+    test('회비 납부 대상인 경우 `true`를 반환해야 한다', () => {
+      const user = createUser({ createdAt: createKstDate('2024-05-01') });
+      advanceTo(createKstDate('2025-05-01'));
+      expect(user.needPayFee()).toEqual(true);
     });
   });
 });
