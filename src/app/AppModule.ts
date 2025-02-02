@@ -9,6 +9,7 @@ import { GetDoorLockPasswordQueryHandler } from '@khlug/app/application/infraBlu
 import { ListUserQueryHandler } from '@khlug/app/application/user/query/listUser/ListUserQueryHandler';
 
 import { Cache } from '@khlug/app/domain/cache/model/Cache';
+import { Fee } from '@khlug/app/domain/fee/model/Fee';
 import { User } from '@khlug/app/domain/user/model/User';
 
 const controllers = [];
@@ -18,7 +19,7 @@ const commandHandlers = [UpdateDoorLockPasswordCommandHandler];
 const queryHandlers = [GetDoorLockPasswordQueryHandler, ListUserQueryHandler];
 
 @Module({
-  imports: [MikroOrmModule.forFeature([Cache, User])],
+  imports: [MikroOrmModule.forFeature([Cache, User, Fee])],
   controllers: [...controllers, ...manageControllers],
   providers: [...commandHandlers, ...queryHandlers],
 })
