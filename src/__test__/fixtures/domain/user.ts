@@ -47,6 +47,13 @@ function stopped(params: Partial<UserConstructorParams> = {}) {
   });
 }
 
+function graduated(params: Partial<UserConstructorParams> = {}) {
+  return generateUser({
+    studentStatus: StudentStatus.GRADUATE,
+    ...params,
+  });
+}
+
 export function generateProfile(
   params: Partial<ProfileConstructorParams> = {},
 ): Profile {
@@ -80,4 +87,5 @@ export function generatePointHistory(
 export const UserFixture = {
   raw: generateUser,
   stopped,
+  graduated,
 };

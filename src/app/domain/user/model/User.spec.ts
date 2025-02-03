@@ -327,6 +327,7 @@ describe('User', () => {
         manager: params.manager ?? false,
         profile: generateProfile({ grade: params.grade ?? 1 }),
         createdAt: params.createdAt ?? new Date('2025-05-01'),
+        returnAt: null,
       });
 
     test('정지 상태인 경우 `false`를 반환해야 한다', () => {
@@ -335,7 +336,7 @@ describe('User', () => {
     });
 
     test('재학 중이 아닌 경우 `false`를 반환해야 한다', () => {
-      const user = createUser({ studentStatus: StudentStatus.GRADUATE });
+      const user = UserFixture.graduated();
       expect(user.needPayFee()).toEqual(false);
     });
 
@@ -344,21 +345,43 @@ describe('User', () => {
       expect(user.needPayFee()).toEqual(false);
     });
 
-    test('4학년인 경우 `false`를 반환해야 한다', () => {
-      const user = createUser({ grade: 4 });
-      expect(user.needPayFee()).toEqual(false);
-    });
-
-    test('등록한지 309일이 안 된 경우 `false`를 반환해야 한다', () => {
+    test('등록한지 1년이 지났고, 4학년인 경우 `false`를 반환해야 한다', () => {
       const user = createUser({
-        createdAt: dayjs().subtract(308, 'days').toDate(),
+        grade: 4,
+        createdAt: createKstDate('2024-05-01'),
       });
+      advanceTo(createKstDate('2025-05-01'));
+
       expect(user.needPayFee()).toEqual(false);
     });
 
-    test('회비 납부 대상인 경우 `true`를 반환해야 한다', () => {
-      const user = createUser({ createdAt: createKstDate('2024-05-01') });
-      advanceTo(createKstDate('2025-05-01'));
+    test('등록한지 1년이 지나지 않았고, 4학년인 경우 `true`를 반환해야 한다', () => {
+      const user = createUser({
+        grade: 4,
+        createdAt: createKstDate('2025-05-01'),
+      });
+      advanceTo(createKstDate('2026-04-30'));
+
+      expect(user.needPayFee()).toEqual(true);
+    });
+
+    test('등록한지 1년이 지나지 않았고, 4학년 미만인 경우 `true`를 반환해야 한다', () => {
+      const user = createUser({
+        grade: 3,
+        createdAt: createKstDate('2025-05-01'),
+      });
+      advanceTo(createKstDate('2026-04-30'));
+
+      expect(user.needPayFee()).toEqual(true);
+    });
+
+    test('등록한지 1년이 지났고, 4학년 미만인 경우 `true`를 반환해야 한다', () => {
+      const user = createUser({
+        grade: 3,
+        createdAt: createKstDate('2025-05-01'),
+      });
+      advanceTo(createKstDate('2026-05-01'));
+
       expect(user.needPayFee()).toEqual(true);
     });
   });
