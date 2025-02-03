@@ -40,6 +40,13 @@ export function generateUser(
   });
 }
 
+function stopped(params: Partial<UserConstructorParams> = {}) {
+  return generateUser({
+    returnAt: new Date(),
+    ...params,
+  });
+}
+
 export function generateProfile(
   params: Partial<ProfileConstructorParams> = {},
 ): Profile {
@@ -69,3 +76,8 @@ export function generatePointHistory(
     ...params,
   });
 }
+
+export const UserFixture = {
+  raw: generateUser,
+  stopped,
+};

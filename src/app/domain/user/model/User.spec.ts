@@ -4,7 +4,7 @@ import { advanceTo, clear } from 'jest-date-mock';
 import { StudentStatus } from '@khlug/app/domain/user/model/constant';
 
 import { DomainFixture } from '@khlug/__test__/fixtures';
-import { generateProfile } from '@khlug/__test__/fixtures/domain';
+import { generateProfile, UserFixture } from '@khlug/__test__/fixtures/domain';
 import { Message } from '@khlug/constant/message';
 
 describe('User', () => {
@@ -328,6 +328,11 @@ describe('User', () => {
         profile: generateProfile({ grade: params.grade ?? 1 }),
         createdAt: params.createdAt ?? new Date('2025-05-01'),
       });
+
+    test('정지 상태인 경우 `false`를 반환해야 한다', () => {
+      const user = UserFixture.stopped();
+      expect(user.needPayFee()).toEqual(false);
+    });
 
     test('재학 중이 아닌 경우 `false`를 반환해야 한다', () => {
       const user = createUser({ studentStatus: StudentStatus.GRADUATE });

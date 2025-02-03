@@ -241,8 +241,16 @@ export class User extends AggregateRoot {
     return isTarget && !authedInThisSemester;
   }
 
-  // 회비 납부 대상 여부
+  /**
+   * 회비 납부 대상 여부
+   * @see 회비에 관한 세부 회칙 제2조
+   */
   needPayFee(): boolean {
+    // 정지 상태의 회원은 회비 납부 대상이 아닙니다.
+    if (this.isStopped()) {
+      return false;
+    }
+
     // 재학 중이 아니면 회비 납부 대상이 아닙니다.
     if (this._studentStatus !== StudentStatus.UNDERGRADUATE) {
       return false;
