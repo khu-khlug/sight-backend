@@ -7,6 +7,26 @@ describe('univPeriod', () => {
     const createKstDate = (dateStr: string) =>
       dayjs.tz(dateStr, 'Asia/Seoul').startOf('day');
 
+    describe('inVacation', () => {
+      test.each([
+        UnivPeriodType.FIRST_SEMESTER_MIDTERM_EXAM,
+        UnivPeriodType.FIRST_SEMESTER_FINAL_EXAM,
+        UnivPeriodType.SECOND_SEMESTER_MIDTERM_EXAM,
+        UnivPeriodType.SECOND_SEMESTER_FINAL_EXAM,
+      ])('학기 중이라면 `false`를 반환해야 한다', (type) => {
+        const period = new UnivPeriod(2025, type);
+        expect(period.inVacation()).toBe(false);
+      });
+
+      test.each([
+        UnivPeriodType.SUMMER_VACATION,
+        UnivPeriodType.WINTER_VACATION,
+      ])('방학 중이라면 `true`를 반환해야 한다', (type) => {
+        const period = new UnivPeriod(2025, type);
+        expect(period.inVacation()).toBe(true);
+      });
+    });
+
     describe('fromDate', () => {
       test('1학기가 시작하지 않았다면 전년도 겨울방학 기간을 반환해야 한다', () => {
         const date = createKstDate('2025-02-28').toDate();

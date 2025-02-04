@@ -34,6 +34,13 @@ export class UnivPeriod {
     this.type = type;
   }
 
+  inVacation(): boolean {
+    return (
+      this.type === UnivPeriodType.SUMMER_VACATION ||
+      this.type === UnivPeriodType.WINTER_VACATION
+    );
+  }
+
   /**
    * @see 회비에 관한 세부 회칙 제8조
    */
