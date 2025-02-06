@@ -265,16 +265,16 @@ export class User extends AggregateRoot {
     let passedMinNeedPayFee = false;
 
     const nowPeriod = UnivPeriod.fromDate(this._createdAt);
-    const thisSemester = UnivPeriod.fromDate(new Date()).toSemester();
+    const thisSemester = UnivPeriod.fromDate(new Date()).toTerm();
     if (nowPeriod.inVacation()) {
       // 방학 중에 가입했다면, 다음 학기와 다다음 학기의 종강일을 지나야 2번의 종강일을 지남.
       // ex) 2024년 겨울방학에 가입했다면 2024년 2학기로 보므로, 2025년 1학기와 2025년 2학기를 지나야 함.
-      const leastNeedPayTerm = nowPeriod.toSemester().next().next();
+      const leastNeedPayTerm = nowPeriod.toTerm().next().next();
       passedMinNeedPayFee = thisSemester.isAfter(leastNeedPayTerm);
     } else {
       // 학기 중에 가입했다면, 다음 학기의 종강일을 지나야 2번의 종강일을 지남.
       // ex) 2024년 2학기에 가입했다면, 2024년 2학기와 2025년 1학기를 지나야 함.
-      const leastNeedPayTerm = nowPeriod.toSemester().next();
+      const leastNeedPayTerm = nowPeriod.toTerm().next();
       passedMinNeedPayFee = thisSemester.isAfter(leastNeedPayTerm);
     }
 
