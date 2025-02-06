@@ -1,6 +1,7 @@
 import dayjs from 'dayjs';
 
 import { UnivDate } from '@khlug/util/univDate';
+import { UnivTerm } from '@khlug/util/univTerm';
 
 /**
  * 각 일자 기준에 대한 정의는 회비에 관한 세부 회칙 제8조를 참고해주세요.
@@ -43,6 +44,19 @@ export class UnivPeriod {
     );
   }
 
+  toSemester(): UnivTerm {
+    switch (this.type) {
+      case UnivPeriodType.FIRST_SEMESTER_MIDTERM_EXAM:
+      case UnivPeriodType.FIRST_SEMESTER_FINAL_EXAM:
+      case UnivPeriodType.SUMMER_VACATION:
+        return new UnivTerm(this.year, 1);
+      case UnivPeriodType.SECOND_SEMESTER_MIDTERM_EXAM:
+      case UnivPeriodType.SECOND_SEMESTER_FINAL_EXAM:
+      case UnivPeriodType.WINTER_VACATION:
+        return new UnivTerm(this.year, 2);
+    }
+  }
+
   /**
    * @see 회비에 관한 세부 회칙 제8조
    */
@@ -51,14 +65,16 @@ export class UnivPeriod {
 
     const year = dateInKst.year();
 
-    const firstStart = UnivDate.calcSemesterStartDate(year, 1);
-    const firstMidTermEnd = UnivDate.calcMidTermExamEndDate(year, 1);
-    const firstFinalEnd = UnivDate.calcFinalExamEndDate(year, 1);
-    const firstEnd = UnivDate.calcSemesterEndDate(year, 1);
+    const firstTerm = new UnivTerm(year, 1);
+    const firstStart = UnivDate.calcSemesterStartDate(firstTerm);
+    const firstMidTermEnd = UnivDate.calcMidTermExamEndDate(firstTerm);
+    const firstFinalEnd = UnivDate.calcFinalExamEndDate(firstTerm);
+    const firstEnd = UnivDate.calcSemesterEndDate(firstTerm);
 
-    const secondStart = UnivDate.calcSemesterStartDate(year, 2);
-    const secondMidTermEnd = UnivDate.calcMidTermExamEndDate(year, 2);
-    const secondFinalEnd = UnivDate.calcFinalExamEndDate(year, 2);
+    const secondTerm = new UnivTerm(year, 2);
+    const secondStart = UnivDate.calcSemesterStartDate(secondTerm);
+    const secondMidTermEnd = UnivDate.calcMidTermExamEndDate(secondTerm);
+    const secondFinalEnd = UnivDate.calcFinalExamEndDate(secondTerm);
 
     if (dateInKst.isBefore(firstStart)) {
       return new UnivPeriod(year - 1, UnivPeriodType.WINTER_VACATION);

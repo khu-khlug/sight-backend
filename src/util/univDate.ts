@@ -1,10 +1,12 @@
 import dayjs from 'dayjs';
 
+import { UnivTerm } from '@khlug/util/univTerm';
+
 export class UnivDate {
   /**
    * 주어진 연도 학기의 개강일을 계산합니다.
    */
-  static calcSemesterStartDate(year: number, semester: 1 | 2): Date {
+  static calcSemesterStartDate({ year, semester }: UnivTerm): Date {
     if (semester === 1) {
       return dayjs.tz(`${year}-03-01`, 'Asia/Seoul').toDate();
     } else {
@@ -15,7 +17,7 @@ export class UnivDate {
   /**
    * 주어진 연도 학기의 중간고사 완료 기준일을 계산합니다.
    */
-  static calcMidTermExamEndDate(year: number, semester: 1 | 2): Date {
+  static calcMidTermExamEndDate({ year, semester }: UnivTerm): Date {
     if (semester === 1) {
       return dayjs
         .tz(`${year}-03-01`, 'Asia/Seoul')
@@ -34,7 +36,7 @@ export class UnivDate {
   /**
    * 주어진 연도 학기의 기말고사 완료 기준일(=종강일)을 계산합니다.
    */
-  static calcFinalExamEndDate(year: number, semester: 1 | 2): Date {
+  static calcFinalExamEndDate({ year, semester }: UnivTerm): Date {
     if (semester === 1) {
       return dayjs
         .tz(`${year}-03-01`, 'Asia/Seoul')
@@ -53,7 +55,7 @@ export class UnivDate {
   /**
    * 주어진 연도 학기의 학기 종료일을 계산합니다.
    */
-  static calcSemesterEndDate(year: number, semester: 1 | 2): Date {
+  static calcSemesterEndDate({ year, semester }: UnivTerm): Date {
     if (semester === 1) {
       return dayjs
         .tz(`${year}-09-01`, 'Asia/Seoul')

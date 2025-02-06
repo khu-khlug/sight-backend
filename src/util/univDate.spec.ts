@@ -1,23 +1,20 @@
 import dayjs from 'dayjs';
 
 import { UnivDate } from '@khlug/util/univDate';
+import { UnivTerm } from '@khlug/util/univTerm';
 
 describe('UnivDate', () => {
   describe('calcSemesterStartDate', () => {
     test('1학기라면 3월 1일을 반환해야 한다', () => {
-      const year = 2025;
-      const semester = 1;
-
-      const result = UnivDate.calcSemesterStartDate(year, semester);
+      const term = new UnivTerm(2025, 1);
+      const result = UnivDate.calcSemesterStartDate(term);
 
       expect(result).toEqual(dayjs.tz('2025-03-01', 'Asia/Seoul').toDate());
     });
 
     test('2학기라면 9월 1일을 반환해야 한다', () => {
-      const year = 2025;
-      const semester = 2;
-
-      const result = UnivDate.calcSemesterStartDate(year, semester);
+      const term = new UnivTerm(2025, 2);
+      const result = UnivDate.calcSemesterStartDate(term);
 
       expect(result).toEqual(dayjs.tz('2025-09-01', 'Asia/Seoul').toDate());
     });
@@ -25,10 +22,8 @@ describe('UnivDate', () => {
 
   describe('calcMidTermExamEndDate', () => {
     test('1학기라면 3월 1일로부터 8주 후의 전날을 반환해야 한다', () => {
-      const year = 2025;
-      const semester = 1;
-
-      const result = UnivDate.calcMidTermExamEndDate(year, semester);
+      const term = new UnivTerm(2025, 1);
+      const result = UnivDate.calcMidTermExamEndDate(term);
 
       // o--------------------o   o--------------------o
       // |      2025-03       |   |      2025-04       |
@@ -45,10 +40,8 @@ describe('UnivDate', () => {
     });
 
     test('2학기라면 9월 1일로부터 8주 후의 전날을 반환해야 한다', () => {
-      const year = 2025;
-      const semester = 2;
-
-      const result = UnivDate.calcMidTermExamEndDate(year, semester);
+      const term = new UnivTerm(2025, 2);
+      const result = UnivDate.calcMidTermExamEndDate(term);
 
       // o--------------------o   o--------------------o
       // |      2025-09       |   |      2025-10       |
@@ -66,10 +59,8 @@ describe('UnivDate', () => {
 
   describe('calcFinalExamEndDate', () => {
     test('1학기라면 3월 1일로부터 16주 후의 전날을 반환해야 한다', () => {
-      const year = 2025;
-      const semester = 1;
-
-      const result = UnivDate.calcFinalExamEndDate(year, semester);
+      const term = new UnivTerm(2025, 1);
+      const result = UnivDate.calcFinalExamEndDate(term);
 
       // o--------------------o   o--------------------o
       // |      2025-03       |   |      2025-06       |
@@ -86,10 +77,8 @@ describe('UnivDate', () => {
     });
 
     test('2학기라면 9월 1일로부터 16주 후의 전날을 반환해야 한다', () => {
-      const year = 2025;
-      const semester = 2;
-
-      const result = UnivDate.calcFinalExamEndDate(year, semester);
+      const term = new UnivTerm(2025, 2);
+      const result = UnivDate.calcFinalExamEndDate(term);
 
       // o--------------------o   o--------------------o
       // |      2025-09       |   |      2025-12       |
@@ -107,28 +96,22 @@ describe('UnivDate', () => {
 
   describe('calcSemesterEndDate', () => {
     test('1학기라면 2학기 개강일의 전날을 반환해야 한다', () => {
-      const year = 2025;
-      const semester = 1;
-
-      const result = UnivDate.calcSemesterEndDate(year, semester);
+      const term = new UnivTerm(2025, 1);
+      const result = UnivDate.calcSemesterEndDate(term);
 
       expect(result).toEqual(dayjs.tz('2025-08-31', 'Asia/Seoul').toDate());
     });
 
     test('2학기라면 내년 1학기 개강일의 전날을 반환해야 한다', () => {
-      const year = 2025;
-      const semester = 2;
-
-      const result = UnivDate.calcSemesterEndDate(year, semester);
+      const term = new UnivTerm(2025, 2);
+      const result = UnivDate.calcSemesterEndDate(term);
 
       expect(result).toEqual(dayjs.tz('2026-02-28', 'Asia/Seoul').toDate());
     });
 
-    test('윤년이라면 29일을 반환해야 한다', () => {
-      const year = 2027;
-      const semester = 2;
-
-      const result = UnivDate.calcSemesterEndDate(year, semester);
+    test('2학기인데 내년이 윤년이라면 29일을 반환해야 한다', () => {
+      const term = new UnivTerm(2027, 2);
+      const result = UnivDate.calcSemesterEndDate(term);
 
       expect(result).toEqual(dayjs.tz('2028-02-29', 'Asia/Seoul').toDate());
     });
