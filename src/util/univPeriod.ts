@@ -1,5 +1,7 @@
 import dayjs from 'dayjs';
 
+import { UnivDate } from '@khlug/util/univDate';
+
 /**
  * 각 일자 기준에 대한 정의는 회비에 관한 세부 회칙 제8조를 참고해주세요.
  */
@@ -46,18 +48,17 @@ export class UnivPeriod {
    */
   static fromDate(refDate: Date): UnivPeriod {
     const dateInKst = dayjs.tz(refDate, 'Asia/Seoul').startOf('day');
-    const createKstDate = (dateStr: string) => dayjs.tz(dateStr, 'Asia/Seoul');
 
     const year = dateInKst.year();
 
-    const firstStart = createKstDate(`${year}-03-01`);
-    const firstMidTermEnd = firstStart.add(8, 'week').subtract(1, 'day');
-    const firstFinalEnd = firstStart.add(16, 'week').subtract(1, 'day');
-    const firstEnd = createKstDate(`${year}-09-01`).subtract(1, 'day');
+    const firstStart = UnivDate.calcSemesterStartDate(year, 1);
+    const firstMidTermEnd = UnivDate.calcMidTermExamEndDate(year, 1);
+    const firstFinalEnd = UnivDate.calcFinalExamEndDate(year, 1);
+    const firstEnd = UnivDate.calcSemesterEndDate(year, 1);
 
-    const secondStart = createKstDate(`${year}-09-01`);
-    const secondMidTermEnd = secondStart.add(8, 'week').subtract(1, 'day');
-    const secondFinalEnd = secondStart.add(16, 'week').subtract(1, 'day');
+    const secondStart = UnivDate.calcSemesterStartDate(year, 2);
+    const secondMidTermEnd = UnivDate.calcMidTermExamEndDate(year, 2);
+    const secondFinalEnd = UnivDate.calcFinalExamEndDate(year, 2);
 
     if (dateInKst.isBefore(firstStart)) {
       return new UnivPeriod(year - 1, UnivPeriodType.WINTER_VACATION);
