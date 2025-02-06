@@ -22,4 +22,41 @@ describe('UnivTerm', () => {
       expect(univTerm).toEqual(new UnivTerm(2025, 1));
     });
   });
+
+  describe('isAfter', () => {
+    test('동일 년도 동일 학기라면 `false`를 반환해야 한다', () => {
+      const thisTerm = new UnivTerm(2025, 1);
+      const otherTerm = new UnivTerm(2025, 1);
+
+      expect(thisTerm.isAfter(otherTerm)).toBe(false);
+    });
+
+    test('동일 년도이고 본 객체의 학기가 크다면 `true`를 반환해야 한다', () => {
+      const thisTerm = new UnivTerm(2025, 2);
+      const otherTerm = new UnivTerm(2025, 1);
+
+      expect(thisTerm.isAfter(otherTerm)).toBe(true);
+    });
+
+    test('동일 년도이고 본 객체의 학기가 작다면 `false`를 반환해야 한다', () => {
+      const thisTerm = new UnivTerm(2025, 1);
+      const otherTerm = new UnivTerm(2025, 2);
+
+      expect(thisTerm.isAfter(otherTerm)).toBe(false);
+    });
+
+    test('본 객체의 년도가 크다면 `true`를 반환해야 한다', () => {
+      const thisTerm = new UnivTerm(2026, 1);
+      const otherTerm = new UnivTerm(2025, 2);
+
+      expect(thisTerm.isAfter(otherTerm)).toBe(true);
+    });
+
+    test('본 객체의 년도가 작다면 `false`를 반환해야 한다', () => {
+      const thisTerm = new UnivTerm(2025, 2);
+      const otherTerm = new UnivTerm(2026, 1);
+
+      expect(thisTerm.isAfter(otherTerm)).toBe(false);
+    });
+  });
 });

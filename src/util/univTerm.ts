@@ -12,4 +12,11 @@ export class UnivTerm {
     const nextSemester = this.semester === 2 ? 1 : 2;
     return new UnivTerm(nextYear, nextSemester);
   }
+
+  isAfter(other: UnivTerm): boolean {
+    return (
+      this.year > other.year ||
+      (this.year === other.year && this.semester > other.semester)
+    );
+  }
 }
