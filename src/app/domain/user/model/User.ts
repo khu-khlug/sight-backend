@@ -26,6 +26,7 @@ import {
 import { Profile } from '@khlug/app/domain/user/model/Profile';
 
 import { Message } from '@khlug/constant/message';
+import { UnivPeriod } from '@khlug/util/univPeriod';
 
 export type UserConstructorParams = {
   id: number;
@@ -243,7 +244,7 @@ export class User extends AggregateRoot {
 
   /**
    * 회비 납부 대상 여부
-   * @see 회비에 관한 세부 회칙 제2조
+   * @see 회비에 관한 세부 회칙 제2조, 제5조
    */
   needPayFee(): boolean {
     // 정지 상태의 회원은 회비 납부 대상이 아닙니다.
@@ -261,12 +262,25 @@ export class User extends AggregateRoot {
       return false;
     }
 
-    const joinedYears = dayjs().diff(this._createdAt, 'year');
+    let passedMinNeedPayFee = false;
 
-    const isJoinedYearsLessThanOne = joinedYears < 1;
+    const nowPeriod = UnivPeriod.fromDate(this._createdAt);
+    const thisSemester = UnivPeriod.fromDate(new Date()).toSemester();
+    if (nowPeriod.inVacation()) {
+      // 방학 중에 가입했다면, 다음 학기와 다다음 학기의 종강일을 지나야 2번의 종강일을 지남.
+      // ex) 2024년 겨울방학에 가입했다면 2024년 2학기로 보므로, 2025년 1학기와 2025년 2학기를 지나야 함.
+      const leastNeedPayTerm = nowPeriod.toSemester().next().next();
+      passedMinNeedPayFee = thisSemester.isAfter(leastNeedPayTerm);
+    } else {
+      // 학기 중에 가입했다면, 다음 학기의 종강일을 지나야 2번의 종강일을 지남.
+      // ex) 2024년 2학기에 가입했다면, 2024년 2학기와 2025년 1학기를 지나야 함.
+      const leastNeedPayTerm = nowPeriod.toSemester().next();
+      passedMinNeedPayFee = thisSemester.isAfter(leastNeedPayTerm);
+    }
+
     const isGradeLessThanFour = this._profile.grade < 4;
 
-    return isJoinedYearsLessThanOne || isGradeLessThanFour;
+    return !passedMinNeedPayFee || isGradeLessThanFour;
   }
 
   get id(): number {

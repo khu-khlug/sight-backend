@@ -6,6 +6,8 @@ import { StudentStatus } from '@khlug/app/domain/user/model/constant';
 import { DomainFixture } from '@khlug/__test__/fixtures';
 import { generateProfile, UserFixture } from '@khlug/__test__/fixtures/domain';
 import { Message } from '@khlug/constant/message';
+import { UnivDate } from '@khlug/util/univDate';
+import { UnivTerm } from '@khlug/util/univTerm';
 
 describe('User', () => {
   const now = new Date();
@@ -345,44 +347,93 @@ describe('User', () => {
       expect(user.needPayFee()).toEqual(false);
     });
 
-    test('등록한지 1년이 지났고, 4학년인 경우 `false`를 반환해야 한다', () => {
+    test('학기 중 등록 후 2번의 종강일을 지났으며 4학년인 경우, `false`를 반환해야 한다', () => {
       const user = createUser({
         grade: 4,
         createdAt: createKstDate('2024-05-01'),
       });
       advanceTo(createKstDate('2025-05-01'));
 
+      // 2024년 1학기와 2024년 2학기 종강일을 지났고 4학년이므로 `false`가 반환되어야 합니다.
       expect(user.needPayFee()).toEqual(false);
     });
 
-    test('등록한지 1년이 지나지 않았고, 4학년인 경우 `true`를 반환해야 한다', () => {
+    test('종강일에 등록 후 그 다음 학기의 종강일을 지났으며 4학년인 경우, `false`를 반환해야 한다', () => {
       const user = createUser({
         grade: 4,
-        createdAt: createKstDate('2025-05-01'),
+        createdAt: UnivDate.calcFinalExamEndDate(new UnivTerm(2024, 1)),
       });
-      advanceTo(createKstDate('2026-04-30'));
+      advanceTo(createKstDate('2025-05-01'));
 
-      expect(user.needPayFee()).toEqual(true);
+      // 2024년 1학기와 2024년 2학기 종강일을 지났고 4학년이므로 `false`가 반환되어야 합니다.
+      expect(user.needPayFee()).toEqual(false);
     });
 
-    test('등록한지 1년이 지나지 않았고, 4학년 미만인 경우 `true`를 반환해야 한다', () => {
+    test('방학 중 등록 후 2번의 종강일을 지났으며 4학년인 경우, `false`를 반환해야 한다', () => {
       const user = createUser({
-        grade: 3,
-        createdAt: createKstDate('2025-05-01'),
+        grade: 4,
+        createdAt: createKstDate('2024-02-01'),
       });
-      advanceTo(createKstDate('2026-04-30'));
+      advanceTo(createKstDate('2025-05-01'));
 
-      expect(user.needPayFee()).toEqual(true);
+      // 2024년 1학기와 2024년 2학기 종강일을 지났고 4학년이므로 `false`가 반환되어야 합니다.
+      expect(user.needPayFee()).toEqual(false);
     });
 
-    test('등록한지 1년이 지났고, 4학년 미만인 경우 `true`를 반환해야 한다', () => {
+    test('학기 중 등록 후 2번의 종강일을 지나지 않았으며 4학년인 경우, `true`를 반환해야 한다', () => {
       const user = createUser({
-        grade: 3,
-        createdAt: createKstDate('2025-05-01'),
+        grade: 4,
+        createdAt: createKstDate('2024-05-01'),
       });
-      advanceTo(createKstDate('2026-05-01'));
+      advanceTo(createKstDate('2024-10-01'));
 
+      // 2024년 1학기 종강일만 지났으므로 `true`가 반환되어야 합니다.
       expect(user.needPayFee()).toEqual(true);
     });
+
+    test('종강일에 등록 후 그 다음 학기의 종강일을 지나지 않았으며 4학년인 경우, `true`를 반환해야 한다', () => {
+      const user = createUser({
+        grade: 4,
+        createdAt: UnivDate.calcFinalExamEndDate(new UnivTerm(2024, 1)),
+      });
+      advanceTo(createKstDate('2024-10-01'));
+
+      // 2024년 1학기 종강일만 지났으므로 `true`가 반환되어야 합니다.
+      expect(user.needPayFee()).toEqual(true);
+    });
+
+    test('방학 중 등록 후 2번의 종강일을 지나지 않았으며 4학년인 경우, `true`를 반환해야 한다', () => {
+      const user = createUser({
+        grade: 4,
+        createdAt: createKstDate('2024-02-01'),
+      });
+      advanceTo(createKstDate('2024-10-30'));
+
+      // 2025년 1학기 종강일만 지났으므로 `true`가 반환되어야 합니다.
+      expect(user.needPayFee()).toEqual(true);
+    });
+
+    test.each([
+      [createKstDate('2024-02-01')], // 2023년 겨울 방학 중
+      [UnivDate.calcSemesterStartDate(new UnivTerm(2024, 1))], // 2024년 1학기 개강일
+      [createKstDate('2024-05-01')], // 2024년 1학기 중
+      [UnivDate.calcFinalExamEndDate(new UnivTerm(2024, 1))], // 2024년 1학기 종강일
+      [createKstDate('2024-08-01')], // 2024년 여름 방학 중
+      [UnivDate.calcSemesterStartDate(new UnivTerm(2024, 2))], // 2024년 2학기 개강일
+      [createKstDate('2024-11-01')], // 2024년 2학기 중
+      [UnivDate.calcFinalExamEndDate(new UnivTerm(2024, 2))], // 2024년 2학기 종강일
+      [createKstDate('2025-02-01')], // 2024년 겨울 방학 중
+    ])(
+      '4학년 미만이라면 등록일자와 무관하게 `true`를 반환해야 한다',
+      (createdAt: Date) => {
+        const user = createUser({
+          grade: 3,
+          createdAt,
+        });
+        advanceTo(createKstDate('2025-04-01'));
+
+        expect(user.needPayFee()).toEqual(true);
+      },
+    );
   });
 });
