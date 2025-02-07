@@ -59,4 +59,34 @@ describe('UnivTerm', () => {
       expect(thisTerm.isAfter(otherTerm)).toBe(false);
     });
   });
+
+  describe('isSame', () => {
+    test('년도와 학기가 같다면 `true`를 반환해야 한다', () => {
+      const thisTerm = new UnivTerm(2025, 1);
+      const otherTerm = new UnivTerm(2025, 1);
+
+      expect(thisTerm.isSame(otherTerm)).toBe(true);
+    });
+
+    test('년도가 다르고 학기가 같다면 `false`를 반환해야 한다', () => {
+      const thisTerm = new UnivTerm(2025, 1);
+      const otherTerm = new UnivTerm(2026, 1);
+
+      expect(thisTerm.isSame(otherTerm)).toBe(false);
+    });
+
+    test('년도가 같고 학기가 다르다면 `false`를 반환해야 한다', () => {
+      const thisTerm = new UnivTerm(2025, 1);
+      const otherTerm = new UnivTerm(2025, 2);
+
+      expect(thisTerm.isSame(otherTerm)).toBe(false);
+    });
+
+    test('년도와 학기가 모두 다르다면 `false`를 반환해야 한다', () => {
+      const thisTerm = new UnivTerm(2025, 1);
+      const otherTerm = new UnivTerm(2026, 2);
+
+      expect(thisTerm.isSame(otherTerm)).toBe(false);
+    });
+  });
 });

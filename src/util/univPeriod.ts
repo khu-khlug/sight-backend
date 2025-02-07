@@ -44,7 +44,7 @@ export class UnivPeriod {
     );
   }
 
-  toSemester(): UnivTerm {
+  toTerm(): UnivTerm {
     switch (this.type) {
       case UnivPeriodType.FIRST_SEMESTER_MIDTERM_EXAM:
       case UnivPeriodType.FIRST_SEMESTER_FINAL_EXAM:
