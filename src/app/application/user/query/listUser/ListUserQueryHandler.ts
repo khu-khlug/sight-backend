@@ -7,7 +7,11 @@ import { ListUserQuery } from '@khlug/app/application/user/query/listUser/ListUs
 import { ListUserQueryResult } from '@khlug/app/application/user/query/listUser/ListUserQueryResult';
 import { UserWithTagListView } from '@khlug/app/application/user/query/view/UserListView';
 
+import { FeeHistory } from '@khlug/app/domain/fee/model/FeeHistory';
+import { UserStatus } from '@khlug/app/domain/user/model/constant';
 import { User } from '@khlug/app/domain/user/model/User';
+
+import { UnivPeriod } from '@khlug/util/univPeriod';
 
 @Injectable()
 @QueryHandler(ListUserQuery)
@@ -17,6 +21,8 @@ export class ListUserQueryHandler
   constructor(
     @InjectRepository(User)
     private readonly userRepository: EntityRepository<User>,
+    @InjectRepository(FeeHistory)
+    private readonly feeHistoryRepository: EntityRepository<FeeHistory>,
   ) {}
 
   async execute(query: ListUserQuery): Promise<ListUserQueryResult> {
@@ -68,6 +74,20 @@ export class ListUserQueryHandler
       .orderBy({ id: 'ASC' })
       .getResultAndCount();
 
+    const feeTargetUserIds = users
+      .filter((user) => user.needPayFee())
+      .map((user) => user.id);
+    const thisTerm = UnivPeriod.fromDate(new Date()).toTerm();
+
+    const feeHistories = await this.feeHistoryRepository.find({
+      user: { $in: feeTargetUserIds },
+      year: thisTerm.year,
+      semester: thisTerm.semester,
+    });
+    const userFeeHistorySet = new Set<number>(
+      feeHistories.map((feeHistory) => feeHistory.user),
+    );
+
     const listView: UserWithTagListView = {
       count,
       users: users.map((user) => {
@@ -78,8 +98,20 @@ export class ListUserQueryHandler
           redTags.push('미인증');
         }
 
+        if (user.status === UserStatus.INACTIVE) {
+          redTags.push('차단');
+        }
+
         if (user.point < 0) {
           redTags.push('-exp');
+        }
+
+        if (user.needPayFee() && !userFeeHistorySet.has(user.id)) {
+          if (user.needPayHalfFee()) {
+            normalTags.push('반액 납부 대상');
+          } else {
+            normalTags.push('납부 대상');
+          }
         }
 
         return {
