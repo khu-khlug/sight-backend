@@ -19,4 +19,8 @@ export class UnivTerm {
       (this.year === other.year && this.semester > other.semester)
     );
   }
+
+  isSame(other: UnivTerm): boolean {
+    return this.year === other.year && this.semester === other.semester;
+  }
 }
