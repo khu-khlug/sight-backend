@@ -436,4 +436,77 @@ describe('User', () => {
       },
     );
   });
+
+  describe('needPayHalfFee', () => {
+    const createUser = (
+      params: Partial<{ grade: number; createdAt: Date }> = {},
+    ) =>
+      DomainFixture.generateUser({
+        studentStatus: StudentStatus.UNDERGRADUATE,
+        manager: false,
+        profile: generateProfile({ grade: params.grade ?? 1 }),
+        createdAt: params.createdAt ?? new Date('2025-05-01'),
+        returnAt: null,
+      });
+
+    test('납부 대상이 아니라면 `false`를 반환해야 한다', () => {
+      const user = createUser({
+        grade: 4,
+        createdAt: createKstDate('2001-01-01'),
+      });
+      expect(user.needPayHalfFee()).toEqual(false);
+    });
+
+    test.each([
+      dayjs(UnivDate.calcMidTermExamEndDate(new UnivTerm(2025, 1)))
+        .add(1, 'day')
+        .toDate(), // 중간고사 종료 기준일 다음날
+      createKstDate('2025-05-15'), // 아무튼 중간고사 이후 언젠가
+      UnivDate.calcFinalExamEndDate(new UnivTerm(2025, 1)), // 기말고자 종료 기준일
+    ])(
+      '현재 학기의 중간고사 종료 기준일 이후에 등록했다면 `true`를 반환해야 한다',
+      (createdAt: Date) => {
+        advanceTo(UnivDate.calcFinalExamEndDate(new UnivTerm(2025, 1)));
+
+        const user = createUser({ grade: 3, createdAt });
+
+        expect(user.needPayHalfFee()).toEqual(true);
+      },
+    );
+
+    test('중간고사 이후에 등록했다고 해도 현재 학기가 아니라면 `false`를 반환해야 한다', () => {
+      advanceTo(createKstDate('2025-10-01'));
+
+      const user = createUser({
+        grade: 3,
+        createdAt: createKstDate('2025-05-15'),
+      });
+
+      // 오늘은 2025년 2학기이고, 등록일은 1학기 중간고사 이후이므로 `false`가 반환되어야 합니다.
+      expect(user.needPayHalfFee()).toEqual(false);
+    });
+
+    test('중간고사 기간에 등록했다면 `false`를 반환해야 한다', () => {
+      advanceTo(UnivDate.calcMidTermExamEndDate(new UnivTerm(2025, 1)));
+
+      const user = createUser({
+        grade: 3,
+        createdAt: createKstDate('2025-03-15'),
+      });
+
+      // 오늘은 2025년 1학기이고, 등록일은 1학기 중간고사 기간이므로 `false`가 반환되어야 합니다.
+      expect(user.needPayHalfFee()).toEqual(false);
+    });
+
+    test('방학 기간에 등록했다면 `false`를 반환해야 한다', () => {
+      advanceTo(createKstDate('2025-08-10'));
+
+      const user = createUser({
+        grade: 3,
+        createdAt: createKstDate('2025-08-01'),
+      });
+
+      expect(user.needPayHalfFee()).toEqual(false);
+    });
+  });
 });

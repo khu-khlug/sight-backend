@@ -26,7 +26,7 @@ import {
 import { Profile } from '@khlug/app/domain/user/model/Profile';
 
 import { Message } from '@khlug/constant/message';
-import { UnivPeriod } from '@khlug/util/univPeriod';
+import { UnivPeriod, UnivPeriodType } from '@khlug/util/univPeriod';
 
 export type UserConstructorParams = {
   id: number;
@@ -281,6 +281,29 @@ export class User extends AggregateRoot {
     const isGradeLessThanFour = this._profile.grade < 4;
 
     return !passedMinNeedPayFee || isGradeLessThanFour;
+  }
+
+  /**
+   * 회비 납부 대상 여부
+   * @see 회비에 관한 세부 회칙 제5조
+   */
+  needPayHalfFee(): boolean {
+    if (!this.needPayFee()) {
+      return false;
+    }
+
+    const joinedPeriod = UnivPeriod.fromDate(this._createdAt);
+
+    const joinedAfterMidterm = [
+      UnivPeriodType.FIRST_SEMESTER_FINAL_EXAM as UnivPeriodType,
+      UnivPeriodType.SECOND_SEMESTER_FINAL_EXAM as UnivPeriodType,
+    ].includes(joinedPeriod.type);
+
+    const nowTerm = UnivPeriod.fromDate(new Date()).toTerm();
+    const joinedTerm = joinedPeriod.toTerm();
+    const joinedInThisSemester = nowTerm.isSame(joinedTerm);
+
+    return joinedAfterMidterm && joinedInThisSemester;
   }
 
   get id(): number {
