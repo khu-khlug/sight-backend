@@ -11,6 +11,11 @@ services:
     command:
       - --character-set-server=utf8mb4
       - --collation-server=utf8mb4_unicode_ci
+      # 레거시 데이터가 `0000-00-00 00:00:00`와 같은 non-standard 데이터를 갖고 있어,
+      # `NO_ZERO_IN_DATE`와 `NO_ZERO_DATE`를 `sql_mode`로부터 제외시킵니다.
+      # 사이트 시스템 마이그레이션이 완료된 뒤에는 제거해야 합니다.
+      # @see https://dev.mysql.com/doc/refman/8.4/en/server-system-variables.html#sysvar_sql_mode
+      - --sql-mode=ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION
     volumes:
       - ./.mysql/:/docker-entrypoint-initdb.d
     healthcheck:
