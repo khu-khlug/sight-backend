@@ -1,6 +1,7 @@
 import {
   Embedded,
   Entity,
+  IType,
   PrimaryKey,
   Property,
   Unique,
@@ -26,6 +27,7 @@ import {
 import { Profile } from '@khlug/app/domain/user/model/Profile';
 
 import { Message } from '@khlug/constant/message';
+import { LegacyDateConverter } from '@khlug/util/mikro-orm/LegacyDateConverter';
 import { UnivPeriod, UnivPeriodType } from '@khlug/util/univPeriod';
 
 export type UserConstructorParams = {
@@ -104,7 +106,11 @@ export class User extends AggregateRoot {
   @IsOptional()
   private _rememberToken: string | null;
 
-  @Property({ type: 'timestamp', name: 'khuisauth_at' })
+  @Property({
+    type: LegacyDateConverter,
+    columnType: 'timestamp',
+    name: 'khuisauth_at',
+  })
   @IsDate()
   private _khuisAuthAt: Date;
 
@@ -139,13 +145,21 @@ export class User extends AggregateRoot {
   @IsDate()
   private _createdAt: Date;
 
-  @Property({ type: 'timestamp', name: 'last_login' })
+  @Property({
+    type: LegacyDateConverter,
+    columnType: 'timestamp',
+    name: 'last_login',
+  })
   @IsDate()
   private _lastLoginAt: Date;
 
-  @Property({ type: 'timestamp', name: 'last_enter' })
+  @Property({
+    type: LegacyDateConverter,
+    columnType: 'timestamp',
+    name: 'last_enter',
+  })
   @IsDate()
-  private _lastEnterAt: Date;
+  private _lastEnterAt: IType<Date, string>;
 
   @Embedded(() => Profile, { prefix: '' })
   private _profile: Profile;
