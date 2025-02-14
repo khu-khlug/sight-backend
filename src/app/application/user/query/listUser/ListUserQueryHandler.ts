@@ -43,31 +43,31 @@ export class ListUserQueryHandler
 
     const qb = this.userRepository.createQueryBuilder('user');
 
-    if (email) {
+    if (email !== null) {
       qb.andWhere('email LIKE ?', [`%${email}%`]);
     }
 
-    if (phone) {
+    if (phone !== null) {
       qb.andWhere('phone LIKE ?', [`%${phone}%`]);
     }
 
-    if (name) {
+    if (name !== null) {
       qb.andWhere('realname LIKE ?', [`%${name}%`]);
     }
 
-    if (number) {
+    if (number !== null) {
       qb.andWhere('number LIKE ?', [`%${number}%`]);
     }
 
-    if (college) {
+    if (college !== null) {
       qb.andWhere('college LIKE ?', [`%${college}%`]);
     }
 
-    if (grade) {
+    if (grade !== null) {
       qb.andWhere('grade = ?', [grade]);
     }
 
-    if (studentStatus) {
+    if (studentStatus !== null) {
       qb.andWhere('state = ?', [studentStatus]);
     }
 
