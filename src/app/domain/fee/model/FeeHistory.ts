@@ -1,4 +1,4 @@
-import { Entity, PrimaryKey, Property } from '@mikro-orm/core';
+import { Entity, Index, PrimaryKey, Property } from '@mikro-orm/core';
 import { IsDate, IsInt } from 'class-validator';
 
 export type FeeHistoryConstructorParams = {
@@ -24,6 +24,7 @@ export class FeeHistory {
   private _semester: number;
 
   @Property({ type: 'bigint', name: 'user' })
+  @Index({ name: 'idx_fee_history_user' })
   @IsInt()
   private _user: number;
 
