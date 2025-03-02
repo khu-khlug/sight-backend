@@ -18,14 +18,16 @@ jobs:
         with:
           node-version-file: '.nvmrc'
 
-      - name: Prepare yarn
-        run: corepack enable && corepack prepare yarn@4.6.0 --activate
+      # - name: Prepare yarn
+      #   run: corepack enable && corepack prepare yarn@4.6.0 --activate
 
       - name: Install dependencies
-        run: yarn install --immutable
+        # run: yarn install --immutable
+        run: npm ci
 
       - name: Run tests
-        run: yarn test:cov --maxWorkers=100%
+        # run: yarn test:cov --maxWorkers=100%
+        run: npm run test:cov -- --maxWorkers=100%
 
       - name: Coverage
         uses: coverallsapp/github-action@v2.2.3
