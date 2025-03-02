@@ -39,6 +39,7 @@ test.sqlite3
 
 # 실수로 `npm install` 하는 경우를 방지하기 위함입니다.
 # `yarn install`을 사용해주세요.
-package-lock.json
+# -> 구 컨테이너 버전 문제로 npm을 다시 사용합니다.
+# package-lock.json
 
 .env.production

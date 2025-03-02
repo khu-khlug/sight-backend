@@ -21,7 +21,7 @@
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "mikro-orm": "node -r ts-node/register -r tsconfig-paths/register ./node_modules/.bin/mikro-orm",
-    "schema:update": "yarn mikro-orm schema:update --run",
+    "schema:update": "npm run mikro-orm schema:update --run",
     "compose": "docker compose down && docker compose up"
   },
   "dependencies": {
@@ -52,7 +52,7 @@
     "@nestjs/schematics": "^10.2.3",
     "@nestjs/testing": "^10.4.15",
     "@swc/cli": "^0.5.2",
-    "@swc/core": "^1.10.4",
+    "@swc/core": "^1.11.5",
     "@swc/jest": "^0.2.37",
     "@types/cookie-parser": "^1.4.8",
     "@types/express": "^5.0.0",
@@ -94,6 +94,5 @@
     "moduleNameMapper": {
       "@khlug/(.*)": "<rootDir>/$1"
     }
-  },
-  "packageManager": "yarn@4.6.0"
+  }
 }
