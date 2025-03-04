@@ -8,6 +8,9 @@ export class GetCurrentUserDiscordIntegrationResponseDto {
   @ApiProperty({ description: '디스코드 연동 정보 ID' })
   id!: string;
 
+  @ApiProperty({ description: '디스코드 유저 ID' })
+  discordUserId!: string;
+
   @ApiProperty({ description: '디스코드 연동일시' })
   createdAt!: Date;
 
@@ -16,6 +19,7 @@ export class GetCurrentUserDiscordIntegrationResponseDto {
   }: GetDiscordIntegrationQueryResult): GetCurrentUserDiscordIntegrationResponseDto {
     return DtoBuilder.build(GetCurrentUserDiscordIntegrationResponseDto, {
       id: discordIntegration.id,
+      discordUserId: discordIntegration.discordUserId,
       createdAt: discordIntegration.createdAt,
     });
   }
