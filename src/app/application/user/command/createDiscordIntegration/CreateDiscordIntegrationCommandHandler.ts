@@ -1,5 +1,3 @@
-import { EntityRepository } from '@mikro-orm/mysql';
-import { InjectRepository } from '@mikro-orm/nestjs';
 import { ForbiddenException, Inject } from '@nestjs/common';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { ulid } from 'ulid';
@@ -14,6 +12,10 @@ import {
 } from '@khlug/app/application/adapter/IDiscordStateGenerator';
 import { CreateDiscordIntegrationCommand } from '@khlug/app/application/user/command/createDiscordIntegration/CreateDiscordIntegrationCommand';
 
+import {
+  DiscordIntegrationRepositoryToken,
+  IDiscordIntegrationRepository,
+} from '@khlug/app/domain/discord/IDiscordIntegrationRepository';
 import { DiscordIntegration } from '@khlug/app/domain/discord/model/DiscordIntegration';
 
 import { Message } from '@khlug/constant/message';
@@ -27,8 +29,8 @@ export class CreateDiscordIntegrationCommandHandler
     private readonly discordStateGenerator: IDiscordStateGenerator,
     @Inject(DiscordAdapterToken)
     private readonly discordAdapter: IDiscordAdapter,
-    @InjectRepository(DiscordIntegration)
-    private readonly discordIntegrationRepository: EntityRepository<DiscordIntegration>,
+    @Inject(DiscordIntegrationRepositoryToken)
+    readonly discordIntegrationRepository: IDiscordIntegrationRepository,
   ) {}
 
   async execute(command: CreateDiscordIntegrationCommand): Promise<void> {
@@ -40,9 +42,7 @@ export class CreateDiscordIntegrationCommandHandler
     }
 
     const prevDiscordIntegration =
-      await this.discordIntegrationRepository.findOne({
-        userId,
-      });
+      await this.discordIntegrationRepository.findByUserId(userId);
     if (prevDiscordIntegration) {
       // 이미 존재한다면 무시합니다.
       return;

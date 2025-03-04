@@ -1,5 +1,5 @@
-import { DiscordIntegration } from '@khlug/app/domain/discord/model/DiscordIntegration';
+import { DiscordIntegrationView } from '@khlug/app/application/user/query/view/DiscordIntegrationView';
 
-export interface GetDiscordIntegrationQueryResult {
-  discordIntegration: DiscordIntegration;
+export class GetDiscordIntegrationQueryResult {
+  constructor(readonly view: DiscordIntegrationView) {}
 }

@@ -1,8 +1,12 @@
 import { MikroOrmModule } from '@mikro-orm/nestjs';
-import { Module } from '@nestjs/common';
+import { Module, Provider } from '@nestjs/common';
 
 import { DiscordAdapter } from '@khlug/app/infra/discord/DiscordAdapter';
 import { DiscordStateGenerator } from '@khlug/app/infra/discord/DiscordStateGenerator';
+import { DiscordIntegrationEntity } from '@khlug/app/infra/persistence/entity/DiscordIntegrationEntity';
+import { DiscordIntegrationQuery } from '@khlug/app/infra/persistence/query/DiscordIntegrationQuery';
+import { DiscordIntegrationRepository } from '@khlug/app/infra/persistence/repository/DiscordIntegrationRepository';
+import { DiscordIntegrationMapper } from '@khlug/app/infra/persistence/repository/mapper/DiscordIntegrationMapper';
 
 import { InfraBlueManageController } from '@khlug/app/interface/infraBlue/manager/InfraBlueManageController';
 import { UserManageController } from '@khlug/app/interface/user/manager/UserManageController';
@@ -16,28 +20,39 @@ import { CreateDiscordIntegrationCommandHandler } from '@khlug/app/application/u
 import { CreateDiscordOAuth2UrlCommandHandler } from '@khlug/app/application/user/command/createDiscordOAuth2Url/CreateDiscordOAuth2UrlCommandHandler';
 import { RemoveDiscordIntegrationCommandHandler } from '@khlug/app/application/user/command/removeDiscordIntegration/RemoveDiscordIntegrationCommandHandler';
 import { GetDiscordIntegrationQueryHandler } from '@khlug/app/application/user/query/getDiscordIntegration/GetDiscordIntegrationQueryHandler';
+import { DiscordIntegrationQueryToken } from '@khlug/app/application/user/query/IDiscordIntegrationQuery';
 import { ListUserQueryHandler } from '@khlug/app/application/user/query/listUser/ListUserQueryHandler';
 
 import { Cache } from '@khlug/app/domain/cache/model/Cache';
-import { DiscordIntegration } from '@khlug/app/domain/discord/model/DiscordIntegration';
+import { DiscordIntegrationRepositoryToken } from '@khlug/app/domain/discord/IDiscordIntegrationRepository';
 import { FeeHistory } from '@khlug/app/domain/fee/model/FeeHistory';
 import { User } from '@khlug/app/domain/user/model/User';
 
-const adapters = [
+const adapters: Provider[] = [
   { provide: DiscordAdapterToken, useClass: DiscordAdapter },
   { provide: DiscordStateGeneratorToken, useClass: DiscordStateGenerator },
 ];
+const queries: Provider[] = [
+  { provide: DiscordIntegrationQueryToken, useClass: DiscordIntegrationQuery },
+];
+const repositories: Provider[] = [
+  {
+    provide: DiscordIntegrationRepositoryToken,
+    useClass: DiscordIntegrationRepository,
+  },
+];
+const mappers: Provider[] = [DiscordIntegrationMapper];
 
 const controllers = [UserController];
 const manageControllers = [InfraBlueManageController, UserManageController];
 
-const commandHandlers = [
+const commandHandlers: Provider[] = [
   UpdateDoorLockPasswordCommandHandler,
   CreateDiscordIntegrationCommandHandler,
   CreateDiscordOAuth2UrlCommandHandler,
   RemoveDiscordIntegrationCommandHandler,
 ];
-const queryHandlers = [
+const queryHandlers: Provider[] = [
   GetDoorLockPasswordQueryHandler,
   ListUserQueryHandler,
   GetDiscordIntegrationQueryHandler,
@@ -45,9 +60,21 @@ const queryHandlers = [
 
 @Module({
   imports: [
-    MikroOrmModule.forFeature([Cache, User, FeeHistory, DiscordIntegration]),
+    MikroOrmModule.forFeature([
+      Cache,
+      User,
+      FeeHistory,
+      DiscordIntegrationEntity,
+    ]),
   ],
   controllers: [...controllers, ...manageControllers],
-  providers: [...adapters, ...commandHandlers, ...queryHandlers],
+  providers: [
+    ...adapters,
+    ...queries,
+    ...repositories,
+    ...mappers,
+    ...commandHandlers,
+    ...queryHandlers,
+  ],
 })
 export class AppModule {}

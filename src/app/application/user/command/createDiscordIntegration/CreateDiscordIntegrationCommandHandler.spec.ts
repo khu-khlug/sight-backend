@@ -1,5 +1,3 @@
-import { EntityRepository } from '@mikro-orm/mysql';
-import { getRepositoryToken } from '@mikro-orm/nestjs';
 import { Test } from '@nestjs/testing';
 import { advanceTo, clear } from 'jest-date-mock';
 
@@ -14,7 +12,10 @@ import {
 import { CreateDiscordIntegrationCommand } from '@khlug/app/application/user/command/createDiscordIntegration/CreateDiscordIntegrationCommand';
 import { CreateDiscordIntegrationCommandHandler } from '@khlug/app/application/user/command/createDiscordIntegration/CreateDiscordIntegrationCommandHandler';
 
-import { DiscordIntegration } from '@khlug/app/domain/discord/model/DiscordIntegration';
+import {
+  DiscordIntegrationRepositoryToken,
+  IDiscordIntegrationRepository,
+} from '@khlug/app/domain/discord/IDiscordIntegrationRepository';
 
 import { DiscordIntegrationFixture } from '@khlug/__test__/fixtures/DiscordIntegrationFixture';
 import { Message } from '@khlug/constant/message';
@@ -23,9 +24,7 @@ describe('CreateDiscordIntegrationCommandHandler', () => {
   let handler: CreateDiscordIntegrationCommandHandler;
   let discordStateGenerator: jest.Mocked<IDiscordStateGenerator>;
   let discordAdapter: jest.Mocked<IDiscordAdapter>;
-  let discordIntegrationRepository: jest.Mocked<
-    EntityRepository<DiscordIntegration>
-  >;
+  let discordIntegrationRepository: jest.Mocked<IDiscordIntegrationRepository>;
 
   beforeEach(async () => {
     advanceTo(new Date());
@@ -45,9 +44,9 @@ describe('CreateDiscordIntegrationCommandHandler', () => {
           },
         },
         {
-          provide: getRepositoryToken(DiscordIntegration),
+          provide: DiscordIntegrationRepositoryToken,
           useValue: {
-            findOne: jest.fn(),
+            findByUserId: jest.fn(),
             insert: jest.fn(),
           },
         },
@@ -58,7 +57,7 @@ describe('CreateDiscordIntegrationCommandHandler', () => {
     discordStateGenerator = testModule.get(DiscordStateGeneratorToken);
     discordAdapter = testModule.get(DiscordAdapterToken);
     discordIntegrationRepository = testModule.get(
-      getRepositoryToken(DiscordIntegration),
+      DiscordIntegrationRepositoryToken,
     );
   });
 
@@ -89,7 +88,7 @@ describe('CreateDiscordIntegrationCommandHandler', () => {
       const prev = DiscordIntegrationFixture.normal();
 
       discordStateGenerator.generate.mockReturnValue(state);
-      discordIntegrationRepository.findOne.mockResolvedValue(prev);
+      discordIntegrationRepository.findByUserId.mockResolvedValue(prev);
 
       const command = new CreateDiscordIntegrationCommand({
         userId,
@@ -107,7 +106,7 @@ describe('CreateDiscordIntegrationCommandHandler', () => {
       const state = 'state';
 
       discordStateGenerator.generate.mockReturnValue(state);
-      discordIntegrationRepository.findOne.mockResolvedValue(null);
+      discordIntegrationRepository.findByUserId.mockResolvedValue(null);
       discordAdapter.getAccessToken.mockResolvedValue('access-token');
       discordAdapter.getCurrentUserId.mockResolvedValue('discord-user-id');
 

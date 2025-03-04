@@ -1,4 +1,3 @@
-import { Entity, Index, PrimaryKey, Property } from '@mikro-orm/core';
 import { IsDate, IsNotEmpty, IsString } from 'class-validator';
 
 export type DiscordIntegrationConstructorParams = {
@@ -8,26 +7,19 @@ export type DiscordIntegrationConstructorParams = {
   createdAt: Date;
 };
 
-@Entity({ tableName: 'discord_integration' })
 export class DiscordIntegration {
-  @PrimaryKey({ type: 'varchar', length: 32, name: 'id' })
   @IsString()
   @IsNotEmpty()
   private _id: string;
 
-  @Property({ type: 'int', name: 'user_id' })
-  @Index({ name: 'idx_discord_int_user_id' })
   @IsString()
   @IsNotEmpty()
   private _userId: number;
 
-  @Property({ type: 'varchar', length: 32, name: 'discord_user_id' })
-  @Index({ name: 'idx_discord_int_discord_user_id' })
   @IsString()
   @IsNotEmpty()
   private _discordUserId: string;
 
-  @Property({ name: 'created_at' })
   @IsDate()
   private _createdAt: Date;
 

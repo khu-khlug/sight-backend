@@ -15,12 +15,12 @@ export class GetCurrentUserDiscordIntegrationResponseDto {
   createdAt!: Date;
 
   static buildFromQueryResult({
-    discordIntegration,
+    view,
   }: GetDiscordIntegrationQueryResult): GetCurrentUserDiscordIntegrationResponseDto {
     return DtoBuilder.build(GetCurrentUserDiscordIntegrationResponseDto, {
-      id: discordIntegration.id,
-      discordUserId: discordIntegration.discordUserId,
-      createdAt: discordIntegration.createdAt,
+      id: view.id,
+      discordUserId: view.discordUserId,
+      createdAt: view.createdAt,
     });
   }
 }

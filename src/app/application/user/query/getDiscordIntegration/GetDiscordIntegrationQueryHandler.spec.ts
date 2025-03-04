@@ -1,22 +1,20 @@
-import { EntityRepository } from '@mikro-orm/mysql';
-import { getRepositoryToken } from '@mikro-orm/nestjs';
 import { Test } from '@nestjs/testing';
 import { advanceTo, clear } from 'jest-date-mock';
 
 import { GetDiscordIntegrationQuery } from '@khlug/app/application/user/query/getDiscordIntegration/GetDiscordIntegrationQuery';
 import { GetDiscordIntegrationQueryHandler } from '@khlug/app/application/user/query/getDiscordIntegration/GetDiscordIntegrationQueryHandler';
 import { GetDiscordIntegrationQueryResult } from '@khlug/app/application/user/query/getDiscordIntegration/GetDiscordIntegrationQueryResult';
+import {
+  DiscordIntegrationQueryToken,
+  IDiscordIntegrationQuery,
+} from '@khlug/app/application/user/query/IDiscordIntegrationQuery';
+import { DiscordIntegrationView } from '@khlug/app/application/user/query/view/DiscordIntegrationView';
 
-import { DiscordIntegration } from '@khlug/app/domain/discord/model/DiscordIntegration';
-
-import { DiscordIntegrationFixture } from '@khlug/__test__/fixtures/DiscordIntegrationFixture';
 import { Message } from '@khlug/constant/message';
 
 describe('GetDiscordIntegrationQueryHandler', () => {
   let handler: GetDiscordIntegrationQueryHandler;
-  let discordIntegrationRepository: jest.Mocked<
-    EntityRepository<DiscordIntegration>
-  >;
+  let discordIntegrationRepository: jest.Mocked<IDiscordIntegrationQuery>;
 
   beforeEach(async () => {
     advanceTo(new Date());
@@ -25,23 +23,21 @@ describe('GetDiscordIntegrationQueryHandler', () => {
       providers: [
         GetDiscordIntegrationQueryHandler,
         {
-          provide: getRepositoryToken(DiscordIntegration),
-          useValue: { findOne: jest.fn() },
+          provide: DiscordIntegrationQueryToken,
+          useValue: { findByUserId: jest.fn() },
         },
       ],
     }).compile();
 
     handler = testModule.get(GetDiscordIntegrationQueryHandler);
-    discordIntegrationRepository = testModule.get(
-      getRepositoryToken(DiscordIntegration),
-    );
+    discordIntegrationRepository = testModule.get(DiscordIntegrationQueryToken);
   });
 
   afterEach(() => clear());
 
   describe('execute', () => {
     test('디스코드 연동 정보가 존재하지 않으면 예외를 발생시켜야 한다', async () => {
-      discordIntegrationRepository.findOne.mockResolvedValue(null);
+      discordIntegrationRepository.findByUserId.mockResolvedValue(null);
 
       const query = new GetDiscordIntegrationQuery(1234);
       await expect(handler.execute(query)).rejects.toThrow(
@@ -50,14 +46,17 @@ describe('GetDiscordIntegrationQueryHandler', () => {
     });
 
     test('디스코드 연동 정보를 반환해야 한다', async () => {
-      const fixture = DiscordIntegrationFixture.normal();
-      discordIntegrationRepository.findOne.mockResolvedValue(fixture);
+      const view: DiscordIntegrationView = {
+        id: 'discord-integration-id',
+        userId: 1234,
+        discordUserId: 'discord-user-id',
+        createdAt: new Date(),
+      };
+      discordIntegrationRepository.findByUserId.mockResolvedValue(view);
 
       const query = new GetDiscordIntegrationQuery(1234);
       const result = await handler.execute(query);
-      const expected: GetDiscordIntegrationQueryResult = {
-        discordIntegration: fixture,
-      };
+      const expected = new GetDiscordIntegrationQueryResult(view);
 
       expect(result).toEqual(expected);
     });
