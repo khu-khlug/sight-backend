@@ -7,6 +7,7 @@ import {
   HttpStatus,
   Post,
   Query,
+  Redirect,
 } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
@@ -18,6 +19,7 @@ import { UserRole } from '@khlug/core/auth/UserRole';
 
 import { CallbackDiscordIntegrationRequestDto } from '@khlug/app/interface/user/public/dto/CallbackDiscordIntegrationRequestDto';
 import { GetCurrentUserDiscordIntegrationResponseDto } from '@khlug/app/interface/user/public/dto/GetCurrentUserDiscordIntegrationResponseDto';
+import { IssueDiscordIntegrationUrlResponseDto } from '@khlug/app/interface/user/public/dto/IssueDiscordIntegrationUrlResponseDto';
 
 import { CreateDiscordIntegrationCommand } from '@khlug/app/application/user/command/createDiscordIntegration/CreateDiscordIntegrationCommand';
 import { CreateDiscordOAuth2UrlCommand } from '@khlug/app/application/user/command/createDiscordOAuth2Url/CreateDiscordOAuth2UrlCommand';
@@ -53,6 +55,7 @@ export class UserController {
   }
 
   @Get('/users/@me/discord-integration/callback')
+  @Redirect()
   @Auth([UserRole.USER, UserRole.MANAGER])
   @ApiOperation({ summary: '디스코드 OAuth2 인증 콜백' })
   @ApiResponse({ status: HttpStatus.FOUND })
@@ -76,18 +79,18 @@ export class UserController {
   @Post('/users/@me/discord-integration/issue-url')
   @Auth([UserRole.USER, UserRole.MANAGER])
   @ApiOperation({ summary: '디스코드 OAuth2 인증 URL 발급' })
-  @ApiResponse({ status: HttpStatus.FOUND })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    type: IssueDiscordIntegrationUrlResponseDto,
+  })
   async issueDiscordIntegrationUrl(
     @Requester() requester: IRequester,
-  ): Promise<HttpRedirectResponse> {
+  ): Promise<IssueDiscordIntegrationUrlResponseDto> {
     const command = new CreateDiscordOAuth2UrlCommand(requester.userId);
     const result: CreateDiscordOAuth2UrlCommandResult =
       await this.commandBus.execute(command);
 
-    return {
-      statusCode: HttpStatus.FOUND,
-      url: result.url,
-    };
+    return new IssueDiscordIntegrationUrlResponseDto(result.url);
   }
 
   @Delete('/users/@me/discord-integration')
