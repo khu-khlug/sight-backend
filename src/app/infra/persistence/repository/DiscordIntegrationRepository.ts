@@ -34,8 +34,12 @@ export class DiscordIntegrationRepository
 
   async remove(discordIntegration: DiscordIntegration): Promise<void> {
     const entity = this.mapper.toEntity(discordIntegration);
+
+    const em = this.discordIntegrationRepository.getEntityManager();
+    const ref = em.getReference(DiscordIntegrationEntity, entity.id);
+
     await this.discordIntegrationRepository
       .getEntityManager()
-      .removeAndFlush(entity);
+      .removeAndFlush(ref);
   }
 }
