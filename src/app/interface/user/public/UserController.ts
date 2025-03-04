@@ -69,7 +69,7 @@ export class UserController {
 
     return {
       statusCode: HttpStatus.FOUND,
-      url: 'https://app.khlug.org/integrate-discord',
+      url: 'https://app.khlug.org/member/integrate-discord',
     };
   }
 
