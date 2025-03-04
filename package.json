@@ -21,7 +21,7 @@
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "mikro-orm": "node -r ts-node/register -r tsconfig-paths/register ./node_modules/.bin/mikro-orm",
-    "schema:update": "npm run mikro-orm schema:update --run",
+    "schema:update": "npm run mikro-orm -- schema:update --run",
     "compose": "docker compose down && docker compose up"
   },
   "dependencies": {
@@ -34,6 +34,7 @@
     "@nestjs/cqrs": "^10.2.8",
     "@nestjs/platform-express": "^10.4.15",
     "@nestjs/swagger": "^8.1.0",
+    "axios": "^1.8.1",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.1",
     "cookie-parser": "^1.4.7",
