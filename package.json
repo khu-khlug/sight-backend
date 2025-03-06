@@ -39,11 +39,13 @@
     "class-validator": "^0.14.1",
     "cookie-parser": "^1.4.7",
     "dayjs": "^1.11.13",
+    "discord.js": "^14.18.0",
     "nestjs-cls": "^4.5.0",
     "php-serialize": "^5.0.1",
     "reflect-metadata": "^0.2.2",
     "rxjs": "^7.8.1",
-    "ulid": "^2.3.0"
+    "ulid": "^2.3.0",
+    "web-streams-polyfill": "^4.1.0"
   },
   "devDependencies": {
     "@faker-js/faker": "^9.3.0",

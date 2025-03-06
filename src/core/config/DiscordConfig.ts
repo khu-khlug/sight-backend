@@ -4,6 +4,7 @@ export type DiscordConfig = {
   clientSecret: string;
   stateSecret: string;
   redirectUrl: string;
+  botToken: string;
 };
 
 export const config = (): DiscordConfig => ({
@@ -12,4 +13,5 @@ export const config = (): DiscordConfig => ({
   clientSecret: process.env.DISCORD_CLIENT_SECRET || '',
   stateSecret: process.env.DISCORD_STATE_SECRET || '',
   redirectUrl: process.env.DISCORD_REDIRECT_URL || '',
+  botToken: process.env.DISCORD_BOT_TOKEN || '',
 });

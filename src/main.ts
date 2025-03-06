@@ -1,3 +1,8 @@
+// TODO: discord.js에서 Nodejs 18부터 지원하는 ReadableStream을 사용하므로,
+//       라이브러리를 정상적으로 사용하기 위해 폴리필을 적용하였습니다.
+//       추후 포팅이 완료되어 Node.js 버전을 올릴 수 있을 때가 오면 제거해야 합니다.
+import 'web-streams-polyfill/polyfill';
+
 import { ValidationPipe } from '@nestjs/common';
 import { CorsOptions } from '@nestjs/common/interfaces/external/cors-options.interface';
 import { ConfigService } from '@nestjs/config';

@@ -8,6 +8,7 @@ import { ClsModule } from 'nestjs-cls';
 import { AuthModule } from '@khlug/core/auth/AuthModule';
 import { configuration } from '@khlug/core/config';
 import { DatabaseConfig } from '@khlug/core/config/DatabaseConfig';
+import { DiscordModule } from '@khlug/core/discord/DiscordModule';
 import { EntityModels } from '@khlug/core/persistence/Entities';
 
 @Global()
@@ -37,6 +38,7 @@ import { EntityModels } from '@khlug/core/persistence/Entities';
       },
     }),
     CqrsModule,
+    DiscordModule,
   ],
   exports: [ClsModule, ConfigModule, MikroOrmModule, CqrsModule],
 })

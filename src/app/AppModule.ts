@@ -9,6 +9,7 @@ import { DiscordIntegrationRepository } from '@khlug/app/infra/persistence/repos
 import { DiscordIntegrationMapper } from '@khlug/app/infra/persistence/repository/mapper/DiscordIntegrationMapper';
 
 import { InfraBlueManageController } from '@khlug/app/interface/infraBlue/manager/InfraBlueManageController';
+import { UserDiscordEventHandler } from '@khlug/app/interface/user/discord/UserDiscordEventHandler';
 import { UserManageController } from '@khlug/app/interface/user/manager/UserManageController';
 import { UserController } from '@khlug/app/interface/user/public/UserController';
 
@@ -45,6 +46,7 @@ const mappers: Provider[] = [DiscordIntegrationMapper];
 
 const controllers = [UserController];
 const manageControllers = [InfraBlueManageController, UserManageController];
+const discordEventHandlers = [UserDiscordEventHandler];
 
 const commandHandlers: Provider[] = [
   UpdateDoorLockPasswordCommandHandler,
@@ -73,6 +75,7 @@ const queryHandlers: Provider[] = [
     ...queries,
     ...repositories,
     ...mappers,
+    ...discordEventHandlers,
     ...commandHandlers,
     ...queryHandlers,
   ],
