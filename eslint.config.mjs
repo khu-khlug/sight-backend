@@ -42,7 +42,7 @@ export default [
 
       parserOptions: {
         project: 'tsconfig.json',
-        tsconfigRootDir: '/Users/lery/khlug/sight-backend',
+        tsconfigRootDir: './',
       },
     },
 
