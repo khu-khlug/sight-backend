@@ -26,4 +26,5 @@ export const Message = {
   ALREADY_GROUP_DISABLED_PORTFOLIO: 'Already group disabled portfolio',
   DEFAULT_BOOKMARKED_GROUP: 'Cannot add bookmark default bookmarked group',
   DISCORD_INTEGRATION_FAILED: '디스코드 연동에 실패했습니다',
+  DISCORD_API_FAILED: '디스코드 API 호출에 실패했습니다',
 };

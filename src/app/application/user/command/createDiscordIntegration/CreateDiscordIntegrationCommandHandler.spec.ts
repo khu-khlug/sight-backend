@@ -11,6 +11,7 @@ import {
 } from '@khlug/app/application/adapter/IDiscordStateGenerator';
 import { CreateDiscordIntegrationCommand } from '@khlug/app/application/user/command/createDiscordIntegration/CreateDiscordIntegrationCommand';
 import { CreateDiscordIntegrationCommandHandler } from '@khlug/app/application/user/command/createDiscordIntegration/CreateDiscordIntegrationCommandHandler';
+import { DiscordMemberService } from '@khlug/app/application/user/service/DiscordMemberService';
 
 import {
   DiscordIntegrationRepositoryToken,
@@ -22,6 +23,7 @@ import { Message } from '@khlug/constant/message';
 
 describe('CreateDiscordIntegrationCommandHandler', () => {
   let handler: CreateDiscordIntegrationCommandHandler;
+  let discordMemberService: jest.Mocked<DiscordMemberService>;
   let discordStateGenerator: jest.Mocked<IDiscordStateGenerator>;
   let discordAdapter: jest.Mocked<IDiscordOAuth2Adapter>;
   let discordIntegrationRepository: jest.Mocked<IDiscordIntegrationRepository>;
@@ -32,6 +34,10 @@ describe('CreateDiscordIntegrationCommandHandler', () => {
     const testModule = await Test.createTestingModule({
       providers: [
         CreateDiscordIntegrationCommandHandler,
+        {
+          provide: DiscordMemberService,
+          useValue: { reflectUserInfoToDiscordUser: jest.fn() },
+        },
         {
           provide: DiscordStateGeneratorToken,
           useValue: { generate: jest.fn() },
@@ -54,6 +60,7 @@ describe('CreateDiscordIntegrationCommandHandler', () => {
     }).compile();
 
     handler = testModule.get(CreateDiscordIntegrationCommandHandler);
+    discordMemberService = testModule.get(DiscordMemberService);
     discordStateGenerator = testModule.get(DiscordStateGeneratorToken);
     discordAdapter = testModule.get(DiscordOAuth2AdapterToken);
     discordIntegrationRepository = testModule.get(
@@ -118,6 +125,28 @@ describe('CreateDiscordIntegrationCommandHandler', () => {
       await handler.execute(command);
 
       expect(discordIntegrationRepository.insert).toHaveBeenCalled();
+    });
+
+    test('유저 정보를 디스코드 유저에 반영해야 한다', async () => {
+      const userId = 1234;
+      const code = 'code';
+      const state = 'state';
+
+      discordStateGenerator.generate.mockReturnValue(state);
+      discordIntegrationRepository.findByUserId.mockResolvedValue(null);
+      discordAdapter.getAccessToken.mockResolvedValue('access-token');
+      discordAdapter.getCurrentUserId.mockResolvedValue('discord-user-id');
+
+      const command = new CreateDiscordIntegrationCommand({
+        userId,
+        code,
+        state,
+      });
+      await handler.execute(command);
+
+      expect(
+        discordMemberService.reflectUserInfoToDiscordUser,
+      ).toHaveBeenCalled();
     });
   });
 });

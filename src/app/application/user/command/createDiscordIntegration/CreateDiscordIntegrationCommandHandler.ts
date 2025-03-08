@@ -11,6 +11,7 @@ import {
   IDiscordStateGenerator,
 } from '@khlug/app/application/adapter/IDiscordStateGenerator';
 import { CreateDiscordIntegrationCommand } from '@khlug/app/application/user/command/createDiscordIntegration/CreateDiscordIntegrationCommand';
+import { DiscordMemberService } from '@khlug/app/application/user/service/DiscordMemberService';
 
 import {
   DiscordIntegrationRepositoryToken,
@@ -25,6 +26,7 @@ export class CreateDiscordIntegrationCommandHandler
   implements ICommandHandler<CreateDiscordIntegrationCommand>
 {
   constructor(
+    private readonly discordMemberService: DiscordMemberService,
     @Inject(DiscordStateGeneratorToken)
     private readonly discordStateGenerator: IDiscordStateGenerator,
     @Inject(DiscordOAuth2AdapterToken)
@@ -59,5 +61,7 @@ export class CreateDiscordIntegrationCommandHandler
       createdAt: new Date(),
     });
     await this.discordIntegrationRepository.insert(newDiscordIntegration);
+
+    await this.discordMemberService.reflectUserInfoToDiscordUser(userId);
   }
 }
