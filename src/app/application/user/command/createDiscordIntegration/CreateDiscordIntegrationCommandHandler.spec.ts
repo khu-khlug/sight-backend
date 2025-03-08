@@ -2,9 +2,9 @@ import { Test } from '@nestjs/testing';
 import { advanceTo, clear } from 'jest-date-mock';
 
 import {
-  DiscordAdapterToken,
-  IDiscordAdapter,
-} from '@khlug/app/application/adapter/IDiscordAdapter';
+  DiscordOAuth2AdapterToken,
+  IDiscordOAuth2Adapter,
+} from '@khlug/app/application/adapter/IDiscordOAuth2Adapter';
 import {
   DiscordStateGeneratorToken,
   IDiscordStateGenerator,
@@ -23,7 +23,7 @@ import { Message } from '@khlug/constant/message';
 describe('CreateDiscordIntegrationCommandHandler', () => {
   let handler: CreateDiscordIntegrationCommandHandler;
   let discordStateGenerator: jest.Mocked<IDiscordStateGenerator>;
-  let discordAdapter: jest.Mocked<IDiscordAdapter>;
+  let discordAdapter: jest.Mocked<IDiscordOAuth2Adapter>;
   let discordIntegrationRepository: jest.Mocked<IDiscordIntegrationRepository>;
 
   beforeEach(async () => {
@@ -37,7 +37,7 @@ describe('CreateDiscordIntegrationCommandHandler', () => {
           useValue: { generate: jest.fn() },
         },
         {
-          provide: DiscordAdapterToken,
+          provide: DiscordOAuth2AdapterToken,
           useValue: {
             getAccessToken: jest.fn(),
             getCurrentUserId: jest.fn(),
@@ -55,7 +55,7 @@ describe('CreateDiscordIntegrationCommandHandler', () => {
 
     handler = testModule.get(CreateDiscordIntegrationCommandHandler);
     discordStateGenerator = testModule.get(DiscordStateGeneratorToken);
-    discordAdapter = testModule.get(DiscordAdapterToken);
+    discordAdapter = testModule.get(DiscordOAuth2AdapterToken);
     discordIntegrationRepository = testModule.get(
       DiscordIntegrationRepositoryToken,
     );

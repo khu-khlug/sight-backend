@@ -3,9 +3,9 @@ import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { ulid } from 'ulid';
 
 import {
-  DiscordAdapterToken,
-  IDiscordAdapter,
-} from '@khlug/app/application/adapter/IDiscordAdapter';
+  DiscordOAuth2AdapterToken,
+  IDiscordOAuth2Adapter,
+} from '@khlug/app/application/adapter/IDiscordOAuth2Adapter';
 import {
   DiscordStateGeneratorToken,
   IDiscordStateGenerator,
@@ -27,8 +27,8 @@ export class CreateDiscordIntegrationCommandHandler
   constructor(
     @Inject(DiscordStateGeneratorToken)
     private readonly discordStateGenerator: IDiscordStateGenerator,
-    @Inject(DiscordAdapterToken)
-    private readonly discordAdapter: IDiscordAdapter,
+    @Inject(DiscordOAuth2AdapterToken)
+    private readonly discordAdapter: IDiscordOAuth2Adapter,
     @Inject(DiscordIntegrationRepositoryToken)
     readonly discordIntegrationRepository: IDiscordIntegrationRepository,
   ) {}

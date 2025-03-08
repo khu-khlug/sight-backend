@@ -2,9 +2,9 @@ import { Test } from '@nestjs/testing';
 import { advanceTo, clear } from 'jest-date-mock';
 
 import {
-  DiscordAdapterToken,
-  IDiscordAdapter,
-} from '@khlug/app/application/adapter/IDiscordAdapter';
+  DiscordOAuth2AdapterToken,
+  IDiscordOAuth2Adapter,
+} from '@khlug/app/application/adapter/IDiscordOAuth2Adapter';
 import {
   DiscordStateGeneratorToken,
   IDiscordStateGenerator,
@@ -15,7 +15,7 @@ import { CreateDiscordOAuth2UrlCommandResult } from '@khlug/app/application/user
 
 describe('CreateDiscordOAuth2UrlCommandHandler', () => {
   let handler: CreateDiscordOAuth2UrlCommandHandler;
-  let discordAdapter: jest.Mocked<IDiscordAdapter>;
+  let discordAdapter: jest.Mocked<IDiscordOAuth2Adapter>;
   let discordStateGenerator: jest.Mocked<IDiscordStateGenerator>;
 
   beforeEach(async () => {
@@ -25,7 +25,7 @@ describe('CreateDiscordOAuth2UrlCommandHandler', () => {
       providers: [
         CreateDiscordOAuth2UrlCommandHandler,
         {
-          provide: DiscordAdapterToken,
+          provide: DiscordOAuth2AdapterToken,
           useValue: { createOAuth2Url: jest.fn() },
         },
         {
@@ -36,7 +36,7 @@ describe('CreateDiscordOAuth2UrlCommandHandler', () => {
     }).compile();
 
     handler = testModule.get(CreateDiscordOAuth2UrlCommandHandler);
-    discordAdapter = testModule.get(DiscordAdapterToken);
+    discordAdapter = testModule.get(DiscordOAuth2AdapterToken);
     discordStateGenerator = testModule.get(DiscordStateGeneratorToken);
   });
 

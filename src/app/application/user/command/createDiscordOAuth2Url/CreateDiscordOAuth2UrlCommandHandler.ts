@@ -2,9 +2,9 @@ import { Inject } from '@nestjs/common';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 
 import {
-  DiscordAdapterToken,
-  IDiscordAdapter,
-} from '@khlug/app/application/adapter/IDiscordAdapter';
+  DiscordOAuth2AdapterToken,
+  IDiscordOAuth2Adapter,
+} from '@khlug/app/application/adapter/IDiscordOAuth2Adapter';
 import {
   DiscordStateGeneratorToken,
   IDiscordStateGenerator,
@@ -21,8 +21,8 @@ export class CreateDiscordOAuth2UrlCommandHandler
     >
 {
   constructor(
-    @Inject(DiscordAdapterToken)
-    private readonly discordAdapter: IDiscordAdapter,
+    @Inject(DiscordOAuth2AdapterToken)
+    private readonly discordAdapter: IDiscordOAuth2Adapter,
     @Inject(DiscordStateGeneratorToken)
     private readonly discordStateGenerator: IDiscordStateGenerator,
   ) {}

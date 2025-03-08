@@ -1,7 +1,7 @@
 import { MikroOrmModule } from '@mikro-orm/nestjs';
 import { Module, Provider } from '@nestjs/common';
 
-import { DiscordAdapter } from '@khlug/app/infra/discord/DiscordAdapter';
+import { DiscordOAuth2Adapter } from '@khlug/app/infra/discord/DiscordOAuth2Adapter';
 import { DiscordStateGenerator } from '@khlug/app/infra/discord/DiscordStateGenerator';
 import { DiscordIntegrationEntity } from '@khlug/app/infra/persistence/entity/DiscordIntegrationEntity';
 import { DiscordIntegrationQuery } from '@khlug/app/infra/persistence/query/DiscordIntegrationQuery';
@@ -13,7 +13,7 @@ import { UserDiscordEventHandler } from '@khlug/app/interface/user/discord/UserD
 import { UserManageController } from '@khlug/app/interface/user/manager/UserManageController';
 import { UserController } from '@khlug/app/interface/user/public/UserController';
 
-import { DiscordAdapterToken } from '@khlug/app/application/adapter/IDiscordAdapter';
+import { DiscordOAuth2AdapterToken } from '@khlug/app/application/adapter/IDiscordOAuth2Adapter';
 import { DiscordStateGeneratorToken } from '@khlug/app/application/adapter/IDiscordStateGenerator';
 import { UpdateDoorLockPasswordCommandHandler } from '@khlug/app/application/infraBlue/command/updateDoorLockPassword/UpdateDoorLockPasswordCommandHandler';
 import { GetDoorLockPasswordQueryHandler } from '@khlug/app/application/infraBlue/query/getDoorLockPassword/GetDoorLockPasswordQueryHandler';
@@ -30,7 +30,7 @@ import { FeeHistory } from '@khlug/app/domain/fee/model/FeeHistory';
 import { User } from '@khlug/app/domain/user/model/User';
 
 const adapters: Provider[] = [
-  { provide: DiscordAdapterToken, useClass: DiscordAdapter },
+  { provide: DiscordOAuth2AdapterToken, useClass: DiscordOAuth2Adapter },
   { provide: DiscordStateGeneratorToken, useClass: DiscordStateGenerator },
 ];
 const queries: Provider[] = [
