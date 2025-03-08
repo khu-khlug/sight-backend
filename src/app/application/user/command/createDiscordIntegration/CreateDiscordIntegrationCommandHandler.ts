@@ -3,14 +3,15 @@ import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { ulid } from 'ulid';
 
 import {
-  DiscordAdapterToken,
-  IDiscordAdapter,
-} from '@khlug/app/application/adapter/IDiscordAdapter';
+  DiscordOAuth2AdapterToken,
+  IDiscordOAuth2Adapter,
+} from '@khlug/app/application/adapter/IDiscordOAuth2Adapter';
 import {
   DiscordStateGeneratorToken,
   IDiscordStateGenerator,
 } from '@khlug/app/application/adapter/IDiscordStateGenerator';
 import { CreateDiscordIntegrationCommand } from '@khlug/app/application/user/command/createDiscordIntegration/CreateDiscordIntegrationCommand';
+import { DiscordMemberService } from '@khlug/app/application/user/service/DiscordMemberService';
 
 import {
   DiscordIntegrationRepositoryToken,
@@ -25,10 +26,11 @@ export class CreateDiscordIntegrationCommandHandler
   implements ICommandHandler<CreateDiscordIntegrationCommand>
 {
   constructor(
+    private readonly discordMemberService: DiscordMemberService,
     @Inject(DiscordStateGeneratorToken)
     private readonly discordStateGenerator: IDiscordStateGenerator,
-    @Inject(DiscordAdapterToken)
-    private readonly discordAdapter: IDiscordAdapter,
+    @Inject(DiscordOAuth2AdapterToken)
+    private readonly discordAdapter: IDiscordOAuth2Adapter,
     @Inject(DiscordIntegrationRepositoryToken)
     readonly discordIntegrationRepository: IDiscordIntegrationRepository,
   ) {}
@@ -59,5 +61,7 @@ export class CreateDiscordIntegrationCommandHandler
       createdAt: new Date(),
     });
     await this.discordIntegrationRepository.insert(newDiscordIntegration);
+
+    await this.discordMemberService.reflectUserInfoToDiscordUser(userId);
   }
 }

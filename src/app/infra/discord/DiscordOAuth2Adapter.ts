@@ -8,12 +8,12 @@ import axios, { AxiosInstance } from 'axios';
 
 import { DiscordConfig } from '@khlug/core/config/DiscordConfig';
 
-import { IDiscordAdapter } from '@khlug/app/application/adapter/IDiscordAdapter';
+import { IDiscordOAuth2Adapter } from '@khlug/app/application/adapter/IDiscordOAuth2Adapter';
 
 import { Message } from '@khlug/constant/message';
 
 @Injectable()
-export class DiscordAdapter implements IDiscordAdapter {
+export class DiscordOAuth2Adapter implements IDiscordOAuth2Adapter {
   private client: AxiosInstance;
   private config: DiscordConfig;
   private logger: ConsoleLogger;
@@ -23,7 +23,7 @@ export class DiscordAdapter implements IDiscordAdapter {
     this.client = axios.create({
       baseURL: this.config.baseUrl,
     });
-    this.logger = new ConsoleLogger(DiscordAdapter.name);
+    this.logger = new ConsoleLogger(DiscordOAuth2Adapter.name);
   }
 
   async getAccessToken(code: string): Promise<string> {

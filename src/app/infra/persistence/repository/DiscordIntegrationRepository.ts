@@ -27,6 +27,20 @@ export class DiscordIntegrationRepository
     return this.mapper.toDomain(entity);
   }
 
+  async findByDiscordUserId(
+    discordUserId: string,
+  ): Promise<DiscordIntegration | null> {
+    const entity = await this.discordIntegrationRepository.findOne({
+      discordUserId,
+    });
+
+    if (!entity) {
+      return null;
+    }
+
+    return this.mapper.toDomain(entity);
+  }
+
   async insert(discordIntegration: DiscordIntegration): Promise<void> {
     const entity = this.mapper.toEntity(discordIntegration);
     await this.discordIntegrationRepository.insert(entity);

@@ -49,7 +49,31 @@ function stopped(params: Partial<UserConstructorParams> = {}) {
 
 function graduated(params: Partial<UserConstructorParams> = {}) {
   return generateUser({
+    status: UserStatus.ACTIVE,
     studentStatus: StudentStatus.GRADUATE,
+    ...params,
+  });
+}
+
+function undergraduated(params: Partial<UserConstructorParams> = {}) {
+  return generateUser({
+    status: UserStatus.ACTIVE,
+    studentStatus: StudentStatus.UNDERGRADUATE,
+    ...params,
+  });
+}
+
+function unauthorized(params: Partial<UserConstructorParams> = {}) {
+  return generateUser({
+    status: UserStatus.UNAUTHORIZED,
+    manager: false,
+    ...params,
+  });
+}
+
+function manager(params: Partial<UserConstructorParams> = {}) {
+  return generateUser({
+    manager: true,
     ...params,
   });
 }
@@ -88,4 +112,7 @@ export const UserFixture = {
   raw: generateUser,
   stopped,
   graduated,
+  undergraduated,
+  unauthorized,
+  manager,
 };

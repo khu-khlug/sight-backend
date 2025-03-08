@@ -29,7 +29,7 @@ describe('DiscordStateGenerator', () => {
 
   describe('generate', () => {
     test('해시를 생성해야 한다', () => {
-      const userId = '1234';
+      const userId = 1234;
 
       const result = discordStateGenerator.generate(userId);
       expect(result).toBeDefined();
