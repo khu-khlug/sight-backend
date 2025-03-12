@@ -27,6 +27,7 @@ import { CreateDiscordIntegrationCommand } from '@khlug/app/application/user/com
 import { CreateDiscordOAuth2UrlCommand } from '@khlug/app/application/user/command/createDiscordOAuth2Url/CreateDiscordOAuth2UrlCommand';
 import { CreateDiscordOAuth2UrlCommandResult } from '@khlug/app/application/user/command/createDiscordOAuth2Url/CreateDiscordOauth2UrlCommandResult';
 import { DeleteUserCommand } from '@khlug/app/application/user/command/deleteUser/DeleteUserCommand';
+import { GraduateUserCommand } from '@khlug/app/application/user/command/graduateUser/GraduateUserCommand';
 import { RemoveDiscordIntegrationCommand } from '@khlug/app/application/user/command/removeDiscordIntegration/RemoveDiscordIntegrationCommand';
 import { GetDiscordIntegrationQuery } from '@khlug/app/application/user/query/getDiscordIntegration/GetDiscordIntegrationQuery';
 import { GetDiscordIntegrationQueryResult } from '@khlug/app/application/user/query/getDiscordIntegration/GetDiscordIntegrationQueryResult';
@@ -37,6 +38,23 @@ export class UserController {
     private readonly queryBus: QueryBus,
     private readonly commandBus: CommandBus,
   ) {}
+
+  @Post('/users/@me/graduate')
+  @Redirect()
+  @Auth([UserRole.USER, UserRole.MANAGER])
+  @ApiOperation({ summary: '졸업 신고' })
+  async graduateCurrentUser(
+    @Requester() requester: IRequester,
+  ): Promise<HttpRedirectResponse> {
+    const command = new GraduateUserCommand(requester.userId);
+    await this.commandBus.execute(command);
+
+    // TODO: 추후 클라이언트에서 처리하도록 수정
+    return {
+      statusCode: HttpStatus.FOUND,
+      url: 'https://khlug.org/my',
+    };
+  }
 
   @Delete('/users/@me')
   @Auth([UserRole.USER, UserRole.MANAGER])

@@ -509,4 +509,41 @@ describe('User', () => {
       expect(user.needPayHalfFee()).toEqual(false);
     });
   });
+
+  describe('graduate', () => {
+    test('이미 졸업한 회원이라면 예외를 발생시켜야 한다', () => {
+      const user = UserFixture.graduated();
+
+      expect(() => user.graduate()).toThrowError(
+        Message.USER_ALREADY_GRADUATED,
+      );
+    });
+
+    test('회원을 졸업 처리해야 한다', () => {
+      const user = UserFixture.undergraduated();
+
+      user.graduate();
+
+      expect(user.studentStatus).toEqual(StudentStatus.GRADUATE);
+      expect(user.profile.grade).toEqual(0);
+      expect(user.manager).toEqual(false);
+      expect(user.updatedAt).toEqual(new Date());
+    });
+  });
+
+  describe('isGraduated', () => {
+    test('졸업한 회원이라면 `true`를 반환해야 한다', () => {
+      const user = UserFixture.raw({ studentStatus: StudentStatus.GRADUATE });
+
+      expect(user.isGraduated()).toEqual(true);
+    });
+
+    test('졸업하지 않은 회원이라면 `false`를 반환해야 한다', () => {
+      const user = UserFixture.raw({
+        studentStatus: StudentStatus.UNDERGRADUATE,
+      });
+
+      expect(user.isGraduated()).toEqual(false);
+    });
+  });
 });
