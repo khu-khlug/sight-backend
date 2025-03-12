@@ -8,9 +8,11 @@ import {
   Post,
   Query,
   Redirect,
+  Res,
 } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { Response } from 'express';
 
 import { Auth } from '@khlug/core/auth/Auth';
 import { IRequester } from '@khlug/core/auth/IRequester';
@@ -24,6 +26,7 @@ import { IssueDiscordIntegrationUrlResponseDto } from '@khlug/app/interface/user
 import { CreateDiscordIntegrationCommand } from '@khlug/app/application/user/command/createDiscordIntegration/CreateDiscordIntegrationCommand';
 import { CreateDiscordOAuth2UrlCommand } from '@khlug/app/application/user/command/createDiscordOAuth2Url/CreateDiscordOAuth2UrlCommand';
 import { CreateDiscordOAuth2UrlCommandResult } from '@khlug/app/application/user/command/createDiscordOAuth2Url/CreateDiscordOauth2UrlCommandResult';
+import { DeleteUserCommand } from '@khlug/app/application/user/command/deleteUser/DeleteUserCommand';
 import { RemoveDiscordIntegrationCommand } from '@khlug/app/application/user/command/removeDiscordIntegration/RemoveDiscordIntegrationCommand';
 import { GetDiscordIntegrationQuery } from '@khlug/app/application/user/query/getDiscordIntegration/GetDiscordIntegrationQuery';
 import { GetDiscordIntegrationQueryResult } from '@khlug/app/application/user/query/getDiscordIntegration/GetDiscordIntegrationQueryResult';
@@ -34,6 +37,22 @@ export class UserController {
     private readonly queryBus: QueryBus,
     private readonly commandBus: CommandBus,
   ) {}
+
+  @Delete('/users/@me')
+  @Auth([UserRole.USER, UserRole.MANAGER])
+  @ApiOperation({ summary: '회원 탈퇴' })
+  @ApiResponse({ status: HttpStatus.NO_CONTENT })
+  async deleteCurrentUser(
+    @Requester() requester: IRequester,
+    @Res() res: Response,
+  ): Promise<void> {
+    const command = new DeleteUserCommand(requester.userId);
+    await this.commandBus.execute(command);
+
+    res
+      .clearCookie('khlug_session', { path: '/' })
+      .redirect('https://khlug.org/');
+  }
 
   @Get('/users/@me/discord-integration')
   @Auth([UserRole.USER, UserRole.MANAGER])

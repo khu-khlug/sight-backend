@@ -3,6 +3,7 @@ import { advanceTo, clear } from 'jest-date-mock';
 
 import { RemoveDiscordIntegrationCommand } from '@khlug/app/application/user/command/removeDiscordIntegration/RemoveDiscordIntegrationCommand';
 import { RemoveDiscordIntegrationCommandHandler } from '@khlug/app/application/user/command/removeDiscordIntegration/RemoveDiscordIntegrationCommandHandler';
+import { DiscordMemberService } from '@khlug/app/application/user/service/DiscordMemberService';
 
 import {
   DiscordIntegrationRepositoryToken,
@@ -15,6 +16,7 @@ import { Message } from '@khlug/constant/message';
 describe('RemoveDiscordIntegrationCommandHandler', () => {
   let handler: RemoveDiscordIntegrationCommandHandler;
   let discordIntegrationRepository: jest.Mocked<IDiscordIntegrationRepository>;
+  let discordMemberService: jest.Mocked<DiscordMemberService>;
 
   beforeEach(async () => {
     advanceTo(new Date());
@@ -26,7 +28,12 @@ describe('RemoveDiscordIntegrationCommandHandler', () => {
           provide: DiscordIntegrationRepositoryToken,
           useValue: {
             findByUserId: jest.fn(),
-            remove: jest.fn(),
+          },
+        },
+        {
+          provide: DiscordMemberService,
+          useValue: {
+            clearDiscordIntegration: jest.fn(),
           },
         },
       ],
@@ -36,6 +43,7 @@ describe('RemoveDiscordIntegrationCommandHandler', () => {
     discordIntegrationRepository = testModule.get(
       DiscordIntegrationRepositoryToken,
     );
+    discordMemberService = testModule.get(DiscordMemberService);
   });
 
   afterEach(() => clear());
@@ -61,7 +69,7 @@ describe('RemoveDiscordIntegrationCommandHandler', () => {
       const command = new RemoveDiscordIntegrationCommand(userId);
       await handler.execute(command);
 
-      expect(discordIntegrationRepository.remove).toHaveBeenCalled();
+      expect(discordMemberService.clearDiscordIntegration).toHaveBeenCalled();
     });
   });
 });

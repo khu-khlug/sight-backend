@@ -53,7 +53,7 @@ describe('CreateDiscordIntegrationCommandHandler', () => {
           provide: DiscordIntegrationRepositoryToken,
           useValue: {
             findByUserId: jest.fn(),
-            insert: jest.fn(),
+            save: jest.fn(),
           },
         },
       ],
@@ -104,7 +104,7 @@ describe('CreateDiscordIntegrationCommandHandler', () => {
       });
       await handler.execute(command);
 
-      expect(discordIntegrationRepository.insert).not.toHaveBeenCalled();
+      expect(discordIntegrationRepository.save).not.toHaveBeenCalled();
     });
 
     test('새로운 디스코드 연동 정보를 생성해야 한다', async () => {
@@ -124,7 +124,7 @@ describe('CreateDiscordIntegrationCommandHandler', () => {
       });
       await handler.execute(command);
 
-      expect(discordIntegrationRepository.insert).toHaveBeenCalled();
+      expect(discordIntegrationRepository.save).toHaveBeenCalled();
     });
 
     test('유저 정보를 디스코드 유저에 반영해야 한다', async () => {

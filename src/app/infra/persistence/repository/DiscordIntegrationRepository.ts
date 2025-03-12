@@ -1,5 +1,5 @@
-import { EntityRepository } from '@mikro-orm/mysql';
-import { InjectRepository } from '@mikro-orm/nestjs';
+import { EntityManager } from '@mikro-orm/mysql';
+import { Injectable } from '@nestjs/common';
 
 import { DiscordIntegrationEntity } from '@khlug/app/infra/persistence/entity/DiscordIntegrationEntity';
 import { DiscordIntegrationMapper } from '@khlug/app/infra/persistence/repository/mapper/DiscordIntegrationMapper';
@@ -7,18 +7,19 @@ import { DiscordIntegrationMapper } from '@khlug/app/infra/persistence/repositor
 import { IDiscordIntegrationRepository } from '@khlug/app/domain/discord/IDiscordIntegrationRepository';
 import { DiscordIntegration } from '@khlug/app/domain/discord/model/DiscordIntegration';
 
+@Injectable()
 export class DiscordIntegrationRepository
   implements IDiscordIntegrationRepository
 {
   constructor(
-    readonly mapper: DiscordIntegrationMapper,
-
-    @InjectRepository(DiscordIntegrationEntity)
-    private readonly discordIntegrationRepository: EntityRepository<DiscordIntegrationEntity>,
+    private readonly mapper: DiscordIntegrationMapper,
+    private readonly entityManager: EntityManager,
   ) {}
 
   async findByUserId(userId: number): Promise<DiscordIntegration | null> {
-    const entity = await this.discordIntegrationRepository.findOne({ userId });
+    const entity = await this.entityManager.findOne(DiscordIntegrationEntity, {
+      userId,
+    });
 
     if (!entity) {
       return null;
@@ -30,7 +31,7 @@ export class DiscordIntegrationRepository
   async findByDiscordUserId(
     discordUserId: string,
   ): Promise<DiscordIntegration | null> {
-    const entity = await this.discordIntegrationRepository.findOne({
+    const entity = await this.entityManager.findOne(DiscordIntegrationEntity, {
       discordUserId,
     });
 
@@ -41,19 +42,13 @@ export class DiscordIntegrationRepository
     return this.mapper.toDomain(entity);
   }
 
-  async insert(discordIntegration: DiscordIntegration): Promise<void> {
+  async save(discordIntegration: DiscordIntegration): Promise<void> {
     const entity = this.mapper.toEntity(discordIntegration);
-    await this.discordIntegrationRepository.insert(entity);
+    await this.entityManager.persistAndFlush(entity);
   }
 
   async remove(discordIntegration: DiscordIntegration): Promise<void> {
     const entity = this.mapper.toEntity(discordIntegration);
-
-    const em = this.discordIntegrationRepository.getEntityManager();
-    const ref = em.getReference(DiscordIntegrationEntity, entity.id);
-
-    await this.discordIntegrationRepository
-      .getEntityManager()
-      .removeAndFlush(ref);
+    await this.entityManager.removeAndFlush(entity);
   }
 }

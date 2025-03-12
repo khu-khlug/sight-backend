@@ -70,11 +70,9 @@ export class DiscordApiAdapter implements IDiscordApiAdapter {
       body['nick'] = nickname;
     }
 
-    if (roles && roles.length > 0) {
+    if (roles) {
       body['roles'] = roles.map((role) => this.roleMap[role]);
     }
-
-    console.log(body);
 
     if (Object.keys(body).length === 0) {
       return;
@@ -85,7 +83,6 @@ export class DiscordApiAdapter implements IDiscordApiAdapter {
         `/guilds/${this.guildId}/members/${discordUserId}`,
         body,
       );
-      this.logger.log(`Successfully modified member ${discordUserId}`);
     } catch (e) {
       const error = e as Error;
       this.logger.error(

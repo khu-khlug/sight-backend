@@ -47,9 +47,7 @@ describe('DiscordMemberService', () => {
         {
           provide: getRepositoryToken(User),
           useValue: {
-            createQueryBuilder: jest.fn().mockReturnThis(),
-            where: jest.fn().mockReturnThis(),
-            getSingleResult: jest.fn(),
+            findOne: jest.fn(),
           },
         },
       ],
@@ -67,9 +65,7 @@ describe('DiscordMemberService', () => {
 
   describe('reflectUserInfoToDiscordUser', () => {
     test('유저가 존재하지 않으면 디스코드 멤버 정보를 수정하지 않아야 한다', async () => {
-      userRepository.createQueryBuilder().getSingleResult = jest
-        .fn()
-        .mockResolvedValueOnce(undefined);
+      userRepository.findOne.mockResolvedValue(null);
 
       await discordMemberService.reflectUserInfoToDiscordUser(1);
 
@@ -77,9 +73,7 @@ describe('DiscordMemberService', () => {
     });
 
     test('디스코드 연동 정보가 존재하지 않으면 디스코드 멤버 정보를 수정하지 않아야 한다', async () => {
-      userRepository.createQueryBuilder().getSingleResult = jest
-        .fn()
-        .mockResolvedValueOnce(UserFixture.undergraduated());
+      userRepository.findOne.mockResolvedValue(UserFixture.undergraduated());
       discordIntegrationRepository.findByUserId = jest
         .fn()
         .mockResolvedValueOnce(undefined);
@@ -90,9 +84,7 @@ describe('DiscordMemberService', () => {
     });
 
     test('유저가 쿠러그 디스코드 채널에 들어와있지 않으면 디스코드 멤버 정보를 수정하지 않아야 한다', async () => {
-      userRepository.createQueryBuilder().getSingleResult = jest
-        .fn()
-        .mockResolvedValueOnce(UserFixture.undergraduated());
+      userRepository.findOne.mockResolvedValue(UserFixture.undergraduated());
       discordIntegrationRepository.findByUserId = jest
         .fn()
         .mockResolvedValueOnce(DiscordIntegrationFixture.normal());
@@ -106,9 +98,7 @@ describe('DiscordMemberService', () => {
     test('디스코드 멤버의 이름으로 유저의 이름을 사용해야 한다', async () => {
       const user = UserFixture.undergraduated();
 
-      userRepository.createQueryBuilder().getSingleResult = jest
-        .fn()
-        .mockResolvedValueOnce(user);
+      userRepository.findOne.mockResolvedValue(user);
       discordIntegrationRepository.findByUserId = jest
         .fn()
         .mockResolvedValueOnce(DiscordIntegrationFixture.normal());
@@ -124,9 +114,7 @@ describe('DiscordMemberService', () => {
     });
 
     test('유저가 활성 상태가 아니라면 디스코드 역할이 비어야 한다', async () => {
-      userRepository.createQueryBuilder().getSingleResult = jest
-        .fn()
-        .mockResolvedValueOnce(UserFixture.unauthorized());
+      userRepository.findOne.mockResolvedValue(UserFixture.unauthorized());
       discordIntegrationRepository.findByUserId = jest
         .fn()
         .mockResolvedValueOnce(DiscordIntegrationFixture.normal());
@@ -142,9 +130,7 @@ describe('DiscordMemberService', () => {
     });
 
     test('유저가 활성 상태이며 졸업 상태가 아니라면 "회원" 디스코드 역할을 가져야 한다', async () => {
-      userRepository.createQueryBuilder().getSingleResult = jest
-        .fn()
-        .mockResolvedValueOnce(UserFixture.undergraduated());
+      userRepository.findOne.mockResolvedValue(UserFixture.undergraduated());
       discordIntegrationRepository.findByUserId = jest
         .fn()
         .mockResolvedValueOnce(DiscordIntegrationFixture.normal());
@@ -160,9 +146,7 @@ describe('DiscordMemberService', () => {
     });
 
     test('유저가 활성 상태이며 졸업했다면 "명예 회원" 디스코드 역할을 가져야 한다', async () => {
-      userRepository.createQueryBuilder().getSingleResult = jest
-        .fn()
-        .mockResolvedValueOnce(UserFixture.graduated());
+      userRepository.findOne.mockResolvedValue(UserFixture.graduated());
       discordIntegrationRepository.findByUserId = jest
         .fn()
         .mockResolvedValueOnce(DiscordIntegrationFixture.normal());
@@ -178,9 +162,7 @@ describe('DiscordMemberService', () => {
     });
 
     test('유저가 운영진이라면 "운영진" 디스코드 역할을 가져야 한다', async () => {
-      userRepository.createQueryBuilder().getSingleResult = jest
-        .fn()
-        .mockResolvedValueOnce(UserFixture.manager());
+      userRepository.findOne.mockResolvedValueOnce(UserFixture.manager());
       discordIntegrationRepository.findByUserId = jest
         .fn()
         .mockResolvedValueOnce(DiscordIntegrationFixture.normal());
