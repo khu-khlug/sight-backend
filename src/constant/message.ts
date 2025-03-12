@@ -11,7 +11,7 @@ export const Message = {
   INVALID_DISCORD_STATE: '알 수 없는 디스코드 OAuth2 상태값입니다',
 
   // 404 Not Found
-  USER_NOT_FOUND: 'User not found',
+  USER_NOT_FOUND: '존재하지 않는 유저입니다',
   SOME_INTERESTS_NOT_FOUND: 'Some interests not found',
   GROUP_NOT_FOUND: 'Group not found',
   SOME_DOOR_LOCK_PASSWORD_NOT_FOUND: '일부 도어락 비밀번호가 존재하지 않습니다',

@@ -320,6 +320,26 @@ export class User extends AggregateRoot {
     return joinedAfterMidterm && joinedInThisSemester;
   }
 
+  leave(): void {
+    this._password = '';
+    this._profile = new Profile({
+      ...this._profile,
+      email: '',
+      number: 0,
+      phone: '',
+      homepage: '',
+      language: '',
+      prefer: '',
+    });
+    this._point = 0;
+    this._status = UserStatus.UNAUTHORIZED;
+    this._manager = false;
+    this._slack = null;
+    this._returnAt = null;
+    this._returnReason = null;
+    this._updatedAt = new Date();
+  }
+
   get id(): number {
     return this._id;
   }

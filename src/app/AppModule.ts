@@ -22,6 +22,7 @@ import { GetDoorLockPasswordQueryHandler } from '@khlug/app/application/infraBlu
 import { ApplyUserInfoToEnteredDiscordUserCommandHandler } from '@khlug/app/application/user/command/applyUserInfoToEnteredDiscordUser/ApplyUserInfoToEnteredDiscordUserCommandHandler';
 import { CreateDiscordIntegrationCommandHandler } from '@khlug/app/application/user/command/createDiscordIntegration/CreateDiscordIntegrationCommandHandler';
 import { CreateDiscordOAuth2UrlCommandHandler } from '@khlug/app/application/user/command/createDiscordOAuth2Url/CreateDiscordOAuth2UrlCommandHandler';
+import { DeleteUserCommandHandler } from '@khlug/app/application/user/command/deleteUser/DeleteUserCommandHandler';
 import { RemoveDiscordIntegrationCommandHandler } from '@khlug/app/application/user/command/removeDiscordIntegration/RemoveDiscordIntegrationCommandHandler';
 import { GetDiscordIntegrationQueryHandler } from '@khlug/app/application/user/query/getDiscordIntegration/GetDiscordIntegrationQueryHandler';
 import { DiscordIntegrationQueryToken } from '@khlug/app/application/user/query/IDiscordIntegrationQuery';
@@ -59,6 +60,7 @@ const commandHandlers: Provider[] = [
   CreateDiscordOAuth2UrlCommandHandler,
   RemoveDiscordIntegrationCommandHandler,
   ApplyUserInfoToEnteredDiscordUserCommandHandler,
+  DeleteUserCommandHandler,
 ];
 const queryHandlers: Provider[] = [
   GetDoorLockPasswordQueryHandler,
