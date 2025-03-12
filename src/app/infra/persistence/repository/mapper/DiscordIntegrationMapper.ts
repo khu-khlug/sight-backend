@@ -20,11 +20,13 @@ export class DiscordIntegrationMapper
   }
 
   toEntity(domain: DiscordIntegration): DiscordIntegrationEntity {
-    return {
-      id: domain.id,
-      userId: domain.userId,
-      discordUserId: domain.discordUserId,
-      createdAt: domain.createdAt,
-    };
+    const entity = new DiscordIntegrationEntity();
+
+    entity.id = domain.id;
+    entity.userId = domain.userId;
+    entity.discordUserId = domain.discordUserId;
+    entity.createdAt = domain.createdAt;
+
+    return entity;
   }
 }

@@ -2,6 +2,7 @@ import { Inject, NotFoundException } from '@nestjs/common';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 
 import { RemoveDiscordIntegrationCommand } from '@khlug/app/application/user/command/removeDiscordIntegration/RemoveDiscordIntegrationCommand';
+import { DiscordMemberService } from '@khlug/app/application/user/service/DiscordMemberService';
 
 import {
   DiscordIntegrationRepositoryToken,
@@ -17,6 +18,7 @@ export class RemoveDiscordIntegrationCommandHandler
   constructor(
     @Inject(DiscordIntegrationRepositoryToken)
     private readonly discordIntegrationRepository: IDiscordIntegrationRepository,
+    private readonly discordMemberService: DiscordMemberService,
   ) {}
 
   async execute(command: RemoveDiscordIntegrationCommand): Promise<void> {
@@ -28,6 +30,6 @@ export class RemoveDiscordIntegrationCommandHandler
       throw new NotFoundException(Message.DISCORD_INTEGRATION_NOT_FOUND);
     }
 
-    await this.discordIntegrationRepository.remove(discordIntegration);
+    await this.discordMemberService.clearDiscordIntegration(userId);
   }
 }

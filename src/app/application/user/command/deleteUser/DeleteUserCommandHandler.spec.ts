@@ -5,6 +5,7 @@ import { advanceTo, clear } from 'jest-date-mock';
 
 import { DeleteUserCommand } from '@khlug/app/application/user/command/deleteUser/DeleteUserCommand';
 import { DeleteUserCommandHandler } from '@khlug/app/application/user/command/deleteUser/DeleteUserCommandHandler';
+import { DiscordMemberService } from '@khlug/app/application/user/service/DiscordMemberService';
 
 import { User } from '@khlug/app/domain/user/model/User';
 
@@ -14,6 +15,7 @@ import { Message } from '@khlug/constant/message';
 describe('DeleteUserCommandHandler', () => {
   let handler: DeleteUserCommandHandler;
   let userRepository: jest.Mocked<EntityRepository<User>>;
+  let discordMemberService: jest.Mocked<DiscordMemberService>;
 
   beforeEach(async () => {
     advanceTo(new Date());
@@ -32,11 +34,18 @@ describe('DeleteUserCommandHandler', () => {
             getEntityManager: jest.fn().mockReturnValue(em),
           },
         },
+        {
+          provide: DiscordMemberService,
+          useValue: {
+            clearDiscordIntegration: jest.fn(),
+          },
+        },
       ],
     }).compile();
 
     handler = testModule.get(DeleteUserCommandHandler);
     userRepository = testModule.get(getRepositoryToken(User));
+    discordMemberService = testModule.get(DiscordMemberService);
   });
 
   afterEach(() => clear());
@@ -64,6 +73,17 @@ describe('DeleteUserCommandHandler', () => {
       expect(
         userRepository.getEntityManager().persistAndFlush,
       ).toHaveBeenCalled();
+    });
+
+    test('디스코드 연동 정보를 제거해야 한다', async () => {
+      const user = UserFixture.undergraduated();
+
+      userRepository.findOne.mockResolvedValue(user);
+
+      const command = new DeleteUserCommand(user.id);
+      await handler.execute(command);
+
+      expect(discordMemberService.clearDiscordIntegration).toHaveBeenCalled();
     });
   });
 });

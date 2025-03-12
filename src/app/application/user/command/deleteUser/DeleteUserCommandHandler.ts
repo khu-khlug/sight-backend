@@ -4,6 +4,7 @@ import { NotFoundException } from '@nestjs/common';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 
 import { DeleteUserCommand } from '@khlug/app/application/user/command/deleteUser/DeleteUserCommand';
+import { DiscordMemberService } from '@khlug/app/application/user/service/DiscordMemberService';
 
 import { User } from '@khlug/app/domain/user/model/User';
 
@@ -16,6 +17,7 @@ export class DeleteUserCommandHandler
   constructor(
     @InjectRepository(User)
     private readonly userRepository: EntityRepository<User>,
+    private readonly discordMemberService: DiscordMemberService,
   ) {}
 
   async execute(command: DeleteUserCommand): Promise<void> {
@@ -32,5 +34,7 @@ export class DeleteUserCommandHandler
     await this.userRepository.getEntityManager().persistAndFlush(user);
 
     // TODO: 운영진에게 탈퇴 관련 메시지 전송 필요
+
+    await this.discordMemberService.clearDiscordIntegration(userId);
   }
 }

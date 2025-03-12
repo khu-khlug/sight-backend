@@ -60,7 +60,7 @@ export class CreateDiscordIntegrationCommandHandler
       discordUserId,
       createdAt: new Date(),
     });
-    await this.discordIntegrationRepository.insert(newDiscordIntegration);
+    await this.discordIntegrationRepository.save(newDiscordIntegration);
 
     await this.discordMemberService.reflectUserInfoToDiscordUser(userId);
   }

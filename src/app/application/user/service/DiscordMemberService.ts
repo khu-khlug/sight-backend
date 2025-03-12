@@ -29,13 +29,28 @@ export class DiscordMemberService {
     private readonly userRepository: EntityRepository<User>,
   ) {}
 
+  async clearDiscordIntegration(userId: number): Promise<void> {
+    const discordIntegration =
+      await this.discordIntegrationRepository.findByUserId(userId);
+
+    if (!discordIntegration) {
+      return;
+    }
+
+    const discordUserId = discordIntegration.discordUserId;
+    const hasMember = await this.discordApiAdapter.hasMember(discordUserId);
+    if (hasMember) {
+      await this.discordApiAdapter.modifyMember({
+        discordUserId,
+        roles: [],
+      });
+    }
+
+    await this.discordIntegrationRepository.remove(discordIntegration);
+  }
+
   async reflectUserInfoToDiscordUser(userId: number): Promise<void> {
-    // TODO: UserRepository 별도 구현 후 수정해야 함
-    //       현재는 엔티티에 직접 매핑되므로 `_id`를 사용하지 않기 위해 쿼리 빌더를 사용함
-    const user = await this.userRepository
-      .createQueryBuilder('u')
-      .where('u.id = ?', [userId])
-      .getSingleResult();
+    const user = await this.userRepository.findOne({ id: userId });
     if (!user) {
       return;
     }

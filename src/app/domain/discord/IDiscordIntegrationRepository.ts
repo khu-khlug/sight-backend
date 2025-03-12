@@ -9,6 +9,6 @@ export interface IDiscordIntegrationRepository {
   findByDiscordUserId: (
     discordUserId: string,
   ) => Promise<DiscordIntegration | null>;
-  insert: (discordIntegration: DiscordIntegration) => Promise<void>;
+  save: (discordIntegration: DiscordIntegration) => Promise<void>;
   remove: (discordIntegration: DiscordIntegration) => Promise<void>;
 }
