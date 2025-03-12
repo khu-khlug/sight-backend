@@ -62,11 +62,12 @@ describe('GraduateUserCommandHandler', () => {
       const user = UserFixture.undergraduated();
 
       userRepository.findOne.mockResolvedValue(user);
+      jest.spyOn(user, 'graduate');
 
       const command = new GraduateUserCommand(user.id);
       await handler.execute(command);
 
-      expect(user.graduate()).toBeUndefined();
+      expect(user.graduate).toHaveBeenCalled();
     });
 
     test('변경된 유저 정보를 디스코드에 반영해야 한다', async () => {
