@@ -23,6 +23,7 @@ import { ApplyUserInfoToEnteredDiscordUserCommandHandler } from '@khlug/app/appl
 import { CreateDiscordIntegrationCommandHandler } from '@khlug/app/application/user/command/createDiscordIntegration/CreateDiscordIntegrationCommandHandler';
 import { CreateDiscordOAuth2UrlCommandHandler } from '@khlug/app/application/user/command/createDiscordOAuth2Url/CreateDiscordOAuth2UrlCommandHandler';
 import { DeleteUserCommandHandler } from '@khlug/app/application/user/command/deleteUser/DeleteUserCommandHandler';
+import { GraduateUserCommandHandler } from '@khlug/app/application/user/command/graduateUser/GraduateUserCommandHandler';
 import { RemoveDiscordIntegrationCommandHandler } from '@khlug/app/application/user/command/removeDiscordIntegration/RemoveDiscordIntegrationCommandHandler';
 import { GetDiscordIntegrationQueryHandler } from '@khlug/app/application/user/query/getDiscordIntegration/GetDiscordIntegrationQueryHandler';
 import { DiscordIntegrationQueryToken } from '@khlug/app/application/user/query/IDiscordIntegrationQuery';
@@ -61,6 +62,7 @@ const commandHandlers: Provider[] = [
   RemoveDiscordIntegrationCommandHandler,
   ApplyUserInfoToEnteredDiscordUserCommandHandler,
   DeleteUserCommandHandler,
+  GraduateUserCommandHandler,
 ];
 const queryHandlers: Provider[] = [
   GetDoorLockPasswordQueryHandler,

@@ -320,6 +320,20 @@ export class User extends AggregateRoot {
     return joinedAfterMidterm && joinedInThisSemester;
   }
 
+  graduate(): void {
+    if (this.isGraduated()) {
+      throw new UnprocessableEntityException(Message.USER_ALREADY_GRADUATED);
+    }
+
+    this._studentStatus = StudentStatus.GRADUATE;
+    this._profile = new Profile({
+      ...this._profile,
+      grade: 0,
+    });
+    this._manager = false;
+    this._updatedAt = new Date();
+  }
+
   leave(): void {
     this._password = '';
     this._profile = new Profile({
@@ -338,6 +352,10 @@ export class User extends AggregateRoot {
     this._returnAt = null;
     this._returnReason = null;
     this._updatedAt = new Date();
+  }
+
+  isGraduated(): boolean {
+    return this._studentStatus === StudentStatus.GRADUATE;
   }
 
   get id(): number {
