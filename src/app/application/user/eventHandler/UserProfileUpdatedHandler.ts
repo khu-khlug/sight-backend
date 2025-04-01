@@ -1,11 +1,8 @@
 import { Inject } from '@nestjs/common';
 import { EventsHandler, IEventHandler } from '@nestjs/cqrs';
 
-import {
-  IMessageSender,
-  SlackSender,
-} from '@khlug/app/domain/adapter/ISlackSender';
-import { MessageCategory } from '@khlug/constant/message';
+import { INotifier, NotifierToken } from '@khlug/app/domain/adapter/INotifier';
+import { NotificationCategory } from '@khlug/constant/notification';
 import { UserProfileUpdated } from '@khlug/app/domain/user/event/UserProfileUpdated';
 
 @EventsHandler(UserProfileUpdated)
@@ -13,8 +10,8 @@ export class UserProfileUpdatedHandler
   implements IEventHandler<UserProfileUpdated>
 {
   constructor(
-    @Inject(SlackSender)
-    private readonly slackSender: IMessageSender,
+    @Inject(NotifierToken)
+    private readonly slackSender: INotifier,
   ) {}
 
   handle(event: UserProfileUpdated) {
@@ -23,7 +20,7 @@ export class UserProfileUpdatedHandler
     this.slackSender.send({
       targetUserId: user.id,
       message: '회원 정보를 수정했습니다.',
-      category: MessageCategory.USER_DATA,
+      category: NotificationCategory.USER_DATA,
     });
   }
 }

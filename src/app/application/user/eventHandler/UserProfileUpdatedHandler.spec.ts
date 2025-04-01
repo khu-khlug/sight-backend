@@ -3,10 +3,7 @@ import { advanceTo, clear } from 'jest-date-mock';
 
 import { UserProfileUpdatedHandler } from '@khlug/app/application/user/eventHandler/UserProfileUpdatedHandler';
 
-import {
-  IMessageSender,
-  SlackSender,
-} from '@khlug/app/domain/adapter/ISlackSender';
+import { INotifier, NotifierToken } from '@khlug/app/domain/adapter/INotifier';
 import { UserProfileUpdated } from '@khlug/app/domain/user/event/UserProfileUpdated';
 import { User } from '@khlug/app/domain/user/model/User';
 
@@ -14,7 +11,7 @@ import { generateUser } from '@khlug/__test__/fixtures/domain';
 
 describe('UserProfileUpdatedHandler', () => {
   let handler: UserProfileUpdatedHandler;
-  let slackSender: jest.Mocked<IMessageSender>;
+  let slackSender: jest.Mocked<INotifier>;
 
   beforeAll(async () => {
     advanceTo(new Date());
@@ -22,12 +19,12 @@ describe('UserProfileUpdatedHandler', () => {
     const testModule = await Test.createTestingModule({
       providers: [
         UserProfileUpdatedHandler,
-        { provide: SlackSender, useValue: {} },
+        { provide: NotifierToken, useValue: {} },
       ],
     }).compile();
 
     handler = testModule.get(UserProfileUpdatedHandler);
-    slackSender = testModule.get(SlackSender);
+    slackSender = testModule.get(NotifierToken);
   });
 
   afterAll(() => {

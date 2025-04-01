@@ -6,10 +6,7 @@ import { Transactional } from '@khlug/core/persistence/transaction/Transactional
 import { CreateGroupCommand } from '@khlug/app/application/group/command/createGroup/CreateGroupCommand';
 import { CreateGroupCommandResult } from '@khlug/app/application/group/command/createGroup/CreateGroupCommandResult';
 
-import {
-  IMessageSender,
-  SlackSender,
-} from '@khlug/app/domain/adapter/ISlackSender';
+import { INotifier, NotifierToken } from '@khlug/app/domain/adapter/INotifier';
 import { GroupFactory } from '@khlug/app/domain/group/GroupFactory';
 import { GroupMemberFactory } from '@khlug/app/domain/group/GroupMemberFactory';
 import {
@@ -25,7 +22,7 @@ import {
   IInterestRepository,
   InterestRepository,
 } from '@khlug/app/domain/interest/IInterestRepository';
-import { MessageCategory } from '@khlug/constant/message';
+import { NotificationCategory } from '@khlug/constant/notification';
 import { PointGrantService } from '@khlug/app/domain/user/service/PointGrantService';
 
 import { Message } from '@khlug/constant/error';
@@ -45,8 +42,8 @@ export class CreateGroupCommandHandler
     private readonly groupMemberRepository: IGroupMemberRepository,
     @Inject(InterestRepository)
     private readonly interestRepository: IInterestRepository,
-    @Inject(SlackSender)
-    private readonly slackSender: IMessageSender,
+    @Inject(NotifierToken)
+    private readonly slackSender: INotifier,
   ) {}
 
   @Transactional()
@@ -101,7 +98,7 @@ export class CreateGroupCommandHandler
 
     this.slackSender.send({
       targetUserId: newGroup.adminUserId,
-      category: MessageCategory.GROUP_ACTIVITY,
+      category: NotificationCategory.GROUP_ACTIVITY,
       message,
     });
 
