@@ -3,7 +3,6 @@ type ExtractParams<T extends string> =
     ? { [key in Param]: string } & ExtractParams<`${A}${B}`>
     : unknown;
 
-// eslint-disable-next-line @typescript-eslint/ban-types
 type Prettify<T> = {} & { [P in keyof T]: T[P] };
 
 export class MessageBuilder {

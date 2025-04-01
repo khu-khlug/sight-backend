@@ -11,10 +11,7 @@ import { Transactional } from '@khlug/core/persistence/transaction/Transactional
 import { AddBookmarkCommand } from '@khlug/app/application/group/command/addBookmark/AddBookmarkCommand';
 import { AddBookmarkCommandResult } from '@khlug/app/application/group/command/addBookmark/AddBookmarkCommandResult';
 
-import {
-  ISlackSender,
-  SlackSender,
-} from '@khlug/app/domain/adapter/ISlackSender';
+import { INotifier, NotifierToken } from '@khlug/app/domain/adapter/INotifier';
 import { GroupBookmarkFactory } from '@khlug/app/domain/group/GroupBookmarkFactory';
 import {
   GroupBookmarkRepository,
@@ -24,9 +21,9 @@ import {
   GroupRepository,
   IGroupRepository,
 } from '@khlug/app/domain/group/IGroupRepository';
-import { SlackMessageCategory } from '@khlug/app/domain/message/model/constant';
+import { NotificationCategory } from '@khlug/constant/notification';
 
-import { Message } from '@khlug/constant/message';
+import { Message } from '@khlug/constant/error';
 import { Template } from '@khlug/constant/template';
 
 @CommandHandler(AddBookmarkCommand)
@@ -40,8 +37,8 @@ export class AddBookmarkCommandHandler
     private readonly groupBookmarkFactory: GroupBookmarkFactory,
     @Inject(GroupBookmarkRepository)
     private readonly groupBookmarkRepository: IGroupBookmarkRepository,
-    @Inject(SlackSender)
-    private readonly slackSender: ISlackSender,
+    @Inject(NotifierToken)
+    private readonly slackSender: INotifier,
   ) {}
 
   @Transactional()
@@ -76,7 +73,7 @@ export class AddBookmarkCommandHandler
     await this.groupBookmarkRepository.save(newBookmark);
 
     this.slackSender.send({
-      category: SlackMessageCategory.GROUP_ACTIVITY_FOR_ME,
+      category: NotificationCategory.GROUP_ACTIVITY_FOR_ME,
       targetUserId: userId,
       message: MessageBuilder.build(Template.ADD_GROUP_BOOKMARK.notification, {
         groupId,

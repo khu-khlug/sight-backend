@@ -8,7 +8,7 @@ import {
 } from '@khlug/app/domain/group/model/constant';
 import { User } from '@khlug/app/domain/user/model/User';
 
-import { Message } from '@khlug/constant/message';
+import { Message } from '@khlug/constant/error';
 
 type CreateGroupParams = {
   user: User;

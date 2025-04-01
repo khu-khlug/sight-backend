@@ -3,10 +3,7 @@ import { EventsHandler, IEventHandler } from '@nestjs/cqrs';
 
 import { Transactional } from '@khlug/core/persistence/transaction/Transactional';
 
-import {
-  ISlackSender,
-  SlackSender,
-} from '@khlug/app/domain/adapter/ISlackSender';
+import { INotifier, NotifierToken } from '@khlug/app/domain/adapter/INotifier';
 import { GroupStateChanged } from '@khlug/app/domain/group/event/GroupStateChanged';
 import {
   GroupMemberRepository,
@@ -17,7 +14,7 @@ import {
   IGroupRepository,
 } from '@khlug/app/domain/group/IGroupRepository';
 import { GroupState } from '@khlug/app/domain/group/model/constant';
-import { SlackMessageCategory } from '@khlug/app/domain/message/model/constant';
+import { NotificationCategory } from '@khlug/constant/notification';
 import { PointGrantService } from '@khlug/app/domain/user/service/PointGrantService';
 
 import { Point } from '@khlug/constant/point';
@@ -33,8 +30,8 @@ export class GroupStateChangedHandler
     private readonly groupRepository: IGroupRepository,
     @Inject(GroupMemberRepository)
     private readonly groupMemberRepository: IGroupMemberRepository,
-    @Inject(SlackSender)
-    private readonly slackSender: ISlackSender,
+    @Inject(NotifierToken)
+    private readonly slackSender: INotifier,
   ) {}
 
   @Transactional()
@@ -54,7 +51,7 @@ export class GroupStateChangedHandler
     members.forEach((member) =>
       this.slackSender.send({
         targetUserId: member.userId,
-        category: SlackMessageCategory.GROUP_ACTIVITY,
+        category: NotificationCategory.GROUP_ACTIVITY,
         message: `<a href="/group/${groupId}><u>${
           group.title
         }</u></a> ${this.buildMessage(nextState)}`,

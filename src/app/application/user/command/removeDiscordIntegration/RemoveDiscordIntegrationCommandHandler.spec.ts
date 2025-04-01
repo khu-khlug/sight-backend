@@ -11,7 +11,7 @@ import {
 } from '@khlug/app/domain/discord/IDiscordIntegrationRepository';
 
 import { DiscordIntegrationFixture } from '@khlug/__test__/fixtures/DiscordIntegrationFixture';
-import { Message } from '@khlug/constant/message';
+import { Message } from '@khlug/constant/error';
 
 describe('RemoveDiscordIntegrationCommandHandler', () => {
   let handler: RemoveDiscordIntegrationCommandHandler;

@@ -11,7 +11,7 @@ import {
   UserRepository,
 } from '@khlug/app/domain/user/IUserRepository';
 
-import { Message } from '@khlug/constant/message';
+import { Message } from '@khlug/constant/error';
 
 @CommandHandler(UpdateUnitedUserCommand)
 export class UpdateUnitedUserCommandHandler

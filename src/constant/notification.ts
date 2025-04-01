@@ -1,4 +1,4 @@
-export const SlackMessageCategory = {
+export const NotificationCategory = {
   MY_ACTIVITY: 'MY_ACTIVITY', // 게시판 및 일정 관련 내가 한 활동, 구 11
   OTHERS_ACTIVITY_FOR_MINE: 'OTHERS_ACTIVITY_FOR_MINE', // 내 게시판 글에 대한 타인의 활동, 구 12
 
@@ -23,5 +23,5 @@ export const SlackMessageCategory = {
   NOTICE: 'NOTICE', // 통보하는 알림, 구 91
   IMPORTANT_NOTICE: 'IMPORTANT_NOTICE', // 확인이 필요한 중요한 알림, 구 92
 } as const;
-export type SlackMessageCategory =
-  (typeof SlackMessageCategory)[keyof typeof SlackMessageCategory];
+export type NotificationCategory =
+  (typeof NotificationCategory)[keyof typeof NotificationCategory];

@@ -9,7 +9,7 @@ import { UpdateDoorLockPasswordCommandHandler } from '@khlug/app/application/inf
 import { Cache, CacheId } from '@khlug/app/domain/cache/model/Cache';
 
 import { CacheFixture } from '@khlug/__test__/fixtures/CacheFixture';
-import { Message } from '@khlug/constant/message';
+import { Message } from '@khlug/constant/error';
 
 describe('UpdateDoorLockPasswordCommandHandler', () => {
   let handler: UpdateDoorLockPasswordCommandHandler;

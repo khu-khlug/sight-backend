@@ -10,7 +10,7 @@ import { DiscordMemberService } from '@khlug/app/application/user/service/Discor
 import { User } from '@khlug/app/domain/user/model/User';
 
 import { UserFixture } from '@khlug/__test__/fixtures/domain';
-import { Message } from '@khlug/constant/message';
+import { Message } from '@khlug/constant/error';
 
 describe('DeleteUserCommandHandler', () => {
   let handler: DeleteUserCommandHandler;

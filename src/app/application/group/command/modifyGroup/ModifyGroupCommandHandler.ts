@@ -33,7 +33,7 @@ import {
   InterestRepository,
 } from '@khlug/app/domain/interest/IInterestRepository';
 
-import { Message } from '@khlug/constant/message';
+import { Message } from '@khlug/constant/error';
 import { isDifferentStringArray } from '@khlug/util/isDifferentStringArray';
 
 type UpdatedItem =

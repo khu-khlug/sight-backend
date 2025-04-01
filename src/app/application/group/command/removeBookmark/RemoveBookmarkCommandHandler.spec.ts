@@ -1,7 +1,7 @@
 import { Test } from '@nestjs/testing';
 import { advanceTo, clear } from 'jest-date-mock';
 
-import { SlackSender } from '@khlug/app/domain/adapter/ISlackSender';
+import { NotifierToken } from '@khlug/app/domain/adapter/INotifier';
 import {
   GroupBookmarkRepository,
   IGroupBookmarkRepository,
@@ -13,7 +13,7 @@ import {
 
 import { GroupBookmarkFixture } from '@khlug/__test__/fixtures/GroupBookmarkFixture';
 import { GroupFixture } from '@khlug/__test__/fixtures/GroupFixture';
-import { Message } from '@khlug/constant/message';
+import { Message } from '@khlug/constant/error';
 
 import { RemoveBookmarkCommand } from './RemoveBookmarkCommand';
 import { RemoveBookmarkCommandHandler } from './RemoveBookmarkCommandHandler';
@@ -40,7 +40,7 @@ describe('RemoveBookmarkCommandHandler', () => {
           useValue: { findByGroupIdAndUserId: jest.fn(), remove: jest.fn() },
         },
         {
-          provide: SlackSender,
+          provide: NotifierToken,
           useValue: { send: jest.fn() },
         },
       ],

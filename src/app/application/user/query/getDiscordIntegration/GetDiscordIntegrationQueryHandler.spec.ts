@@ -10,7 +10,7 @@ import {
 } from '@khlug/app/application/user/query/IDiscordIntegrationQuery';
 import { DiscordIntegrationView } from '@khlug/app/application/user/query/view/DiscordIntegrationView';
 
-import { Message } from '@khlug/constant/message';
+import { Message } from '@khlug/constant/error';
 
 describe('GetDiscordIntegrationQueryHandler', () => {
   let handler: GetDiscordIntegrationQueryHandler;

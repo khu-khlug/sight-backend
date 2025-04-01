@@ -5,10 +5,7 @@ import { UpdateUserCommand } from '@khlug/app/application/user/command/updateUse
 import { UpdateUserCommandHandler } from '@khlug/app/application/user/command/updateUser/UpdateUserCommandHandler';
 import { UpdateUserCommandResult } from '@khlug/app/application/user/command/updateUser/UpdateUserCommandResult';
 
-import {
-  ISlackSender,
-  SlackSender,
-} from '@khlug/app/domain/adapter/ISlackSender';
+import { INotifier, NotifierToken } from '@khlug/app/domain/adapter/INotifier';
 import {
   IInterestRepository,
   InterestRepository,
@@ -30,7 +27,7 @@ import {
   generateInterest,
   generateUser,
 } from '@khlug/__test__/fixtures/domain';
-import { Message } from '@khlug/constant/message';
+import { Message } from '@khlug/constant/error';
 
 jest.mock('@khlug/core/persistence/transaction/Transactional', () => ({
   Transactional: () => () => {},
@@ -42,7 +39,7 @@ describe('UpdateUserCommandHandler', () => {
   let userRepository: jest.Mocked<IUserRepository>;
   let interestRepository: jest.Mocked<IInterestRepository>;
   let userInterestRepository: jest.Mocked<IUserInterestRepository>;
-  let slackSender: jest.Mocked<ISlackSender>;
+  let slackSender: jest.Mocked<INotifier>;
 
   beforeAll(async () => {
     advanceTo(new Date());
@@ -54,7 +51,7 @@ describe('UpdateUserCommandHandler', () => {
         { provide: UserRepository, useValue: {} },
         { provide: InterestRepository, useValue: {} },
         { provide: UserInterestRepository, useValue: {} },
-        { provide: SlackSender, useValue: {} },
+        { provide: NotifierToken, useValue: {} },
       ],
     }).compile();
 
@@ -63,7 +60,7 @@ describe('UpdateUserCommandHandler', () => {
     userRepository = testModule.get(UserRepository);
     interestRepository = testModule.get(InterestRepository);
     userInterestRepository = testModule.get(UserInterestRepository);
-    slackSender = testModule.get(SlackSender);
+    slackSender = testModule.get(NotifierToken);
   });
 
   afterAll(() => {

@@ -9,7 +9,7 @@ import {
   IDiscordIntegrationRepository,
 } from '@khlug/app/domain/discord/IDiscordIntegrationRepository';
 
-import { Message } from '@khlug/constant/message';
+import { Message } from '@khlug/constant/error';
 
 @CommandHandler(RemoveDiscordIntegrationCommand)
 export class RemoveDiscordIntegrationCommandHandler

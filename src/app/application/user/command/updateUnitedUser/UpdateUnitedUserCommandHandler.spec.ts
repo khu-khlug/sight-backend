@@ -12,7 +12,7 @@ import { StudentStatus } from '@khlug/app/domain/user/model/constant';
 import { User } from '@khlug/app/domain/user/model/User';
 
 import { generateUser } from '@khlug/__test__/fixtures/domain';
-import { Message } from '@khlug/constant/message';
+import { Message } from '@khlug/constant/error';
 
 jest.mock('@khlug/core/persistence/transaction/Transactional', () => ({
   Transactional: () => () => {},
