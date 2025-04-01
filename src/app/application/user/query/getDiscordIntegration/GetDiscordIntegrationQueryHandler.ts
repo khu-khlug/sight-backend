@@ -8,7 +8,7 @@ import {
   IDiscordIntegrationQuery,
 } from '@khlug/app/application/user/query/IDiscordIntegrationQuery';
 
-import { Message } from '@khlug/constant/message';
+import { Message } from '@khlug/constant/error';
 
 @QueryHandler(GetDiscordIntegrationQuery)
 export class GetDiscordIntegrationQueryHandler

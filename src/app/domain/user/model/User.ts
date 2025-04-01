@@ -26,7 +26,7 @@ import {
 } from '@khlug/app/domain/user/model/constant';
 import { Profile } from '@khlug/app/domain/user/model/Profile';
 
-import { Message } from '@khlug/constant/message';
+import { Message } from '@khlug/constant/error';
 import { LegacyDateConverter } from '@khlug/util/mikro-orm/LegacyDateConverter';
 import { UnivPeriod, UnivPeriodType } from '@khlug/util/univPeriod';
 

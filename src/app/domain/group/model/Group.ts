@@ -9,7 +9,7 @@ import {
   PRACTICE_GROUP_ID,
 } from '@khlug/app/domain/group/model/constant';
 
-import { Message } from '@khlug/constant/message';
+import { Message } from '@khlug/constant/error';
 
 export type GroupConstructorParams = {
   id: string;

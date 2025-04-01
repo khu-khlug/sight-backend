@@ -7,7 +7,7 @@ import { CreateGroupCommand } from '@khlug/app/application/group/command/createG
 import { CreateGroupCommandResult } from '@khlug/app/application/group/command/createGroup/CreateGroupCommandResult';
 
 import {
-  ISlackSender,
+  IMessageSender,
   SlackSender,
 } from '@khlug/app/domain/adapter/ISlackSender';
 import { GroupFactory } from '@khlug/app/domain/group/GroupFactory';
@@ -25,10 +25,10 @@ import {
   IInterestRepository,
   InterestRepository,
 } from '@khlug/app/domain/interest/IInterestRepository';
-import { SlackMessageCategory } from '@khlug/app/domain/message/model/constant';
+import { MessageCategory } from '@khlug/constant/message';
 import { PointGrantService } from '@khlug/app/domain/user/service/PointGrantService';
 
-import { Message } from '@khlug/constant/message';
+import { Message } from '@khlug/constant/error';
 import { Point } from '@khlug/constant/point';
 
 @CommandHandler(CreateGroupCommand)
@@ -46,7 +46,7 @@ export class CreateGroupCommandHandler
     @Inject(InterestRepository)
     private readonly interestRepository: IInterestRepository,
     @Inject(SlackSender)
-    private readonly slackSender: ISlackSender,
+    private readonly slackSender: IMessageSender,
   ) {}
 
   @Transactional()
@@ -101,7 +101,7 @@ export class CreateGroupCommandHandler
 
     this.slackSender.send({
       targetUserId: newGroup.adminUserId,
-      category: SlackMessageCategory.GROUP_ACTIVITY,
+      category: MessageCategory.GROUP_ACTIVITY,
       message,
     });
 

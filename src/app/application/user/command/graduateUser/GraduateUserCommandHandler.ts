@@ -8,7 +8,7 @@ import { DiscordMemberService } from '@khlug/app/application/user/service/Discor
 
 import { User } from '@khlug/app/domain/user/model/User';
 
-import { Message } from '@khlug/constant/message';
+import { Message } from '@khlug/constant/error';
 
 @CommandHandler(GraduateUserCommand)
 export class GraduateUserCommandHandler

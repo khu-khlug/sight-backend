@@ -14,7 +14,7 @@ import {
   IDiscordApiAdapter,
 } from '@khlug/app/application/adapter/IDiscordApiAdapter';
 
-import { Message } from '@khlug/constant/message';
+import { Message } from '@khlug/constant/error';
 
 @Injectable()
 export class DiscordApiAdapter implements IDiscordApiAdapter {

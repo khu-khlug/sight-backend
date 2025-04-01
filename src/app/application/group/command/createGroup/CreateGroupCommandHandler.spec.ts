@@ -27,7 +27,7 @@ import { PointGrantService } from '@khlug/app/domain/user/service/PointGrantServ
 
 import { DomainFixture } from '@khlug/__test__/fixtures';
 import { GroupFixture } from '@khlug/__test__/fixtures/GroupFixture';
-import { Message } from '@khlug/constant/message';
+import { Message } from '@khlug/constant/error';
 import { Point } from '@khlug/constant/point';
 
 describe('CreateGroupCommandHandler', () => {

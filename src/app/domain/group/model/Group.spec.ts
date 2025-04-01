@@ -3,7 +3,7 @@ import { advanceTo, clear } from 'jest-date-mock';
 import { GroupState } from '@khlug/app/domain/group/model/constant';
 
 import { GroupFixture } from '@khlug/__test__/fixtures/GroupFixture';
-import { Message } from '@khlug/constant/message';
+import { Message } from '@khlug/constant/error';
 
 describe('Group', () => {
   beforeAll(() => {

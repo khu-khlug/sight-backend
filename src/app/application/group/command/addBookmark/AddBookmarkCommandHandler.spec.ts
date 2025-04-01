@@ -17,7 +17,7 @@ import {
 
 import { GroupBookmarkFixture } from '@khlug/__test__/fixtures/GroupBookmarkFixture';
 import { GroupFixture } from '@khlug/__test__/fixtures/GroupFixture';
-import { Message } from '@khlug/constant/message';
+import { Message } from '@khlug/constant/error';
 
 describe('AddBookmarkCommandHandler', () => {
   let handler: AddBookmarkCommandHandler;

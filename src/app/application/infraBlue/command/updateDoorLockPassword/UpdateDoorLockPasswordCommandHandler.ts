@@ -7,7 +7,7 @@ import { UpdateDoorLockPasswordCommand } from '@khlug/app/application/infraBlue/
 
 import { Cache, CacheId } from '@khlug/app/domain/cache/model/Cache';
 
-import { Message } from '@khlug/constant/message';
+import { Message } from '@khlug/constant/error';
 
 @CommandHandler(UpdateDoorLockPasswordCommand)
 export class UpdateDoorLockPasswordCommandHandler

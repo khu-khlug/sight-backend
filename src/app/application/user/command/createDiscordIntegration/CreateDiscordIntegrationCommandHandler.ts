@@ -19,7 +19,7 @@ import {
 } from '@khlug/app/domain/discord/IDiscordIntegrationRepository';
 import { DiscordIntegration } from '@khlug/app/domain/discord/model/DiscordIntegration';
 
-import { Message } from '@khlug/constant/message';
+import { Message } from '@khlug/constant/error';
 
 @CommandHandler(CreateDiscordIntegrationCommand)
 export class CreateDiscordIntegrationCommandHandler

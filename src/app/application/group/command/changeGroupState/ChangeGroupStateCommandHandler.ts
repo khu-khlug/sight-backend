@@ -21,7 +21,7 @@ import {
 } from '@khlug/app/domain/group/IGroupRepository';
 import { GroupState } from '@khlug/app/domain/group/model/constant';
 
-import { Message } from '@khlug/constant/message';
+import { Message } from '@khlug/constant/error';
 
 @CommandHandler(ChangeGroupStateCommand)
 export class ChangeGroupStateCommandHandler

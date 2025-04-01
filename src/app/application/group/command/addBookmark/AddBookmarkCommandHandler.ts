@@ -12,7 +12,7 @@ import { AddBookmarkCommand } from '@khlug/app/application/group/command/addBook
 import { AddBookmarkCommandResult } from '@khlug/app/application/group/command/addBookmark/AddBookmarkCommandResult';
 
 import {
-  ISlackSender,
+  IMessageSender,
   SlackSender,
 } from '@khlug/app/domain/adapter/ISlackSender';
 import { GroupBookmarkFactory } from '@khlug/app/domain/group/GroupBookmarkFactory';
@@ -24,9 +24,9 @@ import {
   GroupRepository,
   IGroupRepository,
 } from '@khlug/app/domain/group/IGroupRepository';
-import { SlackMessageCategory } from '@khlug/app/domain/message/model/constant';
+import { MessageCategory } from '@khlug/constant/message';
 
-import { Message } from '@khlug/constant/message';
+import { Message } from '@khlug/constant/error';
 import { Template } from '@khlug/constant/template';
 
 @CommandHandler(AddBookmarkCommand)
@@ -41,7 +41,7 @@ export class AddBookmarkCommandHandler
     @Inject(GroupBookmarkRepository)
     private readonly groupBookmarkRepository: IGroupBookmarkRepository,
     @Inject(SlackSender)
-    private readonly slackSender: ISlackSender,
+    private readonly slackSender: IMessageSender,
   ) {}
 
   @Transactional()
@@ -76,7 +76,7 @@ export class AddBookmarkCommandHandler
     await this.groupBookmarkRepository.save(newBookmark);
 
     this.slackSender.send({
-      category: SlackMessageCategory.GROUP_ACTIVITY_FOR_ME,
+      category: MessageCategory.GROUP_ACTIVITY_FOR_ME,
       targetUserId: userId,
       message: MessageBuilder.build(Template.ADD_GROUP_BOOKMARK.notification, {
         groupId,

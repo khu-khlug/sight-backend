@@ -9,7 +9,7 @@ import { GetDoorLockPasswordQueryResult } from '@khlug/app/application/infraBlue
 import { Cache, CacheId } from '@khlug/app/domain/cache/model/Cache';
 
 import { CacheFixture } from '@khlug/__test__/fixtures/CacheFixture';
-import { Message } from '@khlug/constant/message';
+import { Message } from '@khlug/constant/error';
 
 describe('GetDoorLockPasswordQueryHandler', () => {
   let handler: GetDoorLockPasswordQueryHandler;

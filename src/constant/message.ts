@@ -1,31 +1,27 @@
-export const Message = {
-  // 401 Unauthorized
-  TOKEN_REQUIRED: 'Token is required',
+export const MessageCategory = {
+  MY_ACTIVITY: 'MY_ACTIVITY', // 게시판 및 일정 관련 내가 한 활동, 구 11
+  OTHERS_ACTIVITY_FOR_MINE: 'OTHERS_ACTIVITY_FOR_MINE', // 내 게시판 글에 대한 타인의 활동, 구 12
 
-  // 403 Forbidden
-  CANNOT_CREATE_GROUP: 'Cannot create group',
-  CANNOT_MODIFY_GROUP: 'Cannot modify group',
-  ONLY_GROUP_ADMIN_CAN_EDIT_GROUP: 'Only group admin can edit the group',
-  ONLY_MANAGER_CAN_SUSPEND_GROUP: 'Only managers can suspend the group',
-  REQUESTER_NOT_JOINED_GROUP: 'Requester is not joined the group',
-  INVALID_DISCORD_STATE: '알 수 없는 디스코드 OAuth2 상태값입니다',
+  GROUP_ACTIVITY: 'GROUP_ACTIVITY', // 내 그룹에 관한 활동, 구 21
+  GROUP_CARD_ACTIVITY: 'GROUP_CARD_ACTIVITY', // 내 그룹의 카드에 관한 활동, 구 22
+  GROUP_RECORD_ACTIVITY: 'GROUP_RECORD_ACTIVITY', // 내 그룹의 기록에 관한 활동, 구 23
+  GROUP_SCHEDULE: 'GROUP_SCHEDULE', // 내 그룹의 일정에 관한 활동, 구 24
+  GROUP_ACTIVITY_FOR_ME: 'GROUP_ACTIVITY_FOR_ME', // 나에게만 알려지는 그룹 활동, 구 25
+  GROUP_ACTIVITY_AS_ADMIN: 'GROUP_ACTIVITY_AS_ADMIN', // 그룹장으로서 받는 활동, 구 26
 
-  // 404 Not Found
-  USER_NOT_FOUND: '존재하지 않는 유저입니다',
-  SOME_INTERESTS_NOT_FOUND: 'Some interests not found',
-  GROUP_NOT_FOUND: 'Group not found',
-  SOME_DOOR_LOCK_PASSWORD_NOT_FOUND: '일부 도어락 비밀번호가 존재하지 않습니다',
-  DISCORD_INTEGRATION_NOT_FOUND: '아직 디스코드와 연동하지 않았습니다',
+  SUPPORT_REQUEST: 'SUPPORT_REQUEST', // 지원 신청과 관련된 알림, 구 31
+  LAB: 'LAB', // 연구실과 관련된 알림, 구 32
 
-  // 422 Unprocessable Entity
-  GRADUATED_USER_ONLY_CAN_CHANGE_EMAIL: 'Graduated user only can change email',
-  UNITED_USER_CAN_ONLY_CHANGE_EMAIL: 'United user can only change email',
-  GROUP_NOT_EDITABLE: 'Group is not editable',
-  CANNOT_MODIFY_CUSTOMER_SERVICE_GROUP: 'Cannot modify customer service group',
-  ALREADY_GROUP_ENABLED_PORTFOLIO: 'Already group enabled portfolio',
-  ALREADY_GROUP_DISABLED_PORTFOLIO: 'Already group disabled portfolio',
-  DEFAULT_BOOKMARKED_GROUP: 'Cannot add bookmark default bookmarked group',
-  DISCORD_INTEGRATION_FAILED: '디스코드 연동에 실패했습니다',
-  DISCORD_API_FAILED: '디스코드 API 호출에 실패했습니다',
-  USER_ALREADY_GRADUATED: '이미 졸업 신고한 회원입니다',
-};
+  USER_DATA: 'USER_DATA', // 내 정보에 관한 활동, 구 41
+  EXPERIENCE: 'EXPERIENCE', // 경험치에 관한 활동, 구 42
+
+  ETC_MY_ACTIVITY: 'ETC_MY_ACTIVITY', // 기타 내가 한 활동(로고 등록 등), 구 81
+  OTHERS_ACTIVITY_AFFECT_MY_ACTIVITY: 'OTHERS_ACTIVITY_AFFECT_MY_ACTIVITY', // 내 활동에 영향이 있는 타인의 활동(내 아이디어로 그룹이 만들어짐 등), 구 82
+  ALL_USERS: 'ALL_USERS', //모든 회원이 받는 알림, 구 83
+  MY_ACTIVITY_ON_OFFLINE: 'MY_ACTIVITY_ON_OFFLINE', // 오프라인에서 내가 한 활동, 구 84
+
+  NOTICE: 'NOTICE', // 통보하는 알림, 구 91
+  IMPORTANT_NOTICE: 'IMPORTANT_NOTICE', // 확인이 필요한 중요한 알림, 구 92
+} as const;
+export type MessageCategory =
+  (typeof MessageCategory)[keyof typeof MessageCategory];

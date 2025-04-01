@@ -1,10 +1,10 @@
-import { SlackMessageCategory } from '@khlug/app/domain/message/model/constant';
+import { MessageCategory } from '@khlug/constant/message';
 
 export type SlackSendParams = {
   sourceUserId?: number;
   targetUserId: number;
   message: string;
-  category: SlackMessageCategory;
+  category: MessageCategory;
 };
 
 export type SlackSendToManagersParams = Omit<SlackSendParams, 'targetUserId'>;
@@ -16,8 +16,7 @@ export type SlackBroadcastParams = Omit<
 
 export const SlackSender = Symbol('SlackSender');
 
-// async sender
-export interface ISlackSender {
+export interface IMessageSender {
   send: (params: SlackSendParams) => void;
   sendToManagers: (params: SlackSendToManagersParams) => void;
   broadcast: (params: SlackBroadcastParams) => void;

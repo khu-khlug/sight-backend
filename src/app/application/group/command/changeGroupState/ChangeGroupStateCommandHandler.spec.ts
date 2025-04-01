@@ -18,7 +18,7 @@ import { Group } from '@khlug/app/domain/group/model/Group';
 
 import { GroupFixture } from '@khlug/__test__/fixtures/GroupFixture';
 import { generateEmptyProviders } from '@khlug/__test__/util';
-import { Message } from '@khlug/constant/message';
+import { Message } from '@khlug/constant/error';
 
 describe('ChangeGroupStateCommandHandler', () => {
   let handler: ChangeGroupStateCommandHandler;

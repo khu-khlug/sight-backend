@@ -12,7 +12,7 @@ import { Transactional } from '@khlug/core/persistence/transaction/Transactional
 import { DisablePortfolioCommand } from '@khlug/app/application/group/command/disablePortfolio/DisablePortfolioCommand';
 
 import {
-  ISlackSender,
+  IMessageSender,
   SlackSender,
 } from '@khlug/app/domain/adapter/ISlackSender';
 import {
@@ -28,10 +28,10 @@ import {
   IGroupRepository,
 } from '@khlug/app/domain/group/IGroupRepository';
 import { Group } from '@khlug/app/domain/group/model/Group';
-import { SlackMessageCategory } from '@khlug/app/domain/message/model/constant';
+import { MessageCategory } from '@khlug/constant/message';
 import { PointGrantService } from '@khlug/app/domain/user/service/PointGrantService';
 
-import { Message } from '@khlug/constant/message';
+import { Message } from '@khlug/constant/error';
 import { Point } from '@khlug/constant/point';
 import { Template } from '@khlug/constant/template';
 
@@ -48,7 +48,7 @@ export class DisablePortfolioCommandHandler
     @Inject(GroupLogger)
     private readonly groupLogger: IGroupLogger,
     @Inject(SlackSender)
-    private readonly slackSender: ISlackSender,
+    private readonly slackSender: IMessageSender,
   ) {}
 
   @Transactional()
@@ -114,7 +114,7 @@ export class DisablePortfolioCommandHandler
     );
 
     this.slackSender.send({
-      category: SlackMessageCategory.GROUP_ACTIVITY,
+      category: MessageCategory.GROUP_ACTIVITY,
       targetUserId: group.adminUserId,
       message,
     });

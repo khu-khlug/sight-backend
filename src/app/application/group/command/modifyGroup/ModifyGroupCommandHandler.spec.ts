@@ -24,7 +24,7 @@ import {
 
 import { DomainFixture } from '@khlug/__test__/fixtures';
 import { GroupFixture } from '@khlug/__test__/fixtures/GroupFixture';
-import { Message } from '@khlug/constant/message';
+import { Message } from '@khlug/constant/error';
 
 import { ModifyGroupCommand } from './ModifyGroupCommand';
 import { ModifyGroupCommandHandler } from './ModifyGroupCommandHandler';

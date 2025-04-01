@@ -13,7 +13,7 @@ import {
 
 import { GroupBookmarkFixture } from '@khlug/__test__/fixtures/GroupBookmarkFixture';
 import { GroupFixture } from '@khlug/__test__/fixtures/GroupFixture';
-import { Message } from '@khlug/constant/message';
+import { Message } from '@khlug/constant/error';
 
 import { RemoveBookmarkCommand } from './RemoveBookmarkCommand';
 import { RemoveBookmarkCommandHandler } from './RemoveBookmarkCommandHandler';

@@ -6,7 +6,7 @@ import { UpdateUserCommandHandler } from '@khlug/app/application/user/command/up
 import { UpdateUserCommandResult } from '@khlug/app/application/user/command/updateUser/UpdateUserCommandResult';
 
 import {
-  ISlackSender,
+  IMessageSender,
   SlackSender,
 } from '@khlug/app/domain/adapter/ISlackSender';
 import {
@@ -30,7 +30,7 @@ import {
   generateInterest,
   generateUser,
 } from '@khlug/__test__/fixtures/domain';
-import { Message } from '@khlug/constant/message';
+import { Message } from '@khlug/constant/error';
 
 jest.mock('@khlug/core/persistence/transaction/Transactional', () => ({
   Transactional: () => () => {},
@@ -42,7 +42,7 @@ describe('UpdateUserCommandHandler', () => {
   let userRepository: jest.Mocked<IUserRepository>;
   let interestRepository: jest.Mocked<IInterestRepository>;
   let userInterestRepository: jest.Mocked<IUserInterestRepository>;
-  let slackSender: jest.Mocked<ISlackSender>;
+  let slackSender: jest.Mocked<IMessageSender>;
 
   beforeAll(async () => {
     advanceTo(new Date());

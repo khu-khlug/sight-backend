@@ -5,7 +5,7 @@ import { StudentStatus } from '@khlug/app/domain/user/model/constant';
 
 import { DomainFixture } from '@khlug/__test__/fixtures';
 import { generateProfile, UserFixture } from '@khlug/__test__/fixtures/domain';
-import { Message } from '@khlug/constant/message';
+import { Message } from '@khlug/constant/error';
 import { UnivDate } from '@khlug/util/univDate';
 import { UnivTerm } from '@khlug/util/univTerm';
 

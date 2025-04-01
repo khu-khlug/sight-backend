@@ -12,7 +12,7 @@ import {
 import { User } from '@khlug/app/domain/user/model/User';
 
 import { DomainFixture } from '@khlug/__test__/fixtures';
-import { Message } from '@khlug/constant/message';
+import { Message } from '@khlug/constant/error';
 
 describe('GroupAuthorizer', () => {
   let authorizer: GroupAuthorizer;

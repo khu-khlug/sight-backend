@@ -11,7 +11,7 @@ import { Transactional } from '@khlug/core/persistence/transaction/Transactional
 import { RemoveBookmarkCommand } from '@khlug/app/application/group/command/removeBookmark/RemoveBookmarkCommand';
 
 import {
-  ISlackSender,
+  IMessageSender,
   SlackSender,
 } from '@khlug/app/domain/adapter/ISlackSender';
 import {
@@ -22,9 +22,9 @@ import {
   GroupRepository,
   IGroupRepository,
 } from '@khlug/app/domain/group/IGroupRepository';
-import { SlackMessageCategory } from '@khlug/app/domain/message/model/constant';
+import { MessageCategory } from '@khlug/constant/message';
 
-import { Message } from '@khlug/constant/message';
+import { Message } from '@khlug/constant/error';
 import { Template } from '@khlug/constant/template';
 
 @CommandHandler(RemoveBookmarkCommand)
@@ -37,7 +37,7 @@ export class RemoveBookmarkCommandHandler
     @Inject(GroupBookmarkRepository)
     private readonly groupBookmarkRepository: IGroupBookmarkRepository,
     @Inject(SlackSender)
-    private readonly slackSender: ISlackSender,
+    private readonly slackSender: IMessageSender,
   ) {}
 
   @Transactional()
@@ -64,7 +64,7 @@ export class RemoveBookmarkCommandHandler
     await this.groupBookmarkRepository.remove(prevBookmark);
 
     this.slackSender.send({
-      category: SlackMessageCategory.GROUP_ACTIVITY_FOR_ME,
+      category: MessageCategory.GROUP_ACTIVITY_FOR_ME,
       targetUserId: userId,
       message: MessageBuilder.build(
         Template.REMOVE_GROUP_BOOKMARK.notification,

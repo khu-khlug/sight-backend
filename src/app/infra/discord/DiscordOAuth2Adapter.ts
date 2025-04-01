@@ -10,7 +10,7 @@ import { DiscordConfig } from '@khlug/core/config/DiscordConfig';
 
 import { IDiscordOAuth2Adapter } from '@khlug/app/application/adapter/IDiscordOAuth2Adapter';
 
-import { Message } from '@khlug/constant/message';
+import { Message } from '@khlug/constant/error';
 
 @Injectable()
 export class DiscordOAuth2Adapter implements IDiscordOAuth2Adapter {

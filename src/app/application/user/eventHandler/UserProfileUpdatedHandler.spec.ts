@@ -4,7 +4,7 @@ import { advanceTo, clear } from 'jest-date-mock';
 import { UserProfileUpdatedHandler } from '@khlug/app/application/user/eventHandler/UserProfileUpdatedHandler';
 
 import {
-  ISlackSender,
+  IMessageSender,
   SlackSender,
 } from '@khlug/app/domain/adapter/ISlackSender';
 import { UserProfileUpdated } from '@khlug/app/domain/user/event/UserProfileUpdated';
@@ -14,7 +14,7 @@ import { generateUser } from '@khlug/__test__/fixtures/domain';
 
 describe('UserProfileUpdatedHandler', () => {
   let handler: UserProfileUpdatedHandler;
-  let slackSender: jest.Mocked<ISlackSender>;
+  let slackSender: jest.Mocked<IMessageSender>;
 
   beforeAll(async () => {
     advanceTo(new Date());
