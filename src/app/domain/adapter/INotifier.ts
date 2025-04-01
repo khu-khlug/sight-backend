@@ -7,20 +7,16 @@ export type NotifierSendParams = {
   category: NotificationCategory;
 };
 
-export type NotifierSendToManagersParams = Omit<
-  NotifierSendParams,
-  'targetUserId'
->;
-
-export type NotifierBroadcastParams = Omit<
-  NotifierSendParams,
-  'sourceUserId' | 'targetUserId'
->;
+export type NotifierSendToChannelParams = {
+  sourceUserId?: number;
+  channelId: string;
+  message: string;
+  category: NotificationCategory;
+};
 
 export const NotifierToken = Symbol('Notifier');
 
 export interface INotifier {
   send: (params: NotifierSendParams) => void;
-  sendToManagers: (params: NotifierSendToManagersParams) => void;
-  broadcast: (params: NotifierBroadcastParams) => void;
+  sendToChannel: (params: NotifierSendToChannelParams) => void;
 }
