@@ -14,6 +14,7 @@ type CachedDiscordUserId = {
 
 const CACHE_EXPIRATION_MS = 1000 * 60 * 60; // 1 hour
 
+// TODO: 추후 디스코드 모듈로 분리 시 유저가 연동을 해제할 때 제거하도록 구현해야 함
 @Injectable()
 export class CachedDiscordUserIdMapper implements IDiscordUserIdMapper {
   private readonly cache = new Map<number, CachedDiscordUserId>();
