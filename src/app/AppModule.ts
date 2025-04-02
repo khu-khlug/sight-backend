@@ -4,6 +4,8 @@ import { Module, Provider } from '@nestjs/common';
 import { DiscordApiAdapter } from '@khlug/app/infra/discord/DiscordApiAdapter';
 import { DiscordOAuth2Adapter } from '@khlug/app/infra/discord/DiscordOAuth2Adapter';
 import { DiscordStateGenerator } from '@khlug/app/infra/discord/DiscordStateGenerator';
+import { CachedDiscordUserIdMapper } from '@khlug/app/infra/notification/CachedDiscordUserIdMapper';
+import { DiscordUserIdMapperToken } from '@khlug/app/infra/notification/IDiscordUserIdMapper';
 import { DiscordIntegrationEntity } from '@khlug/app/infra/persistence/entity/DiscordIntegrationEntity';
 import { DiscordIntegrationQuery } from '@khlug/app/infra/persistence/query/DiscordIntegrationQuery';
 import { DiscordIntegrationRepository } from '@khlug/app/infra/persistence/repository/DiscordIntegrationRepository';
@@ -49,7 +51,15 @@ const repositories: Provider[] = [
     useClass: DiscordIntegrationRepository,
   },
 ];
-const mappers: Provider[] = [DiscordIntegrationMapper];
+const entityMappers: Provider[] = [DiscordIntegrationMapper];
+
+// 도메인과 무관한 실제 구현체를 넣습니다.
+const implementations: Provider[] = [
+  {
+    provide: DiscordUserIdMapperToken,
+    useValue: CachedDiscordUserIdMapper,
+  },
+];
 
 const controllers = [UserController];
 const manageControllers = [InfraBlueManageController, UserManageController];
@@ -85,7 +95,8 @@ const services: Provider[] = [DiscordMemberService];
     ...adapters,
     ...queries,
     ...repositories,
-    ...mappers,
+    ...entityMappers,
+    ...implementations,
     ...discordEventHandlers,
     ...commandHandlers,
     ...queryHandlers,
