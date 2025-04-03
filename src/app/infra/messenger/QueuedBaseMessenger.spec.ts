@@ -7,16 +7,14 @@ jest.mock('p-queue', () => {
 
 import { ConsoleLogger } from '@nestjs/common';
 
-import { QueuedBaseNotifier } from '@khlug/app/infra/notification/QueuedBaseNotifier';
+import { QueuedBaseMessenger } from '@khlug/app/infra/messenger/QueuedBaseMessenger';
 
-import { NotificationCategory } from '@khlug/constant/notification';
-
-class NoopNotifier extends QueuedBaseNotifier {
+class NoopNotifier extends QueuedBaseMessenger {
   protected async sendImpl(): Promise<void> {}
   protected async sendToChannelImpl(): Promise<void> {}
 }
 
-class ThrowErrorNotifier extends QueuedBaseNotifier {
+class ThrowErrorNotifier extends QueuedBaseMessenger {
   protected async sendImpl(): Promise<void> {
     throw new Error('Test error');
   }
@@ -25,7 +23,7 @@ class ThrowErrorNotifier extends QueuedBaseNotifier {
   }
 }
 
-describe('QueuedBaseNotifier', () => {
+describe('QueuedBaseMessenger', () => {
   beforeEach(() => {
     advanceTo(new Date());
 
@@ -36,12 +34,11 @@ describe('QueuedBaseNotifier', () => {
 
   describe('send', () => {
     test('큐에 알람 전송 작업을 추가해야 한다', () => {
-      const notifier = new NoopNotifier();
+      const logger: jest.Mocked<ConsoleLogger> = {} as any;
+      const notifier = new NoopNotifier(logger);
 
       notifier.send({
-        sourceUserId: 1,
         targetUserId: 2,
-        category: NotificationCategory.MY_ACTIVITY,
         message: 'hello',
       });
 
@@ -54,9 +51,7 @@ describe('QueuedBaseNotifier', () => {
 
       expect(() =>
         notifier.send({
-          sourceUserId: 1,
           targetUserId: 2,
-          category: NotificationCategory.MY_ACTIVITY,
           message: 'hello',
         }),
       ).not.toThrow();
@@ -65,12 +60,11 @@ describe('QueuedBaseNotifier', () => {
 
   describe('sendToChannel', () => {
     test('큐에 알람 전송 작업을 추가해야 한다', () => {
-      const notifier = new NoopNotifier();
+      const logger: jest.Mocked<ConsoleLogger> = {} as any;
+      const notifier = new NoopNotifier(logger);
 
       notifier.sendToChannel({
-        sourceUserId: 1,
         channelId: '123',
-        category: NotificationCategory.MY_ACTIVITY,
         message: 'hello',
       });
 
@@ -83,9 +77,7 @@ describe('QueuedBaseNotifier', () => {
 
       expect(() =>
         notifier.sendToChannel({
-          sourceUserId: 1,
           channelId: '123',
-          category: NotificationCategory.MY_ACTIVITY,
           message: 'hello',
         }),
       ).not.toThrow();

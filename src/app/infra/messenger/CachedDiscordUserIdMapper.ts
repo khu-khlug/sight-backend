@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 
-import { IDiscordUserIdMapper } from '@khlug/app/infra/notification/IDiscordUserIdMapper';
+import { IDiscordUserIdMapper } from '@khlug/app/infra/messenger/IDiscordUserIdMapper';
 
 import {
   DiscordIntegrationRepositoryToken,
