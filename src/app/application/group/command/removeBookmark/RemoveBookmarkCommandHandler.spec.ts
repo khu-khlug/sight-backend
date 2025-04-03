@@ -1,7 +1,7 @@
 import { Test } from '@nestjs/testing';
 import { advanceTo, clear } from 'jest-date-mock';
 
-import { NotifierToken } from '@khlug/app/domain/adapter/INotifier';
+import { MessengerToken } from '@khlug/app/domain/adapter/IMessenger';
 import {
   GroupBookmarkRepository,
   IGroupBookmarkRepository,
@@ -40,7 +40,7 @@ describe('RemoveBookmarkCommandHandler', () => {
           useValue: { findByGroupIdAndUserId: jest.fn(), remove: jest.fn() },
         },
         {
-          provide: NotifierToken,
+          provide: MessengerToken,
           useValue: { send: jest.fn() },
         },
       ],

@@ -1,7 +1,7 @@
 import { Test } from '@nestjs/testing';
 import { advanceTo, clear } from 'jest-date-mock';
 
-import { CachedDiscordUserIdMapper } from '@khlug/app/infra/notification/CachedDiscordUserIdMapper';
+import { CachedDiscordUserIdMapper } from '@khlug/app/infra/messenger/CachedDiscordUserIdMapper';
 
 import {
   DiscordIntegrationRepositoryToken,

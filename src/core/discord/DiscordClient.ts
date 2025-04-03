@@ -34,4 +34,8 @@ export class DiscordClient {
 
     await this.client.login(this.token);
   }
+
+  get rest() {
+    return this.client.rest;
+  }
 }

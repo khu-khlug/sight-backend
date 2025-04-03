@@ -4,7 +4,10 @@ import { advanceTo, clear } from 'jest-date-mock';
 import { EnablePortfolioCommand } from '@khlug/app/application/group/command/enablePortfolio/EnablePortfolioCommand';
 import { EnablePortfolioCommandHandler } from '@khlug/app/application/group/command/enablePortfolio/EnablePortfolioCommandHandler';
 
-import { INotifier, NotifierToken } from '@khlug/app/domain/adapter/INotifier';
+import {
+  IMessenger,
+  MessengerToken,
+} from '@khlug/app/domain/adapter/IMessenger';
 import {
   GroupLogger,
   IGroupLogger,
@@ -30,7 +33,7 @@ describe('EnablePortfolioCommandHandler', () => {
   let groupMemberRepository: jest.Mocked<IGroupMemberRepository>;
   let groupLogger: jest.Mocked<IGroupLogger>;
   let pointGrantService: jest.Mocked<PointGrantService>;
-  let slackSender: jest.Mocked<INotifier>;
+  let slackSender: jest.Mocked<IMessenger>;
 
   beforeEach(async () => {
     advanceTo(new Date());
@@ -55,7 +58,7 @@ describe('EnablePortfolioCommandHandler', () => {
           useValue: { grant: jest.fn() },
         },
         {
-          provide: NotifierToken,
+          provide: MessengerToken,
           useValue: { send: jest.fn() },
         },
       ],
@@ -66,7 +69,7 @@ describe('EnablePortfolioCommandHandler', () => {
     groupMemberRepository = testModule.get(GroupMemberRepository);
     groupLogger = testModule.get(GroupLogger);
     pointGrantService = testModule.get(PointGrantService);
-    slackSender = testModule.get(NotifierToken);
+    slackSender = testModule.get(MessengerToken);
   });
 
   afterEach(() => clear());

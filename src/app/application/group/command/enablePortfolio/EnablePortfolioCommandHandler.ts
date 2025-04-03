@@ -11,7 +11,10 @@ import { Transactional } from '@khlug/core/persistence/transaction/Transactional
 
 import { EnablePortfolioCommand } from '@khlug/app/application/group/command/enablePortfolio/EnablePortfolioCommand';
 
-import { INotifier, NotifierToken } from '@khlug/app/domain/adapter/INotifier';
+import {
+  IMessenger,
+  MessengerToken,
+} from '@khlug/app/domain/adapter/IMessenger';
 import {
   GroupLogger,
   IGroupLogger,
@@ -25,7 +28,6 @@ import {
   IGroupRepository,
 } from '@khlug/app/domain/group/IGroupRepository';
 import { Group } from '@khlug/app/domain/group/model/Group';
-import { NotificationCategory } from '@khlug/constant/notification';
 import { PointGrantService } from '@khlug/app/domain/user/service/PointGrantService';
 
 import { Message } from '@khlug/constant/error';
@@ -44,8 +46,8 @@ export class EnablePortfolioCommandHandler
     private readonly groupMemberRepository: IGroupMemberRepository,
     @Inject(GroupLogger)
     private readonly groupLogger: IGroupLogger,
-    @Inject(NotifierToken)
-    private readonly slackSender: INotifier,
+    @Inject(MessengerToken)
+    private readonly slackSender: IMessenger,
   ) {}
 
   @Transactional()
@@ -110,7 +112,6 @@ export class EnablePortfolioCommandHandler
     );
 
     this.slackSender.send({
-      category: NotificationCategory.GROUP_ACTIVITY,
       targetUserId: group.adminUserId,
       message,
     });

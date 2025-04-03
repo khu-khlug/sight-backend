@@ -4,7 +4,7 @@ import { advanceTo, clear } from 'jest-date-mock';
 import { CreateGroupCommand } from '@khlug/app/application/group/command/createGroup/CreateGroupCommand';
 import { CreateGroupCommandHandler } from '@khlug/app/application/group/command/createGroup/CreateGroupCommandHandler';
 
-import { NotifierToken } from '@khlug/app/domain/adapter/INotifier';
+import { MessengerToken } from '@khlug/app/domain/adapter/IMessenger';
 import { GroupFactory } from '@khlug/app/domain/group/GroupFactory';
 import { GroupMemberFactory } from '@khlug/app/domain/group/GroupMemberFactory';
 import {
@@ -64,7 +64,7 @@ describe('CreateGroupCommandHandler', () => {
           useValue: { findByIds: jest.fn() },
         },
         {
-          provide: NotifierToken,
+          provide: MessengerToken,
           useValue: { send: jest.fn() },
         },
       ],

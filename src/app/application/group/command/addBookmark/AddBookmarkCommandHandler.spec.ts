@@ -4,7 +4,7 @@ import { advanceTo, clear } from 'jest-date-mock';
 import { AddBookmarkCommand } from '@khlug/app/application/group/command/addBookmark/AddBookmarkCommand';
 import { AddBookmarkCommandHandler } from '@khlug/app/application/group/command/addBookmark/AddBookmarkCommandHandler';
 
-import { NotifierToken } from '@khlug/app/domain/adapter/INotifier';
+import { MessengerToken } from '@khlug/app/domain/adapter/IMessenger';
 import { GroupBookmarkFactory } from '@khlug/app/domain/group/GroupBookmarkFactory';
 import {
   GroupBookmarkRepository,
@@ -47,7 +47,7 @@ describe('AddBookmarkCommandHandler', () => {
           },
         },
         {
-          provide: NotifierToken,
+          provide: MessengerToken,
           useValue: {
             send: jest.fn(),
           },

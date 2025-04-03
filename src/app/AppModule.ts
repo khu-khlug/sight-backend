@@ -4,8 +4,9 @@ import { Module, Provider } from '@nestjs/common';
 import { DiscordApiAdapter } from '@khlug/app/infra/discord/DiscordApiAdapter';
 import { DiscordOAuth2Adapter } from '@khlug/app/infra/discord/DiscordOAuth2Adapter';
 import { DiscordStateGenerator } from '@khlug/app/infra/discord/DiscordStateGenerator';
-import { CachedDiscordUserIdMapper } from '@khlug/app/infra/notification/CachedDiscordUserIdMapper';
-import { DiscordUserIdMapperToken } from '@khlug/app/infra/notification/IDiscordUserIdMapper';
+import { CachedDiscordUserIdMapper } from '@khlug/app/infra/messenger/CachedDiscordUserIdMapper';
+import { DiscordMessenger } from '@khlug/app/infra/messenger/DiscordMessenger';
+import { DiscordUserIdMapperToken } from '@khlug/app/infra/messenger/IDiscordUserIdMapper';
 import { DiscordIntegrationEntity } from '@khlug/app/infra/persistence/entity/DiscordIntegrationEntity';
 import { DiscordIntegrationQuery } from '@khlug/app/infra/persistence/query/DiscordIntegrationQuery';
 import { DiscordIntegrationRepository } from '@khlug/app/infra/persistence/repository/DiscordIntegrationRepository';
@@ -32,6 +33,7 @@ import { DiscordIntegrationQueryToken } from '@khlug/app/application/user/query/
 import { ListUserQueryHandler } from '@khlug/app/application/user/query/listUser/ListUserQueryHandler';
 import { DiscordMemberService } from '@khlug/app/application/user/service/DiscordMemberService';
 
+import { MessengerToken } from '@khlug/app/domain/adapter/IMessenger';
 import { Cache } from '@khlug/app/domain/cache/model/Cache';
 import { DiscordIntegrationRepositoryToken } from '@khlug/app/domain/discord/IDiscordIntegrationRepository';
 import { FeeHistory } from '@khlug/app/domain/fee/model/FeeHistory';
@@ -58,6 +60,10 @@ const implementations: Provider[] = [
   {
     provide: DiscordUserIdMapperToken,
     useValue: CachedDiscordUserIdMapper,
+  },
+  {
+    provide: MessengerToken,
+    useValue: DiscordMessenger,
   },
 ];
 

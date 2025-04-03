@@ -40,6 +40,6 @@ import { EntityModels } from '@khlug/core/persistence/Entities';
     CqrsModule,
     DiscordModule,
   ],
-  exports: [ClsModule, ConfigModule, MikroOrmModule, CqrsModule],
+  exports: [ClsModule, ConfigModule, MikroOrmModule, CqrsModule, DiscordModule],
 })
 export class CoreModule {}
