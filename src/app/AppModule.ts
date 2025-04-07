@@ -59,11 +59,11 @@ const entityMappers: Provider[] = [DiscordIntegrationMapper];
 const implementations: Provider[] = [
   {
     provide: DiscordUserIdMapperToken,
-    useValue: CachedDiscordUserIdMapper,
+    useClass: CachedDiscordUserIdMapper,
   },
   {
     provide: MessengerToken,
-    useValue: DiscordMessenger,
+    useClass: DiscordMessenger,
   },
 ];
 
