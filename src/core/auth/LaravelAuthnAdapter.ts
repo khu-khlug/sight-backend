@@ -1,7 +1,7 @@
-import crypto from 'crypto';
-import fs from 'fs/promises';
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import crypto from 'crypto';
+import fs from 'fs/promises';
 import { unserialize } from 'php-serialize';
 
 import { LaravelSessionConfig } from '@khlug/core/config/LaravelSessionConfig';
@@ -38,7 +38,7 @@ export class LaravelAuthnAdapter {
     const session = this.normalize(rawSession);
     const decrypted = this.decrypt(session);
 
-    const sessionId = unserialize(decrypted);
+    const sessionId = this.getSessionId(decrypted);
     const serializedSessionData = await this.getSessionData(sessionId);
 
     const sessionData: SessionData = unserialize(serializedSessionData);
@@ -73,6 +73,16 @@ export class LaravelAuthnAdapter {
     }
 
     return decrypted.toString();
+  }
+
+  private getSessionId(decrypted: string): string {
+    const splitted = decrypted.split('|');
+
+    if (splitted.length < 2) {
+      throw new Error('Invalid session format');
+    }
+
+    return splitted[1];
   }
 
   private async getSessionData(sessionId: string): Promise<string> {
