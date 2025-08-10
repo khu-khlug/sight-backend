@@ -20,7 +20,7 @@ WORKDIR /sight
 # RUN corepack enable && corepack prepare yarn@4.6.0 --activate
 
 # COPY --from=builder /sight/package.json /sight/yarn.lock  ./
-COPY --from=builder /sight/package.json /sight/package-json.lock  ./
+COPY --from=builder /sight/package.json /sight/package-lock.json  ./
 COPY --from=builder /sight/.env.* ./
 COPY --from=builder /sight/node_modules/ ./node_modules/
 COPY --from=builder /sight/dist/ ./dist/
