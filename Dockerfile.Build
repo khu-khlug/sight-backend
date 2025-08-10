@@ -1,6 +1,6 @@
-FROM node:16-alpine as builder
+FROM node:16-alpine AS builder
 
-ENV NODE_ENV build
+ENV NODE_ENV=build
 WORKDIR /sight
 
 COPY . .
@@ -14,7 +14,7 @@ RUN npm run build
 
 FROM node:16-alpine
 
-ENV NODE_ENV production
+ENV NODE_ENV=production
 WORKDIR /sight
 
 # RUN corepack enable && corepack prepare yarn@4.6.0 --activate
