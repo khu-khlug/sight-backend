@@ -22,9 +22,11 @@ export class AuthServiceAdapter {
   }
 
   async authenticate(cookies: string): Promise<number | null> {
-    const { data } = await this.client.post<AuthResponse>('/internal/auth', {
-      headers: { Cookie: cookies },
-    });
+    const { data } = await this.client.post<AuthResponse>(
+      '/internal/auth',
+      {},
+      { headers: { Cookie: cookies } },
+    );
 
     return data.login ? data.userId : null;
   }
