@@ -9,14 +9,14 @@ import { Request } from 'express';
 import { ClsService } from 'nestjs-cls';
 
 import { AUTH_DECORATOR_METADATA_KEY } from '@khlug/core/auth/Auth';
+import { AuthServiceAdapter } from '@khlug/core/auth/AuthServiceAdapter';
 import { IRequester } from '@khlug/core/auth/IRequester';
-import { LaravelAuthnAdapter } from '@khlug/core/auth/LaravelAuthnAdapter';
 import { UserRole } from '@khlug/core/auth/UserRole';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
   constructor(
-    private readonly laravelAuthnAdapter: LaravelAuthnAdapter,
+    private readonly laravelAuthnAdapter: AuthServiceAdapter,
     private readonly clsService: ClsService,
     private readonly em: EntityManager,
   ) {}
@@ -32,14 +32,14 @@ export class AuthGuard implements CanActivate {
       return true;
     }
 
-    const rawSession = req.cookies['khlug_session'];
+    const cookies = req.headers['cookie'];
 
-    if (!rawSession) {
+    if (!cookies) {
       throw new UnauthorizedException();
     }
 
     const requesterUserId =
-      await this.laravelAuthnAdapter.authenticate(rawSession);
+      await this.laravelAuthnAdapter.authenticate(cookies);
     if (!requesterUserId) {
       throw new UnauthorizedException();
     }

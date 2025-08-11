@@ -9,13 +9,13 @@ import {
   AuthMetadata,
 } from '@khlug/core/auth/Auth';
 import { AuthGuard } from '@khlug/core/auth/AuthGuard';
+import { AuthServiceAdapter } from '@khlug/core/auth/AuthServiceAdapter';
 import { IRequester } from '@khlug/core/auth/IRequester';
-import { LaravelAuthnAdapter } from '@khlug/core/auth/LaravelAuthnAdapter';
 import { UserRole } from '@khlug/core/auth/UserRole';
 
 describe('AuthGuard', () => {
   let authGuard: AuthGuard;
-  let laravelAuthnAdapter: jest.Mocked<LaravelAuthnAdapter>;
+  let laravelAuthnAdapter: jest.Mocked<AuthServiceAdapter>;
   let clsService: jest.Mocked<ClsService>;
   let entityManager: jest.Mocked<EntityManager>;
 
@@ -28,7 +28,7 @@ describe('AuthGuard', () => {
       providers: [
         AuthGuard,
         {
-          provide: LaravelAuthnAdapter,
+          provide: AuthServiceAdapter,
           useValue: {
             authenticate: jest.fn(),
           },
@@ -52,7 +52,7 @@ describe('AuthGuard', () => {
     }).compile();
 
     authGuard = testModule.get(AuthGuard);
-    laravelAuthnAdapter = testModule.get(LaravelAuthnAdapter);
+    laravelAuthnAdapter = testModule.get(AuthServiceAdapter);
     clsService = testModule.get(ClsService);
     entityManager = testModule.get(EntityManager);
   });
@@ -62,7 +62,10 @@ describe('AuthGuard', () => {
   describe('canActivate', () => {
     const createExecutionContext = (cookies: Record<string, string>) => {
       const handler = function () {};
-      const request = { cookies };
+      const cookieString = Object.entries(cookies)
+        .map(([key, value]) => `${key}=${value}`)
+        .join(';');
+      const request = { headers: { cookie: cookieString } };
 
       return {
         switchToHttp: () => ({
