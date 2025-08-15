@@ -9,6 +9,7 @@ import { AuthModule } from '@khlug/core/auth/AuthModule';
 import { configuration } from '@khlug/core/config';
 import { DatabaseConfig } from '@khlug/core/config/DatabaseConfig';
 import { DiscordModule } from '@khlug/core/discord/DiscordModule';
+import { HealthController } from '@khlug/core/health/HealthController';
 import { EntityModels } from '@khlug/core/persistence/Entities';
 
 @Global()
@@ -40,6 +41,7 @@ import { EntityModels } from '@khlug/core/persistence/Entities';
     CqrsModule,
     DiscordModule,
   ],
+  controllers: [HealthController],
   exports: [ClsModule, ConfigModule, MikroOrmModule, CqrsModule, DiscordModule],
 })
 export class CoreModule {}
