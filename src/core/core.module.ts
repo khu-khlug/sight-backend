@@ -2,6 +2,7 @@ import { defineConfig } from '@mikro-orm/mysql';
 import { MikroOrmModule } from '@mikro-orm/nestjs';
 import { Global, Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { APP_FILTER, APP_INTERCEPTOR } from '@nestjs/core';
 import { CqrsModule } from '@nestjs/cqrs';
 import { ClsModule } from 'nestjs-cls';
 
@@ -10,6 +11,8 @@ import { configuration } from '@khlug/core/config';
 import { DatabaseConfig } from '@khlug/core/config/DatabaseConfig';
 import { DiscordModule } from '@khlug/core/discord/DiscordModule';
 import { HealthController } from '@khlug/core/health/HealthController';
+import { HttpExceptionFilter } from '@khlug/core/logging/HttpExceptionFilter';
+import { LoggingInterceptor } from '@khlug/core/logging/LoggingInterceptor';
 import { EntityModels } from '@khlug/core/persistence/Entities';
 
 @Global()
@@ -40,6 +43,10 @@ import { EntityModels } from '@khlug/core/persistence/Entities';
     }),
     CqrsModule,
     DiscordModule,
+  ],
+  providers: [
+    { provide: APP_FILTER, useClass: HttpExceptionFilter },
+    { provide: APP_INTERCEPTOR, useClass: LoggingInterceptor },
   ],
   controllers: [HealthController],
   exports: [ClsModule, ConfigModule, MikroOrmModule, CqrsModule, DiscordModule],
