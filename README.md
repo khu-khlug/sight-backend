@@ -2,6 +2,9 @@
 
 쿠러그 사이트의 백엔드 레포지토리입니다.
 
+> [!IMPORTANT]
+> NestJS 백엔드 서비스가 Spring 백엔드로 통합되면서 2026년 3월 2일부로 제거되었습니다.
+
 [![Coverage Status](https://coveralls.io/repos/github/khu-khlug/sight-backend/badge.svg?branch=main)](https://coveralls.io/github/khu-khlug/sight-backend?branch=main)
 
 ## 사전 준비
